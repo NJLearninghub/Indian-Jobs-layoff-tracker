@@ -1,0 +1,19 @@
+{
+  "name": "india-layoff-tracker-api",
+  "version": "1.0.0",
+  "description": "Backend API for India Layoff Tracker 2025-2026",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vercel dev",
+    "deploy": "vercel --prod",
+    "lint": "eslint api/**/*.js lib/**/*.js"
+  },
+  "engines": {
+    "node": ">=18.x"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vercel": "^35.0.0"
+  },
+  "license": "MIT"
+}

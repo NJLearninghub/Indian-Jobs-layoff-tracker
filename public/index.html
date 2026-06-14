@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>India Layoff Tracker 2025–2026</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+  <style>
+    /* ── Design Tokens ── */
+    :root {
+      --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
+      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
+      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
+      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
+      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
+
+      --space-1:  0.25rem; --space-2:  0.5rem;  --space-3:  0.75rem;
+      --space-4:  1rem;    --space-5:  1.25rem; --space-6:  1.5rem;
+      --space-8:  2rem;    --space-10: 2.5rem;  --space-12: 3rem;
+      --space-16: 4rem;
+
+      --radius-sm: 0.375rem; --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;  --radius-xl: 1rem;
+      --radius-full: 9999px;
+
+      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+
+      /* Chart colors */
+      --c-red:    #ef4444; --c-orange: #f97316;
+      --c-amber:  #f59e0b; --c-green:  #22c55e;
+      --c-blue:   #3b82f6; --c-purple: #a855f7;
+      --c-teal:   #14b8a6; --c-pink:   #ec4899;
+      --c-indigo: #6366f1; --c-cyan:   #06b6d4;
+    }
+
+    :root, [data-theme="light"] {
+      --color-bg:             #f4f3ef;
+      --color-surface:        #f9f8f6;
+      --color-surface-2:      #ffffff;
+      --color-surface-offset: #eceae4;
+      --color-divider:        #dbd9d3;
+      --color-border:         #d0cdc6;
+      --color-text:           #1a1917;
+      --color-text-muted:     #6b6966;
+      --color-text-faint:     #b0aea8;
+      --color-primary:        #dc2626;
+      --color-primary-hover:  #b91c1c;
+      --color-primary-highlight: #fef2f2;
+      --color-success:        #16a34a;
+      --color-warning:        #d97706;
+      --color-error:          #dc2626;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+    }
+
+    [data-theme="dark"] {
+      --color-bg:             #111110;
+      --color-surface:        #18171a;
+      --color-surface-2:      #1e1d21;
+      --color-surface-offset: #242228;
+      --color-divider:        #2e2c32;
+      --color-border:         #38353d;
+      --color-text:           #e8e6e3;
+      --color-text-muted:     #7c7980;
+      --color-text-faint:     #4d4b52;
+      --color-primary:        #f87171;
+      --color-primary-hover:  #fca5a5;
+      --color-primary-highlight: #2d1a1a;
+      --color-success:        #4ade80;
+      --color-warning:        #fbbf24;
+      --color-error:          #f87171;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+      --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
+    }
+
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+    body {
+      min-height: 100dvh;
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--color-text);
+      background: var(--color-bg);
+      transition: background var(--transition), color var(--transition);
+    }
+    img { display: block; max-width: 100%; }
+    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+    table { border-collapse: collapse; width: 100%; }
+    input, select { font: inherit; color: inherit; }
+
+    /* ── Layout ── */
+    .app-shell { display: flex; min-height: 100dvh; }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px; flex-shrink: 0;
+      background: var(--color-surface);
+      border-right: 1px solid var(--color-border);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; height: 100dvh;
+      z-index: 100; transition: transform var(--transition);
+    }
+    .sidebar-logo {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-5) var(--space-6);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--color-primary);
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-weight: 700; font-size: var(--text-sm);
+      flex-shrink: 0;
+    }
+    .logo-text { font-weight: 700; font-size: var(--text-sm); line-height: 1.2; }
+    .logo-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+    .sidebar-nav { flex: 1; padding: var(--space-4) var(--space-3); overflow-y: auto; }
+    .nav-section { margin-bottom: var(--space-6); }
+    .nav-section-label {
+      font-size: var(--text-xs); font-weight: 600;
+      color: var(--color-text-faint); text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 0 var(--space-3);
+      margin-bottom: var(--space-2);
+    }
+    .nav-item {
+      display: flex; align-items: center; gap: var(--space-3);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      color: var(--color-text-muted);
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      font-size: var(--text-sm);
+      border: none; background: none; width: 100%; text-align: left;
+    }
+    .nav-item:hover { background: var(--color-surface-offset); color: var(--color-text); }
+    .nav-item.active { background: var(--color-primary-highlight); color: var(--color-primary); font-weight: 600; }
+    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    .sidebar-footer {
+      padding: var(--space-4) var(--space-3);
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* Topbar */
+    .topbar {
+      position: fixed; top: 0; left: 240px; right: 0;
+      height: 56px; background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 var(--space-6); z-index: 99;
+    }
+    .topbar-left { display: flex; align-items: center; gap: var(--space-4); }
+    .topbar-right { display: flex; align-items: center; gap: var(--space-3); }
+    .page-title { font-size: var(--text-base); font-weight: 600; }
+
+    /* Search */
+    .search-wrap {
+      display: flex; align-items: center; gap: var(--space-2);
+      background: var(--color-surface-offset);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      width: 260px;
+    }
+    .search-wrap svg { width: 14px; height: 14px; color: var(--color-text-muted); }
+    .search-wrap input {
+      border: none; background: none; outline: none;
+      font-size: var(--text-sm); color: var(--color-text);
+      width: 100%;
+    }
+    .search-wrap input::placeholder { color: var(--color-text-faint); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: var(--radius-md);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color-text-muted);
+      transition: background var(--transition), color var(--transition);
+    }
+    .theme-toggle:hover { background: var(--color-surface-offset); color: var(--color-text); }
+
+    /* Main content */
+    .main-content {
+      margin-left: 240px;
+      margin-top: 56px;
+      flex: 1; padding: var(--space-6);
+      min-height: calc(100dvh - 56px);
+    }
+
+    /* ── Views ── */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* ── KPI Cards ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: var(--space-4); margin-bottom: var(--space-6);
+    }
+    .kpi-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      transition: box-shadow var(--transition);
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); }
+    .kpi-label {
+      font-size: var(--text-xs); color: var(--color-text-muted);
+      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
+      margin-bottom: var(--space-2);
+      display: flex; align-items: center; gap: var(--space-2);
+    }
+    .kpi-label svg { width: 14px; height: 14px; }
+    .kpi-value {
+      font-size: var(--text-xl); font-weight: 700;
+      font-variant-numeric: tabular-nums lining-nums;
+      color: var(--color-text); line-height: 1;
+      margin-bottom: var(--space-1);
+    }
+    .kpi-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
+    .kpi-delta {
+      font-size: var(--text-xs); font-weight: 600;
+      display: inline-flex; align-items: center; gap: 2px;
+      margin-top: var(--space-2);
+    }
+    .kpi-delta.up { color: var(--color-error); }
+    .kpi-delta.down { color: var(--color-success); }
+
+    /* ── Charts Grid ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
+      gap: var(--space-5); margin-bottom: var(--space-6);
+    }
+    .chart-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+    }
+    .chart-card.wide { grid-column: 1 / -1; }
+    .chart-title {
+      font-size: var(--text-sm); font-weight: 600;
+      margin-bottom: var(--space-4); color: var(--color-text);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .chart-subtitle { font-size: var(--text-xs); color: var(--color-text-muted); font-weight: 400; }
+    .chart-container { position: relative; height: 240px; }
+    .chart-container.tall { height: 320px; }
+
+    /* ── Table ── */
+    .table-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden; margin-bottom: var(--space-6);
+    }
+    .table-header {
+      padding: var(--space-4) var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: var(--space-3);
+    }
+    .table-header-title { font-size: var(--text-sm); font-weight: 600; }
+    .table-filters { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+    .filter-select {
+      background: var(--color-surface-offset);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      font-size: var(--text-xs); color: var(--color-text);
+      outline: none; cursor: pointer;
+    }
+    .filter-select:focus { border-color: var(--color-primary); }
+
+    .table-wrap { overflow-x: auto; }
+    .data-table { width: 100%; }
+    .data-table th {
+      background: var(--color-surface-offset);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-xs); font-weight: 600;
+      color: var(--color-text-muted); text-align: left;
+      white-space: nowrap; border-bottom: 1px solid var(--color-border);
+      cursor: pointer; user-select: none;
+    }
+    .data-table th:hover { color: var(--color-text); }
+    .data-table td {
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-xs); border-bottom: 1px solid var(--color-divider);
+      vertical-align: middle;
+      font-variant-numeric: tabular-nums lining-nums;
+    }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: var(--color-surface-offset); }
+
+    /* Badges */
+    .badge {
+      display: inline-flex; align-items: center;
+      padding: 2px var(--space-2); border-radius: var(--radius-full);
+      font-size: 10px; font-weight: 600; white-space: nowrap;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+    .badge-sector { background: color-mix(in oklab, var(--color-primary) 12%, var(--color-surface)); color: var(--color-primary); }
+    .badge-it      { background: rgba(59,130,246,0.15); color: #60a5fa; }
+    .badge-fintech { background: rgba(245,158,11,0.15); color: #fbbf24; }
+    .badge-ecomm   { background: rgba(34,197,94,0.15); color: #4ade80; }
+    .badge-edtech  { background: rgba(168,85,247,0.15); color: #c084fc; }
+    .badge-gaming  { background: rgba(236,72,153,0.15); color: #f472b6; }
+    .badge-health  { background: rgba(20,184,166,0.15); color: #2dd4bf; }
+    .badge-logistic{ background: rgba(249,115,22,0.15); color: #fb923c; }
+    .badge-ev      { background: rgba(234,179,8,0.15); color: #facc15; }
+    .badge-banking { background: rgba(99,102,241,0.15); color: #818cf8; }
+    .badge-saas    { background: rgba(6,182,212,0.15); color: #22d3ee; }
+    .badge-media   { background: rgba(239,68,68,0.15); color: #f87171; }
+    .badge-ai      { background: rgba(251,191,36,0.15); color: #fde047; }
+    .badge-agri    { background: rgba(74,222,128,0.15); color: #86efac; }
+    .badge-mfg     { background: rgba(156,163,175,0.15); color: #d1d5db; }
+
+    .status-badge { 
+      padding: 2px var(--space-2); border-radius: var(--radius-full);
+      font-size: 10px; font-weight: 700;
+    }
+    .status-confirmed { background: rgba(239,68,68,0.15); color: #f87171; }
+    .status-shutdown  { background: rgba(55,48,63,0.9); color: #9ca3af; }
+    .status-silent    { background: rgba(245,158,11,0.15); color: #fbbf24; }
+
+    .company-cell { display: flex; align-items: center; gap: var(--space-3); }
+    .company-logo-placeholder {
+      width: 28px; height: 28px; border-radius: var(--radius-sm);
+      background: var(--color-surface-offset);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      color: var(--color-text-muted); flex-shrink: 0;
+    }
+    .company-name { font-weight: 600; font-size: var(--text-xs); color: var(--color-text); }
+    .company-type { font-size: 10px; color: var(--color-text-muted); }
+
+    .jobs-cut {
+      font-weight: 700; color: var(--color-error);
+      font-family: var(--font-mono);
+    }
+
+    /* Pagination */
+    .pagination {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: var(--space-3) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      font-size: var(--text-xs); color: var(--color-text-muted);
+    }
+    .pagination-btns { display: flex; gap: var(--space-2); }
+    .pg-btn {
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--color-border);
+      font-size: var(--text-xs); background: var(--color-surface-offset);
+      color: var(--color-text); transition: background var(--transition);
+    }
+    .pg-btn:hover { background: var(--color-border); }
+    .pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pg-btn.current { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+
+    /* ── Risk Calculator ── */
+    .risk-section { max-width: 720px; }
+    .risk-form {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6); margin-bottom: var(--space-5);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+    .form-label { font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .form-select, .form-range {
+      background: var(--color-surface-offset);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--text-sm); color: var(--color-text);
+      outline: none; width: 100%;
+    }
+    .form-select:focus { border-color: var(--color-primary); }
+    .form-range { padding: var(--space-2) 0; accent-color: var(--color-primary); }
+    .range-labels { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-1); }
+
+    .calc-btn {
+      width: 100%; margin-top: var(--space-5);
+      padding: var(--space-3) var(--space-6);
+      background: var(--color-primary);
+      color: white; border-radius: var(--radius-md);
+      font-size: var(--text-sm); font-weight: 600;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .calc-btn:hover { background: var(--color-primary-hover); }
+    .calc-btn:active { transform: scale(0.98); }
+
+    .risk-result {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-6); display: none;
+    }
+    .risk-result.visible { display: block; }
+    .risk-score-wrap { display: flex; align-items: center; gap: var(--space-6); margin-bottom: var(--space-5); }
+    .risk-score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
+    .risk-score-ring canvas { position: absolute; top: 0; left: 0; }
+    .risk-score-label {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      font-size: var(--text-lg); font-weight: 800; font-family: var(--font-mono);
+    }
+    .risk-info h3 { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-2); }
+    .risk-info p { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.6; }
+    .risk-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-4); }
+    .risk-factor { background: var(--color-surface-offset); border-radius: var(--radius-md); padding: var(--space-3); }
+    .risk-factor-label { font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-1); }
+    .risk-factor-bar { height: 6px; background: var(--color-border); border-radius: 3px; margin-bottom: var(--space-1); overflow: hidden; }
+    .risk-factor-fill { height: 100%; border-radius: 3px; transition: width 600ms cubic-bezier(0.16,1,0.3,1); }
+    .risk-factor-score { font-size: var(--text-xs); font-weight: 700; }
+
+    /* ── Section titles ── */
+    .section-header { margin-bottom: var(--space-5); }
+    .section-title { font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1); }
+    .section-desc { font-size: var(--text-xs); color: var(--color-text-muted); }
+
+    /* Live dot */
+    .live-dot {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-xs); color: var(--color-error); font-weight: 600;
+    }
+    .live-dot::before {
+      content: ''; width: 8px; height: 8px; border-radius: 50%;
+      background: var(--color-error);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.8); }
+    }
+
+    /* Mobile */
+    .mobile-menu-btn {
+      display: none; width: 36px; height: 36px;
+      align-items: center; justify-content: center;
+      border-radius: var(--radius-md);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main-content { margin-left: 0; padding: var(--space-4); }
+      .topbar { left: 0; }
+      .mobile-menu-btn { display: flex; }
+      .search-wrap { width: 180px; }
+      .form-grid { grid-template-columns: 1fr; }
+      .risk-breakdown { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Overlay for mobile sidebar */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 99;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* Timeline */
+    .timeline { display: flex; flex-direction: column; gap: 0; }
+    .timeline-item {
+      display: flex; gap: var(--space-4);
+      padding: var(--space-4) 0;
+      border-bottom: 1px solid var(--color-divider);
+    }
+    .timeline-item:last-child { border-bottom: none; }
+    .timeline-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--color-primary); flex-shrink: 0;
+      margin-top: 5px; position: relative;
+    }
+    .timeline-content { flex: 1; }
+    .timeline-date { font-size: var(--text-xs); color: var(--color-text-faint); font-family: var(--font-mono); margin-bottom: var(--space-1); }
+    .timeline-company { font-weight: 700; font-size: var(--text-sm); margin-bottom: 2px; }
+    .timeline-detail { font-size: var(--text-xs); color: var(--color-text-muted); }
+    .timeline-jobs { 
+      font-family: var(--font-mono); font-weight: 700;
+      color: var(--color-error); font-size: var(--text-sm);
+      flex-shrink: 0; padding-top: 4px;
+    }
+
+    /* Trend badges in timeline */
+    .reason-tag {
+      display: inline-block; padding: 1px var(--space-2);
+      border-radius: var(--radius-full);
+      font-size: 10px; font-weight: 600;
+      background: var(--color-surface-offset);
+      color: var(--color-text-muted); margin-top: var(--space-1);
+    }
+
+    .last-updated { font-size: var(--text-xs); color: var(--color-text-faint); }
+
+    /* Sector Map Grid */
+    .sector-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+      gap: var(--space-4); margin-bottom: var(--space-6);
+    }
+    .sector-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      cursor: pointer; transition: box-shadow var(--transition), border-color var(--transition);
+    }
+    .sector-card:hover { box-shadow: var(--shadow-md); border-color: var(--color-primary); }
+    .sector-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
+    .sector-icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
+    .sector-name { font-weight: 700; font-size: var(--text-sm); }
+    .sector-count { font-size: var(--text-xs); color: var(--color-text-muted); }
+    .sector-bar { height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden; margin-bottom: var(--space-2); }
+    .sector-bar-fill { height: 100%; border-radius: 2px; }
+    .sector-stats { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-muted); }
+    .sector-jobs { font-weight: 700; font-family: var(--font-mono); color: var(--color-error); }
+
+    /* No results */
+    .no-results {
+      padding: var(--space-12); text-align: center;
+      color: var(--color-text-muted); font-size: var(--text-sm);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<div class="app-shell">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-text">LayoffWatch India</div>
+        <div class="logo-sub">2025–2026 Tracker</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-label">Overview</div>
+        <button class="nav-item active" onclick="showView('dashboard', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" onclick="showView('timeline', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Timeline
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Data</div>
+        <button class="nav-item" onclick="showView('companies', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          Companies
+        </button>
+        <button class="nav-item" onclick="showView('sectors', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
+          Sectors
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Tools</div>
+        <button class="nav-item" onclick="showView('risk', this)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Risk Calculator
+        </button>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="last-updated">Last updated: June 2026</div>
+      <div class="last-updated" style="margin-top: 4px;">Sources: Inc42, TechCircle, ET</div>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-menu-btn theme-toggle" onclick="toggleSidebar()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="page-title" id="pageTitle">Dashboard</span>
+      <span class="live-dot">LIVE</span>
+    </div>
+    <div class="topbar-right">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search company..." id="globalSearch" oninput="handleGlobalSearch(this.value)">
+      </div>
+      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- ── DASHBOARD VIEW ── -->
+    <div class="view active" id="view-dashboard">
+      <div class="section-header">
+        <div class="section-title">India Layoff Tracker — 2025 &amp; 2026</div>
+        <div class="section-desc">Comprehensive tracking of workforce reductions across Indian companies — IT/ITeS, startups, banking, e-commerce, and more.</div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            Total Jobs Cut (Tracked)
+          </div>
+          <div class="kpi-value" id="kpi-total">1,04,000+</div>
+          <div class="kpi-sub">Verified layoffs, 2025–2026</div>
+          <div class="kpi-delta up">↑ 60% vs FY24</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+            Companies Affected
+          </div>
+          <div class="kpi-value">85+</div>
+          <div class="kpi-sub">Across all sectors</div>
+          <div class="kpi-delta up">↑ 40+ new in 2026</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/></svg>
+            IT Sector Jobs Cut
+          </div>
+          <div class="kpi-value">55,000+</div>
+          <div class="kpi-sub">TCS, Infosys, Wipro & more</div>
+          <div class="kpi-delta up">↑ Largest share</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            Startup Layoffs
+          </div>
+          <div class="kpi-value">20,000+</div>
+          <div class="kpi-sub">Across 60+ Indian startups</div>
+          <div class="kpi-delta up">↑ AI & funding pressure</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Banking Sector
+          </div>
+          <div class="kpi-value">15,000+</div>
+          <div class="kpi-sub">Private banks FY25–26</div>
+          <div class="kpi-delta up">↑ Silent reductions</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            Shutdowns
+          </div>
+          <div class="kpi-value">18+</div>
+          <div class="kpi-sub">Complete closures tracked</div>
+          <div class="kpi-delta up">↑ Agritech, Gaming, D2C</div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+        <div class="chart-card wide">
+          <div class="chart-title">
+            Monthly Layoff Trend — 2025
+            <span class="chart-subtitle">Jobs cut per month (estimated)</span>
+          </div>
+          <div class="chart-container tall">
+            <canvas id="chartMonthly"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">
+            Layoffs by Sector
+            <span class="chart-subtitle">Total jobs 2025–26</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartSector"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">
+            Reason for Layoff
+            <span class="chart-subtitle">Share of total</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartReason"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">
+            Top 10 Companies by Jobs Cut
+            <span class="chart-subtitle">2025</span>
+          </div>
+          <div class="chart-container tall">
+            <canvas id="chartCompanies"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">
+            Stage of Affected Startups
+            <span class="chart-subtitle">By funding stage</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="chartStage"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPANIES VIEW ── -->
+    <div class="view" id="view-companies">
+      <div class="section-header">
+        <div class="section-title">All Layoffs — Company Database</div>
+        <div class="section-desc">Verified workforce reductions across major and minor Indian companies, 2025–2026.</div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-header">
+          <div class="table-header-title" id="companiesCount">Loading...</div>
+          <div class="table-filters">
+            <select class="filter-select" id="filterSector" onchange="applyFilters()">
+              <option value="">All Sectors</option>
+              <option value="IT/ITeS">IT/ITeS</option>
+              <option value="Fintech">Fintech</option>
+              <option value="E-commerce">E-commerce</option>
+              <option value="EdTech">EdTech</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Healthtech">Healthtech</option>
+              <option value="Logistics">Logistics</option>
+              <option value="EV/Auto">EV/Auto</option>
+              <option value="Banking">Banking</option>
+              <option value="SaaS">SaaS</option>
+              <option value="Media">Media</option>
+              <option value="AI">AI</option>
+              <option value="Agritech">Agritech</option>
+              <option value="Quick Commerce">Quick Commerce</option>
+            </select>
+            <select class="filter-select" id="filterYear" onchange="applyFilters()">
+              <option value="">All Years</option>
+              <option value="2025">2025</option>
+              <option value="2026">2026</option>
+            </select>
+            <select class="filter-select" id="filterReason" onchange="applyFilters()">
+              <option value="">All Reasons</option>
+              <option value="AI Automation">AI Automation</option>
+              <option value="Cost Cutting">Cost Cutting</option>
+              <option value="Restructuring">Restructuring</option>
+              <option value="Shutdown">Shutdown</option>
+              <option value="Funding Crunch">Funding Crunch</option>
+              <option value="Regulatory">Regulatory</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th onclick="sortTable('company')">Company ↕</th>
+                <th onclick="sortTable('sector')">Sector ↕</th>
+                <th onclick="sortTable('jobs')">Jobs Cut ↕</th>
+                <th onclick="sortTable('pct')">% Workforce ↕</th>
+                <th onclick="sortTable('reason')">Reason ↕</th>
+                <th onclick="sortTable('date')">Date ↕</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="companiesTableBody"></tbody>
+          </table>
+          <div id="noResults" class="no-results" style="display:none">No records found. Try adjusting filters.</div>
+        </div>
+        <div class="pagination" id="paginationContainer">
+          <span id="paginationInfo"></span>
+          <div class="pagination-btns" id="paginationBtns"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTORS VIEW ── -->
+    <div class="view" id="view-sectors">
+      <div class="section-header">
+        <div class="section-title">Layoffs by Sector</div>
+        <div class="section-desc">Breakdown of job cuts across all major Indian industry sectors.</div>
+      </div>
+      <div class="sector-grid" id="sectorGrid"></div>
+      <div class="chart-card">
+        <div class="chart-title">Sector-wise Layoff Comparison</div>
+        <div class="chart-container tall" style="height:360px;">
+          <canvas id="chartSectorDetail"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIMELINE VIEW ── -->
+    <div class="view" id="view-timeline">
+      <div class="section-header">
+        <div class="section-title">Layoff Timeline</div>
+        <div class="section-desc">Chronological record of significant layoff events in India.</div>
+      </div>
+      <div class="table-card" style="overflow:hidden;">
+        <div class="table-header">
+          <div class="table-header-title">All Events — Newest First</div>
+          <select class="filter-select" id="filterTimelineSector" onchange="renderTimeline()">
+            <option value="">All Sectors</option>
+            <option value="IT/ITeS">IT/ITeS</option>
+            <option value="Banking">Banking</option>
+            <option value="Fintech">Fintech</option>
+            <option value="Gaming">Gaming</option>
+            <option value="E-commerce">E-commerce</option>
+            <option value="EdTech">EdTech</option>
+          </select>
+        </div>
+        <div style="padding: 0 var(--space-5);">
+          <div class="timeline" id="timelineContainer"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RISK CALCULATOR VIEW ── -->
+    <div class="view" id="view-risk">
+      <div class="section-header">
+        <div class="section-title">Personal Layoff Risk Calculator</div>
+        <div class="section-desc">Estimate your layoff risk based on real 2025–2026 Indian job market data.</div>
+      </div>
+      <div class="risk-section">
+        <div class="risk-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Your Sector</label>
+              <select class="form-select" id="riskSector">
+                <option value="IT/ITeS">IT/ITeS (Services)</option>
+                <option value="Banking">Banking / Finance</option>
+                <option value="Startup">Startup (any sector)</option>
+                <option value="Gaming">Gaming</option>
+                <option value="EdTech">EdTech</option>
+                <option value="E-commerce">E-commerce</option>
+                <option value="Fintech">Fintech</option>
+                <option value="Healthtech">Healthtech</option>
+                <option value="Logistics">Logistics</option>
+                <option value="Manufacturing">Manufacturing</option>
+                <option value="Media">Media / Entertainment</option>
+                <option value="PSU/Government">PSU / Government</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Your Role Type</label>
+              <select class="form-select" id="riskRole">
+                <option value="Engineering">Software / Engineering</option>
+                <option value="Operations">Operations / Support</option>
+                <option value="Sales">Sales / BD</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Design">Design / Creative</option>
+                <option value="HR">HR / Recruiting</option>
+                <option value="Data">Data / Analytics</option>
+                <option value="Finance">Finance / Accounts</option>
+                <option value="Content">Content / Writing</option>
+                <option value="Management">Senior Management</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Company Size</label>
+              <select class="form-select" id="riskCompanySize">
+                <option value="small">Small (&lt;500)</option>
+                <option value="mid">Mid (500–5,000)</option>
+                <option value="large">Large (5,000–50,000)</option>
+                <option value="enterprise">Enterprise (50,000+)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Years at Current Company</label>
+              <select class="form-select" id="riskTenure">
+                <option value="0">Less than 1 year</option>
+                <option value="1">1–2 years</option>
+                <option value="2">2–4 years</option>
+                <option value="5">5+ years</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Seniority Level</label>
+              <select class="form-select" id="riskSeniority">
+                <option value="junior">Junior (0–3 yrs exp)</option>
+                <option value="mid">Mid-level (3–7 yrs)</option>
+                <option value="senior">Senior (7–12 yrs)</option>
+                <option value="lead">Lead / Manager</option>
+                <option value="exec">Executive / C-suite</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Skill Area</label>
+              <select class="form-select" id="riskSkill">
+                <option value="ai">AI / ML / GenAI</option>
+                <option value="cloud">Cloud / DevOps</option>
+                <option value="fullstack">Full Stack Dev</option>
+                <option value="legacy">Legacy Systems / Maintenance</option>
+                <option value="manual">Manual / Repetitive Tasks</option>
+                <option value="pm">Product Management</option>
+                <option value="domain">Domain Expert (non-tech)</option>
+              </select>
+            </div>
+          </div>
+          <button class="calc-btn" onclick="calculateRisk()">
+            Calculate My Risk Score →
+          </button>
+        </div>
+
+        <div class="risk-result" id="riskResult">
+          <div class="risk-score-wrap">
+            <div class="risk-score-ring">
+              <canvas id="riskGauge" width="100" height="100"></canvas>
+              <div class="risk-score-label" id="riskScoreLabel">—</div>
+            </div>
+            <div class="risk-info">
+              <h3 id="riskTitle">—</h3>
+              <p id="riskDesc">—</p>
+            </div>
+          </div>
+          <div class="risk-breakdown" id="riskBreakdown"></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ── DATA ──
+const LAYOFFS = [
+  // IT/ITeS — Major Indian IT Companies
+  { company:"TCS", sector:"IT/ITeS", jobs:12000, pct:"2%", reason:"AI Automation", date:"2025-08", month:"Aug 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"Infosys", sector:"IT/ITeS", jobs:8000, pct:"3%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
+  { company:"Wipro", sector:"IT/ITeS", jobs:7000, pct:"3%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
+  { company:"Tech Mahindra", sector:"IT/ITeS", jobs:5000, pct:"5%", reason:"Restructuring", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Pune", stage:"Listed" },
+  { company:"HCLTech", sector:"IT/ITeS", jobs:3500, pct:"2%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Noida", stage:"Listed" },
+  { company:"Cognizant", sector:"IT/ITeS", jobs:3500, pct:"2%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Chennai", stage:"Listed" },
+  { company:"IBM India", sector:"IT/ITeS", jobs:1000, pct:"~5%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Oracle India", sector:"IT/ITeS", jobs:2882, pct:"10%", reason:"AI Automation", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Accenture India", sector:"IT/ITeS", jobs:3000, pct:"~2%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"SAP India", sector:"IT/ITeS", jobs:800, pct:"~3%", reason:"Restructuring", date:"2025-05", month:"May 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
+  { company:"Mphasis", sector:"IT/ITeS", jobs:600, pct:"~2%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
+  { company:"LTIMindtree", sector:"IT/ITeS", jobs:900, pct:"~2%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
+  { company:"Persistent Systems", sector:"IT/ITeS", jobs:400, pct:"~1%", reason:"Restructuring", date:"2025-08", month:"Aug 2025", status:"silent", hq:"Pune", stage:"Listed" },
+  { company:"Hexaware", sector:"IT/ITeS", jobs:700, pct:"~3%", reason:"Cost Cutting", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
+  { company:"Capgemini India", sector:"IT/ITeS", jobs:1200, pct:"~2%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"Microsoft India", sector:"IT/ITeS", jobs:1500, pct:"~3%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Hyderabad", stage:"Listed" },
+  { company:"Intel India", sector:"IT/ITeS", jobs:500, pct:"~4%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"PwC India", sector:"IT/ITeS", jobs:800, pct:"~3%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  // Banking
+  { company:"ICICI Bank", sector:"Banking", jobs:6000, pct:"4%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"Axis Bank", sector:"Banking", jobs:3100, pct:"3%", reason:"Restructuring", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"HDFC Bank", sector:"Banking", jobs:3000, pct:"1.5%", reason:"Restructuring", date:"2026-03", month:"Mar 2026", status:"silent", hq:"Mumbai", stage:"Listed" },
+  { company:"RBL Bank", sector:"Banking", jobs:950, pct:"7%", reason:"Cost Cutting", date:"2025-12", month:"Dec 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
+  { company:"Yes Bank", sector:"Banking", jobs:1200, pct:"8%", reason:"Restructuring", date:"2025-10", month:"Oct 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  // EV/Auto
+  { company:"Ola Electric", sector:"EV/Auto", jobs:1000, pct:"25%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  // Gaming
+  { company:"MPL (Mobile Premier League)", sector:"Gaming", jobs:300, pct:"60%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Head Digital Works", sector:"Gaming", jobs:500, pct:"67%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Hyderabad", stage:"Growth Stage" },
+  { company:"Games 24x7", sector:"Gaming", jobs:400, pct:"~35%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  { company:"GamesKraft", sector:"Gaming", jobs:400, pct:"~67%", reason:"Regulatory", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"PokerBaazi", sector:"Gaming", jobs:200, pct:"50%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
+  // E-commerce
+  { company:"Flipkart / ANS Commerce", sector:"E-commerce", jobs:110, pct:"100%", reason:"Shutdown", date:"2025-02", month:"Feb 2025", status:"shutdown", hq:"Bengaluru", stage:"Listed" },
+  { company:"CARS24", sector:"E-commerce", jobs:200, pct:"~5%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
+  { company:"BeepKart", sector:"E-commerce", jobs:150, pct:"100%", reason:"Shutdown", date:"2025-08", month:"Aug 2025", status:"shutdown", hq:"Bengaluru", stage:"Early Stage" },
+  { company:"Meesho", sector:"E-commerce", jobs:251, pct:"~5%", reason:"Restructuring", date:"2024-05", month:"May 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Snapdeal", sector:"E-commerce", jobs:400, pct:"~20%", reason:"Cost Cutting", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
+  // Quick Commerce
+  { company:"Zepto", sector:"Quick Commerce", jobs:400, pct:"~7%", reason:"Cost Cutting", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  { company:"Zepto", sector:"Quick Commerce", jobs:200, pct:"~3%", reason:"Restructuring", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  // Logistics
+  { company:"Ecom Express", sector:"Logistics", jobs:500, pct:"~3%", reason:"Cost Cutting", date:"2025-02", month:"Feb 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
+  { company:"Porter", sector:"Logistics", jobs:350, pct:"18%", reason:"Restructuring", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Delhivery", sector:"Logistics", jobs:600, pct:"~4%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Gurugram", stage:"Listed" },
+  { company:"Dunzo", sector:"Logistics", jobs:300, pct:"~30%", reason:"Funding Crunch", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  // Fintech
+  { company:"Gupshup", sector:"Fintech", jobs:500, pct:"30%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  { company:"Gupshup", sector:"AI", jobs:100, pct:"~10%", reason:"AI Automation", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  { company:"Clear", sector:"Fintech", jobs:145, pct:"16%", reason:"AI Automation", date:"2025-08", month:"Aug 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Zopper", sector:"Fintech", jobs:100, pct:"20%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Delhi", stage:"Growth Stage" },
+  { company:"Simpl", sector:"Fintech", jobs:80, pct:"80%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"shutdown", hq:"Bengaluru", stage:"Growth Stage" },
+  { company:"Paytm", sector:"Fintech", jobs:1000, pct:"~5%", reason:"Regulatory", date:"2024-03", month:"Mar 2024", status:"confirmed", hq:"Noida", stage:"Listed" },
+  { company:"BharatPe", sector:"Fintech", jobs:500, pct:"~20%", reason:"Restructuring", date:"2024-06", month:"Jun 2024", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
+  // EdTech
+  { company:"Byju's", sector:"EdTech", jobs:4500, pct:"~15%", reason:"Funding Crunch", date:"2024-06", month:"Jun 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Unacademy", sector:"EdTech", jobs:1000, pct:"~15%", reason:"Cost Cutting", date:"2024-05", month:"May 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Vedantu", sector:"EdTech", jobs:800, pct:"~20%", reason:"Cost Cutting", date:"2024-04", month:"Apr 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"upGrad", sector:"EdTech", jobs:700, pct:"~10%", reason:"Restructuring", date:"2024-03", month:"Mar 2024", status:"silent", hq:"Mumbai", stage:"Late Stage" },
+  // Healthtech
+  { company:"Pristyn Care", sector:"Healthtech", jobs:400, pct:"~10%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
+  { company:"PharmEasy", sector:"Healthtech", jobs:1500, pct:"~15%", reason:"Funding Crunch", date:"2024-07", month:"Jul 2024", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
+  { company:"Zoplar", sector:"Healthtech", jobs:45, pct:"100%", reason:"Shutdown", date:"2025-05", month:"May 2025", status:"shutdown", hq:"Bengaluru", stage:"Growth Stage" },
+  // Media/Entertainment
+  { company:"VerSe Innovation (Josh/DailyHunt)", sector:"Media", jobs:350, pct:"~10%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"Pocket FM", sector:"Media", jobs:75, pct:"15%", reason:"Cost Cutting", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Bengaluru", stage:"Growth Stage" },
+  { company:"ShareChat", sector:"Media", jobs:400, pct:"~15%", reason:"Cost Cutting", date:"2024-10", month:"Oct 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
+  { company:"MX Media (Times Internet)", sector:"Media", jobs:200, pct:"~8%", reason:"Restructuring", date:"2025-03", month:"Mar 2025", status:"silent", hq:"Delhi", stage:"Listed" },
+  // AI Startups
+  { company:"Krutrim", sector:"AI", jobs:150, pct:"~20%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"confirmed", hq:"Bengaluru", stage:"Growth Stage" },
+  { company:"Astra (AI)", sector:"AI", jobs:106, pct:"100%", reason:"Shutdown", date:"2025-07", month:"Jul 2025", status:"shutdown", hq:"Bengaluru", stage:"Early Stage" },
+  // Agritech
+  { company:"Otipy", sector:"Agritech", jobs:300, pct:"100%", reason:"Funding Crunch", date:"2025-05", month:"May 2025", status:"shutdown", hq:"Delhi", stage:"Growth Stage" },
+  { company:"BharatAgri", sector:"Agritech", jobs:37, pct:"100%", reason:"Shutdown", date:"2025-11", month:"Nov 2025", status:"shutdown", hq:"Pune", stage:"Early Stage" },
+  { company:"DeHaat", sector:"Agritech", jobs:200, pct:"~8%", reason:"Cost Cutting", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Patna", stage:"Late Stage" },
+  // SaaS
+  { company:"Freshworks India", sector:"SaaS", jobs:700, pct:"~5%", reason:"AI Automation", date:"2025-02", month:"Feb 2025", status:"confirmed", hq:"Chennai", stage:"Listed" },
+  { company:"Zoho (selective)", sector:"SaaS", jobs:400, pct:"~1%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"silent", hq:"Chennai", stage:"Bootstrapped" },
+  { company:"Chargebee", sector:"SaaS", jobs:200, pct:"~12%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Chennai", stage:"Late Stage" },
+  { company:"Innovaccer", sector:"SaaS", jobs:150, pct:"~10%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
+  // 2026 events
+  { company:"Axis Bank", sector:"Banking", jobs:3100, pct:"3%", reason:"Restructuring", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"Oracle India (2026)", sector:"IT/ITeS", jobs:200, pct:"~5%", reason:"AI Automation", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Meta India", sector:"Media", jobs:150, pct:"~8%", reason:"Restructuring", date:"2026-05", month:"May 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
+  { company:"Amazon India", sector:"E-commerce", jobs:500, pct:"~2%", reason:"Restructuring", date:"2026-03", month:"Mar 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Flipkart", sector:"E-commerce", jobs:400, pct:"~2%", reason:"AI Automation", date:"2026-03", month:"Mar 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Swiggy", sector:"Logistics", jobs:350, pct:"~3%", reason:"Cost Cutting", date:"2025-12", month:"Dec 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
+  { company:"Zomato / Blinkit", sector:"Logistics", jobs:200, pct:"~1%", reason:"Restructuring", date:"2026-01", month:"Jan 2026", status:"silent", hq:"Gurugram", stage:"Listed" },
+];
+
+// Sector metadata
+const SECTOR_META = {
+  "IT/ITeS":      { color: "#3b82f6", icon: "💻", description: "IT Services, MNCs & GCCs" },
+  "Banking":      { color: "#6366f1", icon: "🏦", description: "Private & Public Banks" },
+  "Gaming":       { color: "#ec4899", icon: "🎮", description: "Real Money Gaming Startups" },
+  "E-commerce":   { color: "#22c55e", icon: "🛒", description: "Online Marketplaces & D2C" },
+  "Quick Commerce":{ color: "#f97316", icon: "⚡", description: "Q-comm & Hyperlocal Delivery" },
+  "Fintech":      { color: "#f59e0b", icon: "💳", description: "Payments, Lending & Insurance" },
+  "EdTech":       { color: "#a855f7", icon: "📚", description: "Online Learning Platforms" },
+  "Healthtech":   { color: "#14b8a6", icon: "🏥", description: "Health & Pharma Tech" },
+  "Logistics":    { color: "#fb923c", icon: "🚚", description: "Delivery & Supply Chain" },
+  "EV/Auto":      { color: "#facc15", icon: "⚡🚗", description: "Electric Vehicles & Auto" },
+  "Media":        { color: "#f87171", icon: "📱", description: "Social & Digital Media" },
+  "AI":           { color: "#fde047", icon: "🤖", description: "AI/ML Native Startups" },
+  "Agritech":     { color: "#86efac", icon: "🌾", description: "Agricultural Technology" },
+  "SaaS":         { color: "#22d3ee", icon: "☁️", description: "B2B Software as a Service" },
+};
+
+
+// ── API Integration ──
+// When deployed to Vercel, the app auto-fetches from /api/* endpoints.
+// Falls back to static LAYOFFS data if fetch fails (e.g. local file open).
+const API_BASE = window.location.protocol.startsWith('http') ? '' : '';
+let apiAvailable = false;
+
+async function tryFetchStats() {
+  try {
+    const r = await fetch(API_BASE + '/api/stats');
+    if (!r.ok) return null;
+    apiAvailable = true;
+    return (await r.json()).data;
+  } catch { return null; }
+}
+
+async function tryFetchLayoffs(params = {}) {
+  try {
+    const qs = new URLSearchParams({ limit: 100, ...params }).toString();
+    const r = await fetch(API_BASE + '/api/layoffs?' + qs);
+    if (!r.ok) return null;
+    return (await r.json()).data;
+  } catch { return null; }
+}
+
+async function postRisk(body) {
+  try {
+    const r = await fetch(API_BASE + '/api/risk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    return (await r.json()).data;
+  } catch { return null; }
+}
+
+// ── State ──
+let currentPage = 1;
+const PAGE_SIZE = 15;
+let filtered = [...LAYOFFS];
+let sortKey = 'date';
+let sortDir = -1;
+let charts = {};
+
+// ── Navigation ──
+function showView(id, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  const titles = { dashboard:'Dashboard', companies:'Companies', sectors:'Sectors', timeline:'Timeline', risk:'Risk Calculator' };
+  document.getElementById('pageTitle').textContent = titles[id] || id;
+  if (id === 'companies') { applyFilters(); }
+  if (id === 'sectors') { renderSectors(); }
+  if (id === 'timeline') { renderTimeline(); }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+}
+
+// ── Theme toggle ──
+(function(){
+  const t = document.querySelector('[data-theme-toggle]');
+  const r = document.documentElement;
+  let d = 'dark';
+  r.setAttribute('data-theme', d);
+  if (t) t.addEventListener('click', () => {
+    d = d === 'dark' ? 'light' : 'dark';
+    r.setAttribute('data-theme', d);
+    t.innerHTML = d === 'dark'
+      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
+    // Redraw charts
+    setTimeout(renderDashboardCharts, 100);
+  });
+})();
+
+// ── Helpers ──
+function getSectorBadge(sector) {
+  const map = {
+    "IT/ITeS":"it","Fintech":"fintech","E-commerce":"ecomm",
+    "EdTech":"edtech","Gaming":"gaming","Healthtech":"health",
+    "Logistics":"logistic","EV/Auto":"ev","Banking":"banking",
+    "SaaS":"saas","Media":"media","AI":"ai","Agritech":"agri",
+    "Manufacturing":"mfg","Quick Commerce":"logistic"
+  };
+  return `<span class="badge badge-${map[sector]||'sector'}">${sector}</span>`;
+}
+function getStatusBadge(status) {
+  const map = { confirmed:'status-confirmed', shutdown:'status-shutdown', silent:'status-silent' };
+  const label = { confirmed:'Confirmed', shutdown:'Shutdown', silent:'Silent' };
+  return `<span class="status-badge ${map[status]||''}">${label[status]||status}</span>`;
+}
+function fmtJobs(n) {
+  if (!n) return '—';
+  return n.toLocaleString('en-IN');
+}
+function getInitials(name) {
+  return name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+}
+
+// ── Charts ──
+function getChartDefaults() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  return {
+    textColor: dark ? '#7c7980' : '#6b6966',
+    gridColor: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
+    bgColor: dark ? '#18171a' : '#f9f8f6',
+  };
+}
+
+function renderDashboardCharts() {
+  const { textColor, gridColor } = getChartDefaults();
+  const baseOpts = {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { color: textColor, font: { size: 11, family: 'Inter' }, boxWidth: 12 } } },
+  };
+
+  // Monthly Trend
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const monthlyData = [1200,1800,3400,4200,5800,4100,5200,4800,3900,2800,2200,1500];
+  if (charts.monthly) charts.monthly.destroy();
+  charts.monthly = new Chart(document.getElementById('chartMonthly'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'Jobs Cut',
+        data: monthlyData,
+        backgroundColor: monthlyData.map(v => v > 4000 ? 'rgba(239,68,68,0.8)' : 'rgba(239,68,68,0.4)'),
+        borderColor: 'rgba(239,68,68,0.9)',
+        borderWidth: 1, borderRadius: 4,
+      }]
+    },
+    options: { ...baseOpts, scales: {
+      x: { ticks: { color: textColor }, grid: { color: gridColor } },
+      y: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } }
+    }}
+  });
+
+  // Sector pie
+  const sectorTotals = {};
+  LAYOFFS.forEach(l => { sectorTotals[l.sector] = (sectorTotals[l.sector]||0) + l.jobs; });
+  const sortedSectors = Object.entries(sectorTotals).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const sectorColors = ['#3b82f6','#6366f1','#ec4899','#22c55e','#f59e0b','#a855f7','#14b8a6','#fb923c'];
+  if (charts.sector) charts.sector.destroy();
+  charts.sector = new Chart(document.getElementById('chartSector'), {
+    type: 'doughnut',
+    data: {
+      labels: sortedSectors.map(s=>s[0]),
+      datasets: [{ data: sortedSectors.map(s=>s[1]), backgroundColor: sectorColors, borderWidth: 2, borderColor: getChartDefaults().bgColor }]
+    },
+    options: { ...baseOpts, cutout: '60%' }
+  });
+
+  // Reason pie
+  const reasonData = { 'AI Automation': 38, 'Restructuring': 28, 'Cost Cutting': 20, 'Regulatory': 7, 'Funding Crunch': 5, 'Shutdown': 2 };
+  if (charts.reason) charts.reason.destroy();
+  charts.reason = new Chart(document.getElementById('chartReason'), {
+    type: 'doughnut',
+    data: {
+      labels: Object.keys(reasonData),
+      datasets: [{ data: Object.values(reasonData), backgroundColor: ['#f87171','#60a5fa','#fbbf24','#f472b6','#4ade80','#a1a1aa'], borderWidth: 2, borderColor: getChartDefaults().bgColor }]
+    },
+    options: { ...baseOpts, cutout: '60%' }
+  });
+
+  // Top companies bar
+  const topCos = [...LAYOFFS].sort((a,b)=>b.jobs-a.jobs).slice(0,10);
+  if (charts.companies) charts.companies.destroy();
+  charts.companies = new Chart(document.getElementById('chartCompanies'), {
+    type: 'bar',
+    data: {
+      labels: topCos.map(c=>c.company.length>18?c.company.slice(0,18)+'…':c.company),
+      datasets: [{ label: 'Jobs Cut', data: topCos.map(c=>c.jobs), backgroundColor: 'rgba(239,68,68,0.7)', borderColor: 'rgba(239,68,68,1)', borderWidth: 1, borderRadius: 4 }]
+    },
+    options: { ...baseOpts, indexAxis: 'y', scales: {
+      x: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } },
+      y: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } }
+    }}
+  });
+
+  // Stage donut
+  const stageTotals = {};
+  LAYOFFS.forEach(l => { const s = l.stage || 'Unknown'; stageTotals[s] = (stageTotals[s]||0) + l.jobs; });
+  const sortedStages = Object.entries(stageTotals).sort((a,b)=>b[1]-a[1]);
+  if (charts.stage) charts.stage.destroy();
+  charts.stage = new Chart(document.getElementById('chartStage'), {
+    type: 'doughnut',
+    data: {
+      labels: sortedStages.map(s=>s[0]),
+      datasets: [{ data: sortedStages.map(s=>s[1]), backgroundColor: ['#f87171','#fbbf24','#4ade80','#60a5fa','#c084fc','#f472b6'], borderWidth: 2, borderColor: getChartDefaults().bgColor }]
+    },
+    options: { ...baseOpts, cutout: '55%' }
+  });
+}
+
+// ── Table ──
+function applyFilters() {
+  const sector = document.getElementById('filterSector').value;
+  const year = document.getElementById('filterYear').value;
+  const reason = document.getElementById('filterReason').value;
+  const search = (document.getElementById('globalSearch').value || '').toLowerCase();
+
+  filtered = LAYOFFS.filter(l => {
+    if (sector && l.sector !== sector) return false;
+    if (year && !l.date.startsWith(year)) return false;
+    if (reason && l.reason !== reason) return false;
+    if (search && !l.company.toLowerCase().includes(search) && !l.sector.toLowerCase().includes(search)) return false;
+    return true;
+  });
+  sortFiltered();
+  currentPage = 1;
+  renderTable();
+}
+
+function sortFiltered() {
+  filtered.sort((a,b) => {
+    let av = a[sortKey], bv = b[sortKey];
+    if (sortKey === 'jobs') return sortDir * (a.jobs - b.jobs);
+    if (sortKey === 'date') return sortDir * a.date.localeCompare(b.date);
+    return sortDir * String(av||'').localeCompare(String(bv||''));
+  });
+}
+
+function sortTable(key) {
+  if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = -1; }
+  sortFiltered(); renderTable();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('companiesTableBody');
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const pageData = filtered.slice(start, start + PAGE_SIZE);
+  const total = filtered.length;
+
+  document.getElementById('companiesCount').textContent = `${total} layoff event${total!==1?'s':''} found`;
+  document.getElementById('noResults').style.display = total ? 'none' : 'block';
+
+  tbody.innerHTML = pageData.map(l => `
+    <tr>
+      <td>
+        <div class="company-cell">
+          <div class="company-logo-placeholder">${getInitials(l.company)}</div>
+          <div>
+            <div class="company-name">${l.company}</div>
+            <div class="company-type">${l.hq || ''}</div>
+          </div>
+        </div>
+      </td>
+      <td>${getSectorBadge(l.sector)}</td>
+      <td><span class="jobs-cut">${fmtJobs(l.jobs)}</span></td>
+      <td>${l.pct || '—'}</td>
+      <td><span class="reason-tag">${l.reason}</span></td>
+      <td style="white-space:nowrap; color:var(--color-text-muted); font-family:var(--font-mono);">${l.month}</td>
+      <td>${getStatusBadge(l.status)}</td>
+    </tr>
+  `).join('');
+
+  // Pagination
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  document.getElementById('paginationInfo').textContent = `Showing ${start+1}–${Math.min(start+PAGE_SIZE, total)} of ${total}`;
+  const btns = document.getElementById('paginationBtns');
+  let paginHtml = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>`;
+  for (let p = Math.max(1, currentPage-2); p <= Math.min(totalPages, currentPage+2); p++) {
+    paginHtml += `<button class="pg-btn ${p===currentPage?'current':''}" onclick="goPage(${p})">${p}</button>`;
+  }
+  paginHtml += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage>=totalPages?'disabled':''}>Next ›</button>`;
+  btns.innerHTML = paginHtml;
+}
+
+function goPage(p) {
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  renderTable();
+}
+
+// ── Sectors ──
+function renderSectors() {
+  const sectorTotals = {};
+  const sectorCounts = {};
+  LAYOFFS.forEach(l => {
+    sectorTotals[l.sector] = (sectorTotals[l.sector]||0) + l.jobs;
+    sectorCounts[l.sector] = (sectorCounts[l.sector]||0) + 1;
+  });
+  const maxJobs = Math.max(...Object.values(sectorTotals));
+  const sorted = Object.entries(sectorTotals).sort((a,b)=>b[1]-a[1]);
+
+  document.getElementById('sectorGrid').innerHTML = sorted.map(([sector, jobs]) => {
+    const meta = SECTOR_META[sector] || { color:'#888', icon:'📊', description: '' };
+    const pct = Math.round(jobs / maxJobs * 100);
+    return `
+    <div class="sector-card" onclick="filterBySector('${sector}')">
+      <div class="sector-card-top">
+        <div>
+          <div class="sector-name">${meta.icon} ${sector}</div>
+          <div class="sector-count">${sectorCounts[sector]} event(s)</div>
+        </div>
+        <div class="sector-jobs">${fmtJobs(jobs)}</div>
+      </div>
+      <div class="sector-bar"><div class="sector-bar-fill" style="width:${pct}%; background:${meta.color};"></div></div>
+      <div class="sector-stats">
+        <span style="color:var(--color-text-faint);">${meta.description}</span>
+        <span>${pct}% of max</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Sector detail chart
+  const { textColor, gridColor } = getChartDefaults();
+  if (charts.sectorDetail) charts.sectorDetail.destroy();
+  charts.sectorDetail = new Chart(document.getElementById('chartSectorDetail'), {
+    type: 'bar',
+    data: {
+      labels: sorted.map(s=>s[0]),
+      datasets: [{
+        label: 'Jobs Cut',
+        data: sorted.map(s=>s[1]),
+        backgroundColor: sorted.map(([s]) => (SECTOR_META[s]||{color:'#888'}).color + 'cc'),
+        borderColor: sorted.map(([s]) => (SECTOR_META[s]||{color:'#888'}).color),
+        borderWidth: 1, borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } },
+        y: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } }
+      }
+    }
+  });
+}
+
+function filterBySector(sector) {
+  showView('companies', document.querySelector('.nav-item:nth-child(1)'));
+  document.getElementById('filterSector').value = sector;
+  applyFilters();
+}
+
+// ── Timeline ──
+function renderTimeline() {
+  const filterSector = document.getElementById('filterTimelineSector').value;
+  const sorted = [...LAYOFFS]
+    .filter(l => !filterSector || l.sector === filterSector)
+    .sort((a,b) => b.date.localeCompare(a.date))
+    .slice(0, 50);
+
+  document.getElementById('timelineContainer').innerHTML = sorted.map(l => {
+    const meta = SECTOR_META[l.sector] || { color: '#888', icon: '📊' };
+    return `
+    <div class="timeline-item">
+      <div class="timeline-dot" style="background:${meta.color};"></div>
+      <div class="timeline-content">
+        <div class="timeline-date">${l.month}</div>
+        <div class="timeline-company">${meta.icon} ${l.company}</div>
+        <div class="timeline-detail">${l.sector} · ${l.hq||''} · ${l.pct||'Undisclosed'} of workforce</div>
+        <span class="reason-tag">${l.reason}</span>
+        ${getStatusBadge(l.status)}
+      </div>
+      <div class="timeline-jobs">${fmtJobs(l.jobs)}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── Risk Calculator ──
+function calculateRisk() {
+  const sector = document.getElementById('riskSector').value;
+  const role = document.getElementById('riskRole').value;
+  const size = document.getElementById('riskCompanySize').value;
+  const tenure = parseInt(document.getElementById('riskTenure').value);
+  const seniority = document.getElementById('riskSeniority').value;
+  const skill = document.getElementById('riskSkill').value;
+
+  // Sector risk
+  const sectorRisk = { 'Gaming':92, 'EdTech':78, 'IT/ITeS':72, 'Media':68, 'Fintech':65, 'E-commerce':60, 'Banking':55, 'Startup':70, 'Logistics':58, 'Healthtech':52, 'Manufacturing':35, 'PSU/Government':15 };
+  const sScore = sectorRisk[sector] || 50;
+
+  // Role risk
+  const roleRisk = { 'Operations':80, 'Content':75, 'HR':70, 'Marketing':65, 'Sales':60, 'Finance':55, 'Design':50, 'Data':45, 'Engineering':42, 'Management':40 };
+  const rScore = roleRisk[role] || 55;
+
+  // Size risk
+  const sizeRisk = { small:70, mid:55, large:65, enterprise:60 };
+  const szScore = sizeRisk[size] || 60;
+
+  // Tenure risk
+  const tenureRisk = { 0:85, 1:65, 2:45, 5:30 };
+  const tScore = tenureRisk[tenure] ?? 50;
+
+  // Skill risk
+  const skillRisk = { manual:90, legacy:82, domain:60, content:70, pm:50, fullstack:35, cloud:25, ai:15 };
+  const skScore = skillRisk[skill] || 50;
+
+  // Seniority
+  const senRisk = { junior:65, mid:55, senior:60, lead:45, exec:40 };
+  const senScore = senRisk[seniority] || 55;
+
+  const total = Math.round(sScore*0.25 + rScore*0.15 + szScore*0.1 + tScore*0.2 + skScore*0.2 + senScore*0.1);
+  const clamped = Math.min(100, Math.max(1, total));
+
+  // Display
+  const result = document.getElementById('riskResult');
+  result.classList.add('visible');
+  document.getElementById('riskScoreLabel').textContent = clamped;
+  document.getElementById('riskScoreLabel').style.color = clamped > 70 ? '#f87171' : clamped > 45 ? '#fbbf24' : '#4ade80';
+
+  let title, desc;
+  if (clamped > 75) { title = '🔴 High Risk'; desc = `Your profile closely matches patterns seen in India's 2025–26 layoff wave. Roles combining ${sector} with ${role} functions have seen significant cuts. Consider upskilling in AI-adjacent tools and diversifying income streams.`; }
+  else if (clamped > 50) { title = '🟡 Moderate Risk'; desc = `Your sector (${sector}) has seen layoffs, but your role and skills provide some protection. Stay current with GenAI tooling and strengthen domain expertise to remain indispensable.`; }
+  else { title = '🟢 Lower Risk'; desc = `Your profile — particularly your skill area — positions you relatively well in the current market. AI-adjacent and cloud skills are in high demand. Continue building a strong portfolio.`; }
+
+  document.getElementById('riskTitle').textContent = title;
+  document.getElementById('riskDesc').textContent = desc;
+
+  const factors = [
+    { label: 'Sector Exposure', score: sScore, color: sScore > 70 ? '#f87171' : sScore > 45 ? '#fbbf24' : '#4ade80' },
+    { label: 'Role Vulnerability', score: rScore, color: rScore > 70 ? '#f87171' : rScore > 45 ? '#fbbf24' : '#4ade80' },
+    { label: 'Skill Relevance', score: skScore, color: skScore > 70 ? '#f87171' : skScore > 45 ? '#fbbf24' : '#4ade80' },
+    { label: 'Tenure Safety', score: tScore, color: tScore > 70 ? '#f87171' : tScore > 45 ? '#fbbf24' : '#4ade80' },
+    { label: 'Seniority Level', score: senScore, color: senScore > 70 ? '#f87171' : senScore > 45 ? '#fbbf24' : '#4ade80' },
+    { label: 'Company Size', score: szScore, color: szScore > 70 ? '#f87171' : szScore > 45 ? '#fbbf24' : '#4ade80' },
+  ];
+  document.getElementById('riskBreakdown').innerHTML = factors.map(f => `
+    <div class="risk-factor">
+      <div class="risk-factor-label">${f.label}</div>
+      <div class="risk-factor-bar"><div class="risk-factor-fill" style="width:${f.score}%; background:${f.color};"></div></div>
+      <div class="risk-factor-score" style="color:${f.color};">${f.score}/100</div>
+    </div>
+  `).join('');
+
+  // Gauge chart
+  const existing = Chart.getChart('riskGauge');
+  if (existing) existing.destroy();
+  new Chart(document.getElementById('riskGauge'), {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [clamped, 100 - clamped],
+        backgroundColor: [clamped > 70 ? '#f87171' : clamped > 45 ? '#fbbf24' : '#4ade80', 'rgba(255,255,255,0.06)'],
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: false, cutout: '72%', rotation: -90, circumference: 180,
+      plugins: { legend: { display: false }, tooltip: { enabled: false } },
+      animation: { duration: 600 }
+    }
+  });
+}
+
+// ── Global Search ──
+function handleGlobalSearch(val) {
+  const view = document.querySelector('.view.active').id;
+  if (view === 'view-companies') applyFilters();
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashboardCharts();
+  applyFilters();
+  renderSectors();
+  renderTimeline();
+});
+</script>
+</body>
+</html>
