@@ -1,158 +1,49 @@
-# India Layoff Tracker — Vercel Backend
+# LayoffWatch India
 
-REST API for the India Layoff Tracker 2025–2026 dashboard.
+A public tracker of layoffs, shutdowns and headcount cuts in India (2025–26), with hiring trends, professions, government jobs and a personal layoff risk calculator. Every figure links to its source.
 
-## Project Structure
+Live site: deployed on Vercel from the `main` branch.
+
+## How it works
+
+It is a static site. There is no server and no build step beyond a data check.
 
 ```
-.
-├── api/
-│   ├── layoffs.js      — GET /api/layoffs     (paginated, filtered list)
-│   ├── sectors.js      — GET /api/sectors     (aggregated by sector)
-│   ├── stats.js        — GET /api/stats       (KPI summary)
-│   ├── search.js       — GET /api/search?q=   (full-text search)
-│   ├── timeline.js     — GET /api/timeline    (events sorted newest first)
-│   └── risk.js         — POST /api/risk       (personal risk score)
-├── lib/
-│   └── data.js         — Shared layoff dataset (74 events)
-├── public/             — Put your frontend HTML here
-├── vercel.json         — Vercel routing & header config
-├── package.json
-└── .env.example
+public/
+  index.html          the whole app (pages, charts, calculator, CSV downloads)
+  assets/
+    dash-shim.js      loads the JSON files and feeds them to the page
+    theme.css         colours, fonts, spacing (dark by default, light on light-mode devices)
+    d3.min.js         charting library (d3 v7.9.0, vendored)
+  data/               ALL the numbers live here
+    layoffs.json      one row per layoff, shutdown, headcount decline or estimate
+    sectors.json      the 23 sectors and their industry groups
+    hiring.json       Naukri sector growth, GCC/BFSI/AI hotspots, experience and skill signals
+    demand.json       Naukri JobSpeak index for 52 fields
+    workforce.json    professions, PLFS workforce shares, labour-market pulse, hiring outlook
+    govt.json         central vacancies, exam vacancies by year, 2026 recruitment drives
+    signals.json      latest reading from 7 hiring sources
+    risk_rules.json   calculator options, scores, evidence and advice
+scripts/
+  validate.mjs        checks every data file; Vercel runs it on each deploy
+UPDATING.md           how to add data (used by the weekly update task)
 ```
 
-## Quick Deploy
+Vercel runs `node scripts/validate.mjs` as the build command. If a data file is broken (missing source link, bad date, unknown sector, duplicate row), the build fails and the previous version stays live.
+
+## Updating data
+
+Edit the JSON files in `public/data/`, run `npm run validate`, commit and push to `main`. Vercel redeploys in about a minute. See [UPDATING.md](UPDATING.md) for the rules.
+
+A scheduled task runs every Monday at about 8 AM IST, researches new events, updates these files and pushes to `main`.
+
+## Run locally
 
 ```bash
-# 1. Install Vercel CLI
-npm i -g vercel
-
-# 2. Clone / copy this folder, then:
-cd india-layoff-tracker-vercel
-vercel          # follow prompts — first deploy auto-creates project
-vercel --prod   # promote to production
+npm run validate
+npm run serve        # http://localhost:8080
 ```
 
-## API Reference
+## Disclaimer
 
-### GET /api/layoffs
-Returns paginated layoff records.
-
-| Param    | Type   | Default | Description                              |
-|----------|--------|---------|------------------------------------------|
-| sector   | string | —       | Filter by sector (e.g. `IT/ITeS`)        |
-| year     | string | —       | `2024`, `2025`, or `2026`                |
-| reason   | string | —       | `AI Automation`, `Cost Cutting`, etc.    |
-| status   | string | —       | `confirmed`, `silent`, `shutdown`        |
-| search   | string | —       | Free-text search on company/sector       |
-| sort     | string | `date`  | `jobs`, `date`, `company`, `sector`      |
-| order    | string | `desc`  | `asc` or `desc`                          |
-| page     | int    | `1`     | Page number                              |
-| limit    | int    | `20`    | Records per page (max 100)               |
-
-**Example:**
-```
-GET /api/layoffs?sector=IT%2FITeS&year=2025&sort=jobs&order=desc&limit=10
-```
-
-### GET /api/sectors
-Returns per-sector aggregates sorted by total jobs cut.
-
-### GET /api/stats
-Returns overall KPI summary: total jobs, events, by-year breakdown, top sector/reason.
-
-### GET /api/search?q=tcs
-Full-text search. Minimum 2 characters.
-
-### GET /api/timeline?sector=Banking&limit=30
-Chronological event list, newest first.
-
-### POST /api/risk
-Calculates personalized layoff risk score.
-
-**Request body (JSON):**
-```json
-{
-  "sector":       "IT/ITeS",
-  "role":         "Engineering",
-  "companySize":  "large",
-  "tenureYears":  3,
-  "seniority":    "mid",
-  "skill":        "cloud"
-}
-```
-
-**Response:**
-```json
-{
-  "data": {
-    "score": 48,
-    "level": "moderate",
-    "advice": "Stay current with GenAI tooling...",
-    "breakdown": {
-      "sector":    { "score": 72, "weight": 0.25 },
-      "role":      { "score": 42, "weight": 0.15 },
-      "companySize":{ "score": 65, "weight": 0.10 },
-      "tenure":    { "score": 45, "weight": 0.20 },
-      "skill":     { "score": 25, "weight": 0.20 },
-      "seniority": { "score": 55, "weight": 0.10 }
-    }
-  }
-}
-```
-
-## Local Development
-
-```bash
-npm install
-vercel dev       # starts local dev server at http://localhost:3000
-```
-
-Test an endpoint:
-```bash
-curl "http://localhost:3000/api/stats"
-curl "http://localhost:3000/api/layoffs?sector=Banking&limit=5"
-curl -X POST "http://localhost:3000/api/risk" \
-  -H "Content-Type: application/json" \
-  -d '{"sector":"Gaming","role":"Engineering","skill":"legacy"}'
-```
-
-## Connecting the Frontend
-
-In your frontend HTML (the `india-layoff-tracker.html`), replace the static
-`const LAYOFFS = [...]` array with fetch calls:
-
-```js
-// Replace static data with API calls
-async function loadLayoffs(params = {}) {
-  const qs = new URLSearchParams(params).toString();
-  const res = await fetch(`/api/layoffs?${qs}`);
-  return res.json();
-}
-
-async function loadStats() {
-  const res = await fetch('/api/stats');
-  return res.json();
-}
-```
-
-## Adding New Layoff Records
-
-Edit `lib/data.js` and add a new entry to the `LAYOFFS` array. Schema:
-
-```js
-{
-  id:      "unique-id",       // kebab-case unique string
-  company: "Company Name",
-  sector:  "IT/ITeS",        // must match a known sector key
-  jobs:    1000,              // integer
-  pct:     "5%",             // string — % of workforce
-  reason:  "AI Automation",  // see REASONS list in data.js
-  date:    "2025-08",        // YYYY-MM format
-  hq:      "Bengaluru",
-  stage:   "Listed",         // Listed | Late Stage | Growth Stage | Early Stage | Bootstrapped
-  status:  "confirmed",      // confirmed | silent | shutdown
-}
-```
-
-Redeploy with `vercel --prod` and the API serves the updated data instantly.
+Compiled from public news reports, company filings, trackers and official releases for information only. Not official data and not advice. Where anything differs from the original or official source, that source prevails.

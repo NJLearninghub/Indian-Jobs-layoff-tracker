@@ -1,0 +1,142 @@
+{
+ "rows": [
+  {
+   "sector": "IT Services",
+   "group": "Technology",
+   "naukri_sector": "IT and software services",
+   "covers": "TCS, Infosys, Wipro, HCLTech, Tech Mahindra"
+  },
+  {
+   "sector": "Software & SaaS",
+   "group": "Technology",
+   "naukri_sector": "IT and software services",
+   "covers": "Product companies, SaaS and AI firms"
+  },
+  {
+   "sector": "Electronics & Semiconductors",
+   "group": "Manufacturing & Industrial",
+   "naukri_sector": "",
+   "covers": "Electronics makers, chip design and semiconductor firms"
+  },
+  {
+   "sector": "Automotive & EV",
+   "group": "Manufacturing & Industrial",
+   "naukri_sector": "Automotive",
+   "covers": "Carmakers, two-wheelers, EVs and auto components"
+  },
+  {
+   "sector": "Textiles & Apparel",
+   "group": "Manufacturing & Industrial",
+   "naukri_sector": "",
+   "covers": "Garment exporters, spinning and home textiles"
+  },
+  {
+   "sector": "Gems & Jewellery",
+   "group": "Manufacturing & Industrial",
+   "naukri_sector": "",
+   "covers": "Diamond cutting and polishing, jewellery"
+  },
+  {
+   "sector": "FMCG & Consumer Goods",
+   "group": "Consumer",
+   "naukri_sector": "FMCG",
+   "covers": "Packaged foods, beverages, personal care"
+  },
+  {
+   "sector": "E-commerce & Retail",
+   "group": "Consumer",
+   "naukri_sector": "",
+   "covers": "Marketplaces, retail chains and retail tech hubs"
+  },
+  {
+   "sector": "Quick Commerce & Food Delivery",
+   "group": "Consumer",
+   "naukri_sector": "",
+   "covers": "Zepto, Zomato, Swiggy and grocery delivery"
+  },
+  {
+   "sector": "Banking & Financial Services",
+   "group": "Financial Services",
+   "naukri_sector": "",
+   "covers": "Banks, NBFCs and insurers"
+  },
+  {
+   "sector": "Fintech & Payments",
+   "group": "Financial Services",
+   "naukri_sector": "",
+   "covers": "Payments, lending and wealth apps"
+  },
+  {
+   "sector": "Pharma & Life Sciences",
+   "group": "Healthcare",
+   "naukri_sector": "Pharma/biotech",
+   "covers": "Drugmakers, CDMOs and research labs"
+  },
+  {
+   "sector": "Healthcare & Healthtech",
+   "group": "Healthcare",
+   "naukri_sector": "Healthcare",
+   "covers": "Hospitals, medical coding and healthtech"
+  },
+  {
+   "sector": "BPO & Customer Operations",
+   "group": "Services",
+   "naukri_sector": "BPO/ITES",
+   "covers": "Call centres, back-office and support operations"
+  },
+  {
+   "sector": "Logistics & Mobility",
+   "group": "Services",
+   "naukri_sector": "",
+   "covers": "Courier, trucking and ride-hailing"
+  },
+  {
+   "sector": "Telecom",
+   "group": "Services",
+   "naukri_sector": "",
+   "covers": "Telecom operators and network vendors"
+  },
+  {
+   "sector": "Media & Entertainment",
+   "group": "Services",
+   "naukri_sector": "",
+   "covers": "TV, digital news, audio and content platforms"
+  },
+  {
+   "sector": "Hospitality & Travel",
+   "group": "Services",
+   "naukri_sector": "",
+   "covers": "Hotels, airlines and travel platforms"
+  },
+  {
+   "sector": "Edtech & Education",
+   "group": "Startups & Internet",
+   "naukri_sector": "",
+   "covers": "Online learning, test prep and schools"
+  },
+  {
+   "sector": "Gaming",
+   "group": "Startups & Internet",
+   "naukri_sector": "",
+   "covers": "Real-money and casual gaming"
+  },
+  {
+   "sector": "Consumer Internet",
+   "group": "Startups & Internet",
+   "naukri_sector": "",
+   "covers": "Social, community and consumer apps"
+  },
+  {
+   "sector": "Proptech & Home",
+   "group": "Startups & Internet",
+   "naukri_sector": "",
+   "covers": "Home interiors and real-estate platforms"
+  },
+  {
+   "sector": "Agritech",
+   "group": "Startups & Internet",
+   "naukri_sector": "",
+   "covers": "Farm inputs, produce supply and agri marketplaces"
+  }
+ ]
+}

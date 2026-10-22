@@ -1,0 +1,77 @@
+/* Design tokens used by the tracker page. Dark by default, light when the device prefers it. */
+:root {
+  color-scheme: dark;
+  --font-anthropic-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --font-anthropic-serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+
+  --color-bg: #0f1013;
+  --color-panel: #17181c;
+  --color-fg: #e8eaf0;
+  --color-fg-muted: #9599a8;
+  --color-border-line: #272930;
+  --color-ok: #34d399;
+  --color-warn: #fbbf24;
+  --color-bad: #f87171;
+
+  --cds-font-size-caption: 0.8125rem;
+  --cds-font-size-body: 0.9375rem;
+  --cds-font-size-heading: 1.0625rem;
+  --cds-font-size-title: 1.75rem;
+  --cds-font-weight-medium: 600;
+
+  --cds-gap-xs: 4px;
+  --cds-gap-sm: 8px;
+  --cds-gap-md: 14px;
+  --cds-gap-lg: 22px;
+  --cds-gap-xl: 32px;
+  --cds-pad-xs: 4px;
+  --cds-pad-sm: 8px;
+  --cds-pad-md: 12px;
+  --cds-pad-lg: 18px;
+  --cds-pad-xl: 28px;
+  --cds-radius: 10px;
+
+  --cds-chart-grid: #23252c;
+  --cds-chart-muted: #4b4f5c;
+  --cds-surface-popover: #1d1f25;
+  --cds-border: #30333c;
+  --cds-shadow-popover: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --cds-text-secondary: #9599a8;
+  --cds-dur-slow: 300ms;
+  --cds-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+    --color-bg: #f6f7f9;
+    --color-panel: #ffffff;
+    --color-fg: #16181d;
+    --color-fg-muted: #5d6270;
+    --color-border-line: #e2e4ea;
+    --color-ok: #047857;
+    --color-warn: #b45309;
+    --color-bad: #b91c1c;
+    --cds-chart-grid: #eceef2;
+    --cds-chart-muted: #b9bdc8;
+    --cds-surface-popover: #ffffff;
+    --cds-border: #e2e4ea;
+    --cds-shadow-popover: 0 8px 24px rgba(16, 24, 40, 0.12);
+    --cds-text-secondary: #5d6270;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-anthropic-sans);
+  font-size: var(--cds-font-size-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+#dash-root { --dash-gutter: 0; }
+h1, h2, h3 { line-height: 1.25; }
+a { color: inherit; }
+button, select, input { color: inherit; }

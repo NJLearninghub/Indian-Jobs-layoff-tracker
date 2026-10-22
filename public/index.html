@@ -1,1546 +1,985 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>India Layoff Tracker 2025–2026</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.min.js"></script>
-  <style>
-    /* ── Design Tokens ── */
-    :root {
-      --font-body: 'Inter', 'Helvetica Neue', sans-serif;
-      --font-mono: 'JetBrains Mono', 'Courier New', monospace;
-
-      --text-xs:   clamp(0.75rem,  0.7rem  + 0.25vw, 0.875rem);
-      --text-sm:   clamp(0.875rem, 0.8rem  + 0.35vw, 1rem);
-      --text-base: clamp(1rem,     0.95rem + 0.25vw, 1.125rem);
-      --text-lg:   clamp(1.125rem, 1rem    + 0.75vw, 1.5rem);
-      --text-xl:   clamp(1.5rem,   1.2rem  + 1.25vw, 2.25rem);
-
-      --space-1:  0.25rem; --space-2:  0.5rem;  --space-3:  0.75rem;
-      --space-4:  1rem;    --space-5:  1.25rem; --space-6:  1.5rem;
-      --space-8:  2rem;    --space-10: 2.5rem;  --space-12: 3rem;
-      --space-16: 4rem;
-
-      --radius-sm: 0.375rem; --radius-md: 0.5rem;
-      --radius-lg: 0.75rem;  --radius-xl: 1rem;
-      --radius-full: 9999px;
-
-      --transition: 180ms cubic-bezier(0.16, 1, 0.3, 1);
-
-      /* Chart colors */
-      --c-red:    #ef4444; --c-orange: #f97316;
-      --c-amber:  #f59e0b; --c-green:  #22c55e;
-      --c-blue:   #3b82f6; --c-purple: #a855f7;
-      --c-teal:   #14b8a6; --c-pink:   #ec4899;
-      --c-indigo: #6366f1; --c-cyan:   #06b6d4;
-    }
-
-    :root, [data-theme="light"] {
-      --color-bg:             #f4f3ef;
-      --color-surface:        #f9f8f6;
-      --color-surface-2:      #ffffff;
-      --color-surface-offset: #eceae4;
-      --color-divider:        #dbd9d3;
-      --color-border:         #d0cdc6;
-      --color-text:           #1a1917;
-      --color-text-muted:     #6b6966;
-      --color-text-faint:     #b0aea8;
-      --color-primary:        #dc2626;
-      --color-primary-hover:  #b91c1c;
-      --color-primary-highlight: #fef2f2;
-      --color-success:        #16a34a;
-      --color-warning:        #d97706;
-      --color-error:          #dc2626;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
-    }
-
-    [data-theme="dark"] {
-      --color-bg:             #111110;
-      --color-surface:        #18171a;
-      --color-surface-2:      #1e1d21;
-      --color-surface-offset: #242228;
-      --color-divider:        #2e2c32;
-      --color-border:         #38353d;
-      --color-text:           #e8e6e3;
-      --color-text-muted:     #7c7980;
-      --color-text-faint:     #4d4b52;
-      --color-primary:        #f87171;
-      --color-primary-hover:  #fca5a5;
-      --color-primary-highlight: #2d1a1a;
-      --color-success:        #4ade80;
-      --color-warning:        #fbbf24;
-      --color-error:          #f87171;
-      --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-      --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-      --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
-    }
-
-    /* ── Base ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
-    body {
-      min-height: 100dvh;
-      font-family: var(--font-body);
-      font-size: var(--text-sm);
-      color: var(--color-text);
-      background: var(--color-bg);
-      transition: background var(--transition), color var(--transition);
-    }
-    img { display: block; max-width: 100%; }
-    button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
-    table { border-collapse: collapse; width: 100%; }
-    input, select { font: inherit; color: inherit; }
-
-    /* ── Layout ── */
-    .app-shell { display: flex; min-height: 100dvh; }
-
-    /* Sidebar */
-    .sidebar {
-      width: 240px; flex-shrink: 0;
-      background: var(--color-surface);
-      border-right: 1px solid var(--color-border);
-      display: flex; flex-direction: column;
-      position: fixed; top: 0; left: 0; height: 100dvh;
-      z-index: 100; transition: transform var(--transition);
-    }
-    .sidebar-logo {
-      display: flex; align-items: center; gap: var(--space-3);
-      padding: var(--space-5) var(--space-6);
-      border-bottom: 1px solid var(--color-border);
-    }
-    .logo-icon {
-      width: 32px; height: 32px;
-      background: var(--color-primary);
-      border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-weight: 700; font-size: var(--text-sm);
-      flex-shrink: 0;
-    }
-    .logo-text { font-weight: 700; font-size: var(--text-sm); line-height: 1.2; }
-    .logo-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
-
-    .sidebar-nav { flex: 1; padding: var(--space-4) var(--space-3); overflow-y: auto; }
-    .nav-section { margin-bottom: var(--space-6); }
-    .nav-section-label {
-      font-size: var(--text-xs); font-weight: 600;
-      color: var(--color-text-faint); text-transform: uppercase;
-      letter-spacing: 0.08em; padding: 0 var(--space-3);
-      margin-bottom: var(--space-2);
-    }
-    .nav-item {
-      display: flex; align-items: center; gap: var(--space-3);
-      padding: var(--space-2) var(--space-3);
-      border-radius: var(--radius-md);
-      color: var(--color-text-muted);
-      cursor: pointer;
-      transition: background var(--transition), color var(--transition);
-      font-size: var(--text-sm);
-      border: none; background: none; width: 100%; text-align: left;
-    }
-    .nav-item:hover { background: var(--color-surface-offset); color: var(--color-text); }
-    .nav-item.active { background: var(--color-primary-highlight); color: var(--color-primary); font-weight: 600; }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-
-    .sidebar-footer {
-      padding: var(--space-4) var(--space-3);
-      border-top: 1px solid var(--color-border);
-    }
-
-    /* Topbar */
-    .topbar {
-      position: fixed; top: 0; left: 240px; right: 0;
-      height: 56px; background: var(--color-surface);
-      border-bottom: 1px solid var(--color-border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 var(--space-6); z-index: 99;
-    }
-    .topbar-left { display: flex; align-items: center; gap: var(--space-4); }
-    .topbar-right { display: flex; align-items: center; gap: var(--space-3); }
-    .page-title { font-size: var(--text-base); font-weight: 600; }
-
-    /* Search */
-    .search-wrap {
-      display: flex; align-items: center; gap: var(--space-2);
-      background: var(--color-surface-offset);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-2) var(--space-3);
-      width: 260px;
-    }
-    .search-wrap svg { width: 14px; height: 14px; color: var(--color-text-muted); }
-    .search-wrap input {
-      border: none; background: none; outline: none;
-      font-size: var(--text-sm); color: var(--color-text);
-      width: 100%;
-    }
-    .search-wrap input::placeholder { color: var(--color-text-faint); }
-
-    /* Theme toggle */
-    .theme-toggle {
-      width: 36px; height: 36px;
-      border-radius: var(--radius-md);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--color-text-muted);
-      transition: background var(--transition), color var(--transition);
-    }
-    .theme-toggle:hover { background: var(--color-surface-offset); color: var(--color-text); }
-
-    /* Main content */
-    .main-content {
-      margin-left: 240px;
-      margin-top: 56px;
-      flex: 1; padding: var(--space-6);
-      min-height: calc(100dvh - 56px);
-    }
-
-    /* ── Views ── */
-    .view { display: none; }
-    .view.active { display: block; }
-
-    /* ── KPI Cards ── */
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: var(--space-4); margin-bottom: var(--space-6);
-    }
-    .kpi-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-5);
-      transition: box-shadow var(--transition);
-    }
-    .kpi-card:hover { box-shadow: var(--shadow-md); }
-    .kpi-label {
-      font-size: var(--text-xs); color: var(--color-text-muted);
-      text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
-      margin-bottom: var(--space-2);
-      display: flex; align-items: center; gap: var(--space-2);
-    }
-    .kpi-label svg { width: 14px; height: 14px; }
-    .kpi-value {
-      font-size: var(--text-xl); font-weight: 700;
-      font-variant-numeric: tabular-nums lining-nums;
-      color: var(--color-text); line-height: 1;
-      margin-bottom: var(--space-1);
-    }
-    .kpi-sub { font-size: var(--text-xs); color: var(--color-text-muted); }
-    .kpi-delta {
-      font-size: var(--text-xs); font-weight: 600;
-      display: inline-flex; align-items: center; gap: 2px;
-      margin-top: var(--space-2);
-    }
-    .kpi-delta.up { color: var(--color-error); }
-    .kpi-delta.down { color: var(--color-success); }
-
-    /* ── Charts Grid ── */
-    .charts-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr));
-      gap: var(--space-5); margin-bottom: var(--space-6);
-    }
-    .chart-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-5);
-    }
-    .chart-card.wide { grid-column: 1 / -1; }
-    .chart-title {
-      font-size: var(--text-sm); font-weight: 600;
-      margin-bottom: var(--space-4); color: var(--color-text);
-      display: flex; align-items: center; justify-content: space-between;
-    }
-    .chart-subtitle { font-size: var(--text-xs); color: var(--color-text-muted); font-weight: 400; }
-    .chart-container { position: relative; height: 240px; }
-    .chart-container.tall { height: 320px; }
-
-    /* ── Table ── */
-    .table-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      overflow: hidden; margin-bottom: var(--space-6);
-    }
-    .table-header {
-      padding: var(--space-4) var(--space-5);
-      border-bottom: 1px solid var(--color-border);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: var(--space-3);
-    }
-    .table-header-title { font-size: var(--text-sm); font-weight: 600; }
-    .table-filters { display: flex; gap: var(--space-3); flex-wrap: wrap; }
-    .filter-select {
-      background: var(--color-surface-offset);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-2) var(--space-3);
-      font-size: var(--text-xs); color: var(--color-text);
-      outline: none; cursor: pointer;
-    }
-    .filter-select:focus { border-color: var(--color-primary); }
-
-    .table-wrap { overflow-x: auto; }
-    .data-table { width: 100%; }
-    .data-table th {
-      background: var(--color-surface-offset);
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--text-xs); font-weight: 600;
-      color: var(--color-text-muted); text-align: left;
-      white-space: nowrap; border-bottom: 1px solid var(--color-border);
-      cursor: pointer; user-select: none;
-    }
-    .data-table th:hover { color: var(--color-text); }
-    .data-table td {
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--text-xs); border-bottom: 1px solid var(--color-divider);
-      vertical-align: middle;
-      font-variant-numeric: tabular-nums lining-nums;
-    }
-    .data-table tr:last-child td { border-bottom: none; }
-    .data-table tr:hover td { background: var(--color-surface-offset); }
-
-    /* Badges */
-    .badge {
-      display: inline-flex; align-items: center;
-      padding: 2px var(--space-2); border-radius: var(--radius-full);
-      font-size: 10px; font-weight: 600; white-space: nowrap;
-      text-transform: uppercase; letter-spacing: 0.04em;
-    }
-    .badge-sector { background: color-mix(in oklab, var(--color-primary) 12%, var(--color-surface)); color: var(--color-primary); }
-    .badge-it      { background: rgba(59,130,246,0.15); color: #60a5fa; }
-    .badge-fintech { background: rgba(245,158,11,0.15); color: #fbbf24; }
-    .badge-ecomm   { background: rgba(34,197,94,0.15); color: #4ade80; }
-    .badge-edtech  { background: rgba(168,85,247,0.15); color: #c084fc; }
-    .badge-gaming  { background: rgba(236,72,153,0.15); color: #f472b6; }
-    .badge-health  { background: rgba(20,184,166,0.15); color: #2dd4bf; }
-    .badge-logistic{ background: rgba(249,115,22,0.15); color: #fb923c; }
-    .badge-ev      { background: rgba(234,179,8,0.15); color: #facc15; }
-    .badge-banking { background: rgba(99,102,241,0.15); color: #818cf8; }
-    .badge-saas    { background: rgba(6,182,212,0.15); color: #22d3ee; }
-    .badge-media   { background: rgba(239,68,68,0.15); color: #f87171; }
-    .badge-ai      { background: rgba(251,191,36,0.15); color: #fde047; }
-    .badge-agri    { background: rgba(74,222,128,0.15); color: #86efac; }
-    .badge-mfg     { background: rgba(156,163,175,0.15); color: #d1d5db; }
-
-    .status-badge { 
-      padding: 2px var(--space-2); border-radius: var(--radius-full);
-      font-size: 10px; font-weight: 700;
-    }
-    .status-confirmed { background: rgba(239,68,68,0.15); color: #f87171; }
-    .status-shutdown  { background: rgba(55,48,63,0.9); color: #9ca3af; }
-    .status-silent    { background: rgba(245,158,11,0.15); color: #fbbf24; }
-
-    .company-cell { display: flex; align-items: center; gap: var(--space-3); }
-    .company-logo-placeholder {
-      width: 28px; height: 28px; border-radius: var(--radius-sm);
-      background: var(--color-surface-offset);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 10px; font-weight: 700;
-      color: var(--color-text-muted); flex-shrink: 0;
-    }
-    .company-name { font-weight: 600; font-size: var(--text-xs); color: var(--color-text); }
-    .company-type { font-size: 10px; color: var(--color-text-muted); }
-
-    .jobs-cut {
-      font-weight: 700; color: var(--color-error);
-      font-family: var(--font-mono);
-    }
-
-    /* Pagination */
-    .pagination {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: var(--space-3) var(--space-5);
-      border-top: 1px solid var(--color-border);
-      font-size: var(--text-xs); color: var(--color-text-muted);
-    }
-    .pagination-btns { display: flex; gap: var(--space-2); }
-    .pg-btn {
-      padding: var(--space-1) var(--space-3);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--color-border);
-      font-size: var(--text-xs); background: var(--color-surface-offset);
-      color: var(--color-text); transition: background var(--transition);
-    }
-    .pg-btn:hover { background: var(--color-border); }
-    .pg-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-    .pg-btn.current { background: var(--color-primary); color: white; border-color: var(--color-primary); }
-
-    /* ── Risk Calculator ── */
-    .risk-section { max-width: 720px; }
-    .risk-form {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-6); margin-bottom: var(--space-5);
-    }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
-    .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
-    .form-label { font-size: var(--text-xs); font-weight: 600; color: var(--color-text-muted); text-transform: uppercase; letter-spacing: 0.06em; }
-    .form-select, .form-range {
-      background: var(--color-surface-offset);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--text-sm); color: var(--color-text);
-      outline: none; width: 100%;
-    }
-    .form-select:focus { border-color: var(--color-primary); }
-    .form-range { padding: var(--space-2) 0; accent-color: var(--color-primary); }
-    .range-labels { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-faint); margin-top: var(--space-1); }
-
-    .calc-btn {
-      width: 100%; margin-top: var(--space-5);
-      padding: var(--space-3) var(--space-6);
-      background: var(--color-primary);
-      color: white; border-radius: var(--radius-md);
-      font-size: var(--text-sm); font-weight: 600;
-      transition: background var(--transition), transform var(--transition);
-    }
-    .calc-btn:hover { background: var(--color-primary-hover); }
-    .calc-btn:active { transform: scale(0.98); }
-
-    .risk-result {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-xl);
-      padding: var(--space-6); display: none;
-    }
-    .risk-result.visible { display: block; }
-    .risk-score-wrap { display: flex; align-items: center; gap: var(--space-6); margin-bottom: var(--space-5); }
-    .risk-score-ring { position: relative; width: 100px; height: 100px; flex-shrink: 0; }
-    .risk-score-ring canvas { position: absolute; top: 0; left: 0; }
-    .risk-score-label {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-      font-size: var(--text-lg); font-weight: 800; font-family: var(--font-mono);
-    }
-    .risk-info h3 { font-size: var(--text-lg); font-weight: 700; margin-bottom: var(--space-2); }
-    .risk-info p { font-size: var(--text-xs); color: var(--color-text-muted); line-height: 1.6; }
-    .risk-breakdown { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); margin-top: var(--space-4); }
-    .risk-factor { background: var(--color-surface-offset); border-radius: var(--radius-md); padding: var(--space-3); }
-    .risk-factor-label { font-size: var(--text-xs); color: var(--color-text-muted); margin-bottom: var(--space-1); }
-    .risk-factor-bar { height: 6px; background: var(--color-border); border-radius: 3px; margin-bottom: var(--space-1); overflow: hidden; }
-    .risk-factor-fill { height: 100%; border-radius: 3px; transition: width 600ms cubic-bezier(0.16,1,0.3,1); }
-    .risk-factor-score { font-size: var(--text-xs); font-weight: 700; }
-
-    /* ── Section titles ── */
-    .section-header { margin-bottom: var(--space-5); }
-    .section-title { font-size: var(--text-lg); font-weight: 700; color: var(--color-text); margin-bottom: var(--space-1); }
-    .section-desc { font-size: var(--text-xs); color: var(--color-text-muted); }
-
-    /* Live dot */
-    .live-dot {
-      display: inline-flex; align-items: center; gap: var(--space-2);
-      font-size: var(--text-xs); color: var(--color-error); font-weight: 600;
-    }
-    .live-dot::before {
-      content: ''; width: 8px; height: 8px; border-radius: 50%;
-      background: var(--color-error);
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    /* Mobile */
-    .mobile-menu-btn {
-      display: none; width: 36px; height: 36px;
-      align-items: center; justify-content: center;
-      border-radius: var(--radius-md);
-    }
-
-    @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0); }
-      .main-content { margin-left: 0; padding: var(--space-4); }
-      .topbar { left: 0; }
-      .mobile-menu-btn { display: flex; }
-      .search-wrap { width: 180px; }
-      .form-grid { grid-template-columns: 1fr; }
-      .risk-breakdown { grid-template-columns: 1fr; }
-      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    /* Overlay for mobile sidebar */
-    .sidebar-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.5); z-index: 99;
-    }
-    .sidebar-overlay.open { display: block; }
-
-    /* Timeline */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
-    .timeline-item {
-      display: flex; gap: var(--space-4);
-      padding: var(--space-4) 0;
-      border-bottom: 1px solid var(--color-divider);
-    }
-    .timeline-item:last-child { border-bottom: none; }
-    .timeline-dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--color-primary); flex-shrink: 0;
-      margin-top: 5px; position: relative;
-    }
-    .timeline-content { flex: 1; }
-    .timeline-date { font-size: var(--text-xs); color: var(--color-text-faint); font-family: var(--font-mono); margin-bottom: var(--space-1); }
-    .timeline-company { font-weight: 700; font-size: var(--text-sm); margin-bottom: 2px; }
-    .timeline-detail { font-size: var(--text-xs); color: var(--color-text-muted); }
-    .timeline-jobs { 
-      font-family: var(--font-mono); font-weight: 700;
-      color: var(--color-error); font-size: var(--text-sm);
-      flex-shrink: 0; padding-top: 4px;
-    }
-
-    /* Trend badges in timeline */
-    .reason-tag {
-      display: inline-block; padding: 1px var(--space-2);
-      border-radius: var(--radius-full);
-      font-size: 10px; font-weight: 600;
-      background: var(--color-surface-offset);
-      color: var(--color-text-muted); margin-top: var(--space-1);
-    }
-
-    .last-updated { font-size: var(--text-xs); color: var(--color-text-faint); }
-
-    /* Sector Map Grid */
-    .sector-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
-      gap: var(--space-4); margin-bottom: var(--space-6);
-    }
-    .sector-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-lg);
-      padding: var(--space-5);
-      cursor: pointer; transition: box-shadow var(--transition), border-color var(--transition);
-    }
-    .sector-card:hover { box-shadow: var(--shadow-md); border-color: var(--color-primary); }
-    .sector-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); }
-    .sector-icon { width: 40px; height: 40px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; }
-    .sector-name { font-weight: 700; font-size: var(--text-sm); }
-    .sector-count { font-size: var(--text-xs); color: var(--color-text-muted); }
-    .sector-bar { height: 4px; background: var(--color-border); border-radius: 2px; overflow: hidden; margin-bottom: var(--space-2); }
-    .sector-bar-fill { height: 100%; border-radius: 2px; }
-    .sector-stats { display: flex; justify-content: space-between; font-size: var(--text-xs); color: var(--color-text-muted); }
-    .sector-jobs { font-weight: 700; font-family: var(--font-mono); color: var(--color-error); }
-
-    /* No results */
-    .no-results {
-      padding: var(--space-12); text-align: center;
-      color: var(--color-text-muted); font-size: var(--text-sm);
-    }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LayoffWatch India — India Layoff &amp; Jobs Tracker 2025–26</title>
+<meta name="description" content="Weekly-updated tracker of layoffs, shutdowns and headcount cuts in India across IT, startups, banking, FMCG, manufacturing and more, with hiring trends, government jobs data and a layoff risk calculator. Every figure links to its source.">
+<meta property="og:title" content="LayoffWatch India — Layoff &amp; Jobs Tracker">
+<meta property="og:description" content="Layoffs, hiring trends and government jobs across India's workforce, with sources for every number.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f1013">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ef4444'/%3E%3Ctext x='32' y='43' font-size='30' text-anchor='middle' fill='white' font-family='Arial' font-weight='700'%3ELW%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/theme.css">
+<script src="assets/d3.min.js"></script>
+<script src="assets/dash-shim.js"></script>
 </head>
 <body>
+<div id="dash-root">
+<style>
+#dash-root { --dash-gutter: 0; }
+.lw { --lw-accent: #ef4444; --lw-accent-soft: rgba(239, 68, 68, .14); --lw-good: #10b981; font-family: var(--font-anthropic-sans); display: grid; grid-template-columns: 15.5rem minmax(0, 1fr); min-height: 100vh; }
+.lw [hidden] { display: none !important; }
+.lw-wrap { container: lw / inline-size; }
+.lw-side { background: var(--color-panel); border-right: 1px solid var(--color-border-line); padding: var(--cds-pad-lg) var(--cds-pad-md); display: flex; flex-direction: column; gap: var(--cds-gap-xs); position: sticky; top: 0; align-self: start; height: 100vh; overflow: auto; }
+.lw-brand { display: flex; gap: var(--cds-gap-sm); align-items: center; margin-bottom: var(--cds-gap-md); }
+.lw-logo { width: 2.4rem; height: 2.4rem; border-radius: 10px; background: var(--lw-accent); display: grid; place-items: center; font-size: 1.15rem; box-shadow: 0 4px 12px rgba(239, 68, 68, .35); flex: none; }
+.lw-brand b { display: block; font-size: var(--cds-font-size-body); font-weight: 700; }
+.lw-brand span { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-group { font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); margin: var(--cds-gap-md) 0 var(--cds-gap-xs) var(--cds-pad-sm); opacity: .8; }
+.lw-nav { display: flex; align-items: center; gap: var(--cds-gap-sm); width: 100%; text-align: left; font: inherit; font-size: var(--cds-font-size-body); font-weight: 500; color: var(--color-fg-muted); background: none; border: 0; border-radius: 8px; padding: var(--cds-pad-sm) var(--cds-pad-md); cursor: pointer; }
+.lw-nav:hover { color: var(--color-fg); background: var(--color-bg); }
+.lw-nav[aria-current="page"] { background: var(--lw-accent-soft); color: var(--lw-accent); font-weight: 700; }
+.lw-nav .ic { width: 1.2rem; text-align: center; flex: none; }
+.lw-foot { margin-top: auto; padding-top: var(--cds-pad-md); border-top: 1px solid var(--color-border-line); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: flex; flex-direction: column; gap: 2px; }
+.lw-foot b { color: var(--color-fg); font-weight: 600; }
+.lw-main { min-width: 0; padding: var(--cds-pad-lg) var(--cds-pad-xl); display: flex; flex-direction: column; gap: var(--cds-gap-lg); }
+.lw-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); }
+.lw-menu { display: none; font: inherit; font-size: 1.2rem; background: none; border: 1px solid var(--color-border-line); border-radius: 8px; color: var(--color-fg); padding: 0 var(--cds-pad-sm); cursor: pointer; }
+.lw-title { font-weight: 700; font-size: var(--cds-font-size-heading); }
+.lw-live { display: inline-flex; align-items: center; gap: 5px; font-size: .7rem; font-weight: 800; letter-spacing: .05em; color: var(--lw-accent); }
+.lw-live i { width: 7px; height: 7px; border-radius: 50%; background: var(--lw-accent); box-shadow: 0 0 8px var(--lw-accent); }
+@media (prefers-reduced-motion: no-preference) { .lw-live i { animation: lwpulse 1.5s infinite; } }
+@keyframes lwpulse { 50% { opacity: .4; transform: scale(.85); } }
+.lw-filters { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; margin-left: auto; }
+.lw-seg { display: inline-flex; border: 1px solid var(--color-border-line); border-radius: 8px; overflow: hidden; }
+.lw-seg button { font: inherit; font-size: var(--cds-font-size-caption); background: transparent; color: var(--color-fg-muted); border: 0; padding: var(--cds-pad-xs) var(--cds-pad-md); cursor: pointer; }
+.lw-seg button[aria-pressed="true"] { background: var(--lw-accent-soft); color: var(--lw-accent); font-weight: 700; }
+.lw select, .lw-search { font: inherit; font-size: var(--cds-font-size-caption); color: var(--color-fg); background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: 8px; padding: var(--cds-pad-xs) var(--cds-pad-sm); max-width: 100%; }
+.lw-dl { font: inherit; font-size: var(--cds-font-size-caption); font-weight: 600; color: #fff; background: var(--lw-accent); border: 0; border-radius: 8px; padding: var(--cds-pad-xs) var(--cds-pad-md); cursor: pointer; margin-left: auto; white-space: nowrap; }
+.lw-dl.alt { background: transparent; color: var(--color-fg); border: 1px solid var(--color-border-line); margin-left: 0; }
+.lw-dlbar { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; margin-top: var(--cds-gap-md); }
+.lw-reset { font: inherit; font-size: var(--cds-font-size-caption); background: none; border: 0; color: var(--color-fg-muted); text-decoration: underline; cursor: pointer; }
+.lw-hero h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+.lw-hero p { color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 62rem; }
+.lw-hero p b { color: var(--color-fg); font-weight: 600; }
+.lw-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr)); gap: var(--cds-gap-md); }
+.lw-kpi { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.lw-kpi .lbl { font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--color-fg-muted); }
+.lw-kpi .val { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); font-variant-numeric: tabular-nums; line-height: 1.15; }
+.lw-kpi .sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-kpi.hot .val { color: var(--lw-accent); }
+.lw-aside { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; }
+.lw-aside b { color: var(--color-fg); font-weight: 600; }
+.lw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr)); gap: var(--cds-gap-md); }
+.lw-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-lg); display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-width: 0; }
+.lw-card.wide { grid-column: 1 / -1; }
+.lw-card h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0; }
+.lw-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; }
+.lw-chart { position: relative; min-height: 240px; }
+.lw-donut { display: grid; grid-template-columns: 9.5rem 1fr; gap: var(--cds-gap-md); align-items: center; min-height: 160px; }
+.lw-legend { display: flex; flex-direction: column; gap: 4px; font-size: var(--cds-font-size-caption); }
+.lw-legend div { display: grid; grid-template-columns: .7rem 1fr auto; gap: var(--cds-gap-xs); align-items: center; }
+.lw-legend i { width: .65rem; height: .65rem; border-radius: 3px; }
+.lw-legend span:last-child { color: var(--color-fg-muted); font-variant-numeric: tabular-nums; }
+.lw-hbars { display: flex; flex-direction: column; gap: var(--cds-gap-xs); min-height: 120px; }
+.lw-hrow { display: grid; grid-template-columns: minmax(6rem, 36%) 1fr 4.2rem; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+.lw-hrow .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lw-hrow .tr { height: 14px; border-radius: 4px; background: var(--cds-chart-grid); overflow: hidden; position: relative; }
+.lw-hrow .fl { height: 100%; border-radius: 4px; position: absolute; top: 0; }
+.lw-hrow .nv { font-variant-numeric: tabular-nums; text-align: right; font-weight: 600; }
+.lw-tip { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; }
+.lw-tip .d { color: var(--cds-text-secondary); }
+.lw-tl { position: relative; padding-left: 1.6rem; display: flex; flex-direction: column; gap: var(--cds-gap-lg); min-height: 200px; }
+.lw-tl::before { content: ""; position: absolute; left: .45rem; top: .4rem; bottom: .4rem; width: 2px; background: var(--color-border-line); }
+.lw-tli { position: relative; }
+.lw-tli .dot { position: absolute; left: -1.6rem; top: .25rem; width: .9rem; height: .9rem; border-radius: 50%; border: 3px solid var(--color-panel); }
+.lw-tli .hd { display: flex; justify-content: space-between; gap: var(--cds-gap-sm); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-tli .n { font-weight: 800; color: var(--lw-accent); font-size: var(--cds-font-size-body); font-variant-numeric: tabular-nums; }
+.lw-tli .co { font-weight: 700; }
+.lw-tli .meta { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-tag { display: inline-block; font-size: .68rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; background: var(--color-bg); color: var(--color-fg-muted); margin: 4px 6px 0 0; border: 1px solid var(--color-border-line); }
+.lw-tag.ok { color: var(--lw-good); }
+.lw-tag.warn { color: var(--color-warn); }
+.lw-tag.alt { color: var(--lw-accent); }
+.lw-tablebox { max-height: 40rem; overflow: auto; }
+.lw-table { width: 100%; border-collapse: collapse; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.lw-table th { position: sticky; top: 0; background: var(--color-panel); text-align: left; font-weight: 600; padding: 0; border-bottom: 1px solid var(--color-border-line); z-index: 1; }
+.lw-table th button { font: inherit; color: inherit; background: none; border: 0; padding: var(--cds-pad-xs) var(--cds-pad-sm); cursor: pointer; width: 100%; text-align: inherit; white-space: nowrap; }
+.lw-table td { padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--color-border-line); vertical-align: top; }
+.lw-table .num { text-align: right; }
+.lw-table .co { font-weight: 600; }
+.lw-table a { color: inherit; }
+.lw-gh { font-size: .72rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--color-fg-muted); margin: var(--cds-gap-md) 0 0; }
+.lw-scards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--cds-gap-md); }
+.lw-sc { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; }
+.lw-sc .top { display: flex; justify-content: space-between; gap: var(--cds-gap-sm); align-items: baseline; }
+.lw-sc .t { font-weight: 700; }
+.lw-sc .v { font-weight: 800; color: var(--lw-accent); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lw-sc .v.zero { color: var(--color-fg-muted); font-weight: 600; }
+.lw-sc .cv, .lw-sc .m { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-sc .bt { height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; }
+.lw-sc .bf { height: 100%; border-radius: 3px; }
+.lw-hot { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-md); }
+.lw-hc { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; }
+.lw-hc .k { font-size: .68rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; align-self: flex-start; background: rgba(16, 185, 129, .14); color: var(--lw-good); }
+.lw-hc .k.proj { background: var(--color-bg); color: var(--color-warn); border: 1px solid var(--color-border-line); }
+.lw-hc .v { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); color: var(--lw-good); font-variant-numeric: tabular-nums; line-height: 1.1; }
+.lw-hc .u { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-hc .t { font-weight: 700; }
+.lw-hc .d { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-hc a { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-calc { font: inherit; font-weight: 700; color: #fff; background: #ef4444; border: 0; border-radius: 8px; padding: var(--cds-pad-sm) var(--cds-pad-lg); cursor: pointer; align-self: flex-start; }
+.lw-calc:hover { background: #dc2626; }
+.lw-rres { display: flex; flex-direction: column; gap: var(--cds-gap-md); border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-lg); }
+.lw-rtop { display: flex; flex-wrap: wrap; gap: var(--cds-gap-lg); align-items: center; }
+.lw-gauge { width: 11rem; flex: none; }
+.lw-rinfo { flex: 1; min-width: 14rem; }
+.lw-rtitle { margin: 0 0 6px; font-size: var(--cds-font-size-heading); font-weight: 800; }
+.lw-rdesc { margin: 0; color: var(--color-fg-muted); font-size: var(--cds-font-size-body); line-height: 1.5; }
+.lw-rfactors { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-sm); }
+.lw-rf { background: var(--color-bg); border: 1px solid var(--color-border-line); border-radius: 10px; padding: var(--cds-pad-sm) var(--cds-pad-md); display: flex; flex-direction: column; gap: 5px; font-size: var(--cds-font-size-caption); }
+.lw-rf .hd { display: flex; justify-content: space-between; gap: var(--cds-gap-sm); align-items: baseline; }
+.lw-rf .nm { font-weight: 700; font-size: var(--cds-font-size-body); }
+.lw-rf .sc { font-weight: 800; font-variant-numeric: tabular-nums; }
+.lw-rf .opt { color: var(--color-fg-muted); }
+.lw-rf .bar { height: 6px; border-radius: 3px; background: var(--cds-chart-grid); overflow: hidden; }
+.lw-rf .bar i { display: block; height: 100%; border-radius: 3px; }
+.lw-rf .why { color: var(--color-fg-muted); line-height: 1.45; }
+.lw-rf .bs { align-self: flex-start; font-size: .66rem; font-weight: 700; padding: 1px 6px; border-radius: 4px; border: 1px solid var(--color-border-line); }
+.lw-rf .bs.data { color: #3b82f6; }
+.lw-rf .bs.rule { color: var(--color-fg-muted); }
+.lw-radvice h3 { margin: 0 0 6px; font-size: var(--cds-font-size-body); font-weight: 700; }
+.lw-radvice ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 4px; font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-radvice b { color: var(--color-fg); }
+.lw-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); }
+.lw-form label { display: flex; flex-direction: column; gap: 6px; font-size: .7rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--color-fg-muted); }
+.lw-form select { font-size: var(--cds-font-size-body); padding: var(--cds-pad-sm); text-transform: none; letter-spacing: 0; font-weight: 400; }
+.lw-score { display: flex; flex-wrap: wrap; gap: var(--cds-gap-lg); align-items: center; border-left: 4px solid var(--lw-accent); padding: var(--cds-pad-md) var(--cds-pad-lg); background: var(--color-bg); border-radius: 8px; }
+.lw-score .big { font-family: var(--font-anthropic-serif); font-size: 2.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.lw-score .band { font-weight: 800; font-size: var(--cds-font-size-heading); }
+.lw-parts { display: flex; flex-direction: column; gap: var(--cds-gap-xs); }
+.lw-part { display: grid; grid-template-columns: minmax(8rem, 1.4fr) 2fr 3.2rem; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+.lw-part .why { color: var(--color-fg-muted); }
+.lw-part .pt { text-align: right; font-weight: 700; font-variant-numeric: tabular-nums; }
+.lw-prof { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); gap: var(--cds-gap-md); min-height: 160px; }
+.lw-pc { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 6px; }
+.lw-pc .t { font-weight: 700; }
+.lw-pc .v { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.lw-pc .u, .lw-pc .d { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-pc a { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-chip { align-self: flex-start; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+.lw-chip.up { background: rgba(16, 185, 129, .14); color: var(--lw-good); }
+.lw-chip.down { background: var(--lw-accent-soft); color: var(--lw-accent); }
+.lw-chip.flat { background: var(--color-bg); color: var(--color-fg-muted); border: 1px solid var(--color-border-line); }
+.lw-pair { display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-height: 120px; }
+.lw-prow { display: grid; grid-template-columns: minmax(7rem, 34%) 1fr 6.5rem; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+.lw-prow .bars { display: flex; flex-direction: column; gap: 3px; }
+.lw-prow .b { height: 10px; border-radius: 4px; }
+.lw-prow .nv { text-align: right; font-variant-numeric: tabular-nums; }
+.lw-prow .nv b { font-weight: 700; }
+.lw-key { display: flex; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-key i { display: inline-block; width: .7rem; height: .7rem; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.lw-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr)); gap: var(--cds-gap-sm); min-height: 90px; }
+.lw-tile { border: 1px solid var(--color-border-line); border-radius: 10px; padding: var(--cds-pad-sm) var(--cds-pad-md); display: flex; flex-direction: column; gap: 2px; }
+.lw-tile .l { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-tile .v { font-family: var(--font-anthropic-serif); font-size: 1.6rem; font-variant-numeric: tabular-nums; }
+.lw-tile .c { font-size: var(--cds-font-size-caption); }
+.lw-scroll { max-height: 34rem; overflow: auto; padding-right: 4px; }
+.lw-sig { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); min-height: 140px; }
+.lw-sg { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: 12px; padding: var(--cds-pad-md) var(--cds-pad-lg); display: flex; flex-direction: column; gap: 5px; }
+.lw-sg .s { font-weight: 700; }
+.lw-sg .ty { font-size: .68rem; font-weight: 700; padding: 1px 7px; border-radius: 4px; align-self: flex-start; border: 1px solid var(--color-border-line); color: var(--color-fg-muted); }
+.lw-sg .ty.gov { color: #3b82f6; }
+.lw-sg .m, .lw-sg .r { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-sg .v { font-family: var(--font-anthropic-serif); font-size: var(--cds-font-size-title); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.lw-sg a { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.lw-vtable td.pct { white-space: nowrap; }
+.lw-vtable .pb { display: inline-block; width: 4.5rem; height: 8px; border-radius: 4px; background: var(--cds-chart-grid); margin-right: 6px; vertical-align: middle; overflow: hidden; }
+.lw-vtable .pb i { display: block; height: 100%; background: #ef4444; border-radius: 4px; }
+.lw-vtable tr.total td { font-weight: 700; border-top: 2px solid var(--color-border-line); }
+.lw-vac { display: flex; flex-direction: column; gap: var(--cds-gap-sm); min-height: 160px; }
+.lw-vrow { display: grid; grid-template-columns: minmax(8rem, 32%) 1fr 9.5rem; gap: var(--cds-gap-sm); align-items: center; font-size: var(--cds-font-size-caption); }
+.lw-vrow .tr { height: 14px; border-radius: 4px; overflow: hidden; display: flex; background: var(--cds-chart-grid); }
+.lw-vrow .nv { text-align: right; font-variant-numeric: tabular-nums; }
+.lw-vrow .nv b { color: #ef4444; }
+.lw-mini { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); gap: var(--cds-gap-md); min-height: 200px; }
+.lw-mc { display: flex; flex-direction: column; gap: 4px; }
+.lw-mc .t { font-weight: 700; font-size: var(--cds-font-size-body); }
+.lw-mc .chg { font-size: var(--cds-font-size-caption); font-weight: 700; }
+.lw-ghero { color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 0; max-width: 62rem; }
+.lw-ghero b { color: var(--color-fg); font-weight: 600; }
+.lw-disc { border: 1px solid var(--color-border-line); border-left: 4px solid #f59e0b; border-radius: 8px; padding: var(--cds-pad-md) var(--cds-pad-lg); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); display: flex; flex-direction: column; gap: 6px; margin-top: var(--cds-gap-lg); }
+.lw-disc b { color: var(--color-fg); }
+.lw-disc ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 3px; }
+.lw-foot-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); border-top: 1px solid var(--color-border-line); padding-top: var(--cds-pad-md); margin-top: var(--cds-gap-lg); }
+[data-dash-source-state=empty] { color: transparent; }
+[data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+.lw-fail { display: flex; align-items: center; justify-content: center; gap: var(--cds-gap-xs); color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); min-height: inherit; }
+.lw-fail::before { content: ""; width: .375rem; height: .375rem; border-radius: 50%; background: var(--color-bad); }
+@container lw (max-width: 760px) {
+  .lw { grid-template-columns: minmax(0, 1fr); }
+  .lw-side { display: none; position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--color-border-line); }
+  .lw.open .lw-side { display: flex; }
+  .lw-menu { display: inline-block; }
+  .lw-main { padding: var(--cds-pad-md); }
+  .lw-hide { display: none; }
+  .lw-filters { margin-left: 0; }
+}
+</style>
 
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-
-<div class="app-shell">
-  <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      </div>
-      <div>
-        <div class="logo-text">LayoffWatch India</div>
-        <div class="logo-sub">2025–2026 Tracker</div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-section">
-        <div class="nav-section-label">Overview</div>
-        <button class="nav-item active" onclick="showView('dashboard', this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-          Dashboard
-        </button>
-        <button class="nav-item" onclick="showView('timeline', this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          Timeline
-        </button>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Data</div>
-        <button class="nav-item" onclick="showView('companies', this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-          Companies
-        </button>
-        <button class="nav-item" onclick="showView('sectors', this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>
-          Sectors
-        </button>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Tools</div>
-        <button class="nav-item" onclick="showView('risk', this)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Risk Calculator
-        </button>
-      </div>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="last-updated">Last updated: June 2026</div>
-      <div class="last-updated" style="margin-top: 4px;">Sources: Inc42, TechCircle, ET</div>
+<div class="lw-wrap"><div class="lw" id="tracker">
+  <aside class="lw-side" id="sidebar">
+    <div class="lw-brand"><div class="lw-logo" aria-hidden="true">👥</div><div><b>LayoffWatch India</b><span>2025–2026 Tracker</span></div></div>
+    <div class="lw-group">Overview</div>
+    <button type="button" class="lw-nav" data-page="dashboard"><span class="ic">⊞</span>Dashboard</button>
+    <button type="button" class="lw-nav" data-page="timeline"><span class="ic">📈</span>Timeline</button>
+    <div class="lw-group">Data</div>
+    <button type="button" class="lw-nav" data-page="companies"><span class="ic">⬡</span>Companies</button>
+    <button type="button" class="lw-nav" data-page="sectors"><span class="ic">🕒</span>Sectors</button>
+    <button type="button" class="lw-nav" data-page="new-jobs"><span class="ic">🔺</span>Where New Jobs Are Added</button>
+    <button type="button" class="lw-nav" data-page="workforce"><span class="ic">🧑‍💼</span>Workforce &amp; Professions</button>
+    <button type="button" class="lw-nav" data-page="govt-jobs"><span class="ic">🏛️</span>Government Jobs</button>
+    <div class="lw-group">Tools</div>
+    <button type="button" class="lw-nav" data-page="risk"><span class="ic">🛡️</span>Risk Calculator</button>
+    <div class="lw-foot">
+      <span>Data through: <b class="lw-k" data-source="kpis" data-field="latest_date">—</b></span>
+      <span>Sources: <b>Inc42, Entrackr, ThePeoplesBoard, Peerlist, 6figr, People Matters, Business Today, Reuters, Naukri JobSpeak</b></span>
     </div>
   </aside>
 
-  <!-- Topbar -->
-  <header class="topbar">
-    <div class="topbar-left">
-      <button class="mobile-menu-btn theme-toggle" onclick="toggleSidebar()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <span class="page-title" id="pageTitle">Dashboard</span>
-      <span class="live-dot">LIVE</span>
-    </div>
-    <div class="topbar-right">
-      <div class="search-wrap">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" placeholder="Search company..." id="globalSearch" oninput="handleGlobalSearch(this.value)">
-      </div>
-      <button class="theme-toggle" data-theme-toggle aria-label="Toggle theme">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Content -->
-  <main class="main-content">
-
-    <!-- ── DASHBOARD VIEW ── -->
-    <div class="view active" id="view-dashboard">
-      <div class="section-header">
-        <div class="section-title">India Layoff Tracker — 2025 &amp; 2026</div>
-        <div class="section-desc">Comprehensive tracking of workforce reductions across Indian companies — IT/ITeS, startups, banking, e-commerce, and more.</div>
-      </div>
-
-      <!-- KPIs -->
-      <div class="kpi-grid">
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Total Jobs Cut (Tracked)
-          </div>
-          <div class="kpi-value" id="kpi-total">1,04,000+</div>
-          <div class="kpi-sub">Verified layoffs, 2025–2026</div>
-          <div class="kpi-delta up">↑ 60% vs FY24</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-            Companies Affected
-          </div>
-          <div class="kpi-value">85+</div>
-          <div class="kpi-sub">Across all sectors</div>
-          <div class="kpi-delta up">↑ 40+ new in 2026</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"/></svg>
-            IT Sector Jobs Cut
-          </div>
-          <div class="kpi-value">55,000+</div>
-          <div class="kpi-sub">TCS, Infosys, Wipro & more</div>
-          <div class="kpi-delta up">↑ Largest share</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-            Startup Layoffs
-          </div>
-          <div class="kpi-value">20,000+</div>
-          <div class="kpi-sub">Across 60+ Indian startups</div>
-          <div class="kpi-delta up">↑ AI & funding pressure</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            Banking Sector
-          </div>
-          <div class="kpi-value">15,000+</div>
-          <div class="kpi-sub">Private banks FY25–26</div>
-          <div class="kpi-delta up">↑ Silent reductions</div>
-        </div>
-        <div class="kpi-card">
-          <div class="kpi-label">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-            Shutdowns
-          </div>
-          <div class="kpi-value">18+</div>
-          <div class="kpi-sub">Complete closures tracked</div>
-          <div class="kpi-delta up">↑ Agritech, Gaming, D2C</div>
-        </div>
-      </div>
-
-      <!-- Charts -->
-      <div class="charts-grid">
-        <div class="chart-card wide">
-          <div class="chart-title">
-            Monthly Layoff Trend — 2025
-            <span class="chart-subtitle">Jobs cut per month (estimated)</span>
-          </div>
-          <div class="chart-container tall">
-            <canvas id="chartMonthly"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title">
-            Layoffs by Sector
-            <span class="chart-subtitle">Total jobs 2025–26</span>
-          </div>
-          <div class="chart-container">
-            <canvas id="chartSector"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title">
-            Reason for Layoff
-            <span class="chart-subtitle">Share of total</span>
-          </div>
-          <div class="chart-container">
-            <canvas id="chartReason"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title">
-            Top 10 Companies by Jobs Cut
-            <span class="chart-subtitle">2025</span>
-          </div>
-          <div class="chart-container tall">
-            <canvas id="chartCompanies"></canvas>
-          </div>
-        </div>
-
-        <div class="chart-card">
-          <div class="chart-title">
-            Stage of Affected Startups
-            <span class="chart-subtitle">By funding stage</span>
-          </div>
-          <div class="chart-container">
-            <canvas id="chartStage"></canvas>
-          </div>
-        </div>
+  <div class="lw-main">
+    <div class="lw-top">
+      <button type="button" class="lw-menu" aria-label="Menu" aria-controls="sidebar">☰</button>
+      <span class="lw-title">Dashboard</span>
+      <span class="lw-live"><i></i>LIVE</span>
+      <div class="lw-filters" id="filters">
+        <div class="lw-seg lw-year" role="group" aria-label="Year"><button type="button" data-v="All">All</button><button type="button" data-v="2025">2025</button><button type="button" data-v="2026">2026</button></div>
+        <select class="lw-sector" aria-label="Sector" data-source="sectors"></select>
+        <select class="lw-segment" aria-label="Company type" data-source="events"></select>
+        <button type="button" class="lw-reset">Reset</button>
       </div>
     </div>
 
-    <!-- ── COMPANIES VIEW ── -->
-    <div class="view" id="view-companies">
-      <div class="section-header">
-        <div class="section-title">All Layoffs — Company Database</div>
-        <div class="section-desc">Verified workforce reductions across major and minor Indian companies, 2025–2026.</div>
+    <section class="lw-page" id="dashboard">
+      <div class="lw-hero">
+        <h1>India layoff tracker, 2025–26</h1>
+        <p><b class="lw-k" data-source="kpis" data-field="total_fmt">—</b> jobs lost to layoffs and headcount cuts in <span class="lw-k" data-source="kpis" data-field="label">—</span>, of which <b class="lw-k" data-source="kpis" data-field="jobs_fmt">—</b> came from <b class="lw-k" data-source="kpis" data-field="events">—</b> announced layoff events. <b class="lw-k" data-source="kpis" data-field="ai_share_fmt">—</b> of those jobs were tied to AI and automation. Latest: <span class="lw-k" data-source="kpis" data-field="latest">—</span>.</p>
       </div>
+      <div class="lw-kpis" style="margin-top: var(--cds-gap-lg)">
+        <div class="lw-kpi hot"><span class="lbl">Total workforce reduction</span><span class="val lw-k" data-source="kpis" data-field="total_fmt">—</span><span class="sub">Layoffs + net headcount declines in filings</span></div>
+        <div class="lw-kpi hot"><span class="lbl">Announced layoffs</span><span class="val lw-k" data-source="kpis" data-field="jobs_fmt">—</span><span class="sub">Low end of reported India figures</span></div>
+        <div class="lw-kpi"><span class="lbl">Layoff events</span><span class="val lw-k" data-source="kpis" data-field="events">—</span><span class="sub">Each with a cited source</span></div>
+        <div class="lw-kpi"><span class="lbl">Companies affected</span><span class="val lw-k" data-source="kpis" data-field="companies">—</span><span class="sub">Repeat rounds counted once</span></div>
+        <div class="lw-kpi"><span class="lbl">Shutdowns</span><span class="val lw-k" data-source="kpis" data-field="shutdowns">—</span><span class="sub">Whole company or unit closed</span></div>
+        <div class="lw-kpi"><span class="lbl">AI-linked share</span><span class="val lw-k" data-source="kpis" data-field="ai_share_fmt">—</span><span class="sub">Of jobs cut, by stated reason</span></div>
+        <div class="lw-kpi"><span class="lbl">Largest single event</span><span class="val lw-k" data-source="kpis" data-field="top_jobs_fmt">—</span><span class="sub lw-k" data-source="kpis" data-field="top_company">—</span></div>
+      </div>
+      <p class="lw-aside" style="margin-top: var(--cds-gap-sm)">Total workforce reduction adds <b class="lw-k" data-source="kpis" data-field="drops_fmt">—</b> net headcount declines from company filings (IT majors, private banks, FMCG), with TCS's announced cuts not double-counted. Not counted anywhere: <b class="lw-k" data-source="kpis" data-field="est_fmt">—</b> in industry-wide estimates such as the diamond-cluster union claim.</p>
+      <div class="lw-grid" style="margin-top: var(--cds-gap-lg)">
+        <section class="lw-card wide" id="monthly"><h2>Monthly layoff trend</h2><p class="lw-note">Tracked jobs cut by month of report. Hover for that month's events.</p><div class="lw-chart lw-monthly" data-source="events"></div></section>
+        <section class="lw-card" id="top-companies"><h2>Top companies by jobs cut</h2><p class="lw-note">All rounds combined.</p><div class="lw-hbars lw-topco" data-source="events"></div></section>
+        <section class="lw-card" id="by-group"><h2>By industry group</h2><p class="lw-note">Tracked jobs cut. Manufacturing includes textiles, autos and electronics.</p><div class="lw-hbars lw-bygroup" data-source="events sectors"></div></section>
+        <section class="lw-card" id="reasons"><h2>Reason for layoff</h2><p class="lw-note">Share of tracked jobs cut, as stated by the source.</p><div class="lw-donut lw-reason" data-source="events"></div></section>
+        <section class="lw-card" id="company-types"><h2>Type of company</h2><p class="lw-note">Share of tracked jobs cut.</p><div class="lw-donut lw-segdonut" data-source="events"></div></section>
+      </div>
+    </section>
 
-      <div class="table-card">
-        <div class="table-header">
-          <div class="table-header-title" id="companiesCount">Loading...</div>
-          <div class="table-filters">
-            <select class="filter-select" id="filterSector" onchange="applyFilters()">
-              <option value="">All Sectors</option>
-              <option value="IT/ITeS">IT/ITeS</option>
-              <option value="Fintech">Fintech</option>
-              <option value="E-commerce">E-commerce</option>
-              <option value="EdTech">EdTech</option>
-              <option value="Gaming">Gaming</option>
-              <option value="Healthtech">Healthtech</option>
-              <option value="Logistics">Logistics</option>
-              <option value="EV/Auto">EV/Auto</option>
-              <option value="Banking">Banking</option>
-              <option value="SaaS">SaaS</option>
-              <option value="Media">Media</option>
-              <option value="AI">AI</option>
-              <option value="Agritech">Agritech</option>
-              <option value="Quick Commerce">Quick Commerce</option>
-            </select>
-            <select class="filter-select" id="filterYear" onchange="applyFilters()">
-              <option value="">All Years</option>
-              <option value="2025">2025</option>
-              <option value="2026">2026</option>
-            </select>
-            <select class="filter-select" id="filterReason" onchange="applyFilters()">
-              <option value="">All Reasons</option>
-              <option value="AI Automation">AI Automation</option>
-              <option value="Cost Cutting">Cost Cutting</option>
-              <option value="Restructuring">Restructuring</option>
-              <option value="Shutdown">Shutdown</option>
-              <option value="Funding Crunch">Funding Crunch</option>
-              <option value="Regulatory">Regulatory</option>
-            </select>
-          </div>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th onclick="sortTable('company')">Company ↕</th>
-                <th onclick="sortTable('sector')">Sector ↕</th>
-                <th onclick="sortTable('jobs')">Jobs Cut ↕</th>
-                <th onclick="sortTable('pct')">% Workforce ↕</th>
-                <th onclick="sortTable('reason')">Reason ↕</th>
-                <th onclick="sortTable('date')">Date ↕</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="companiesTableBody"></tbody>
+    <section class="lw-page" id="timeline" hidden>
+      <div class="lw-hero"><h1>Layoff timeline</h1><p>Every tracked event, newest first. Uses the filters above.</p></div>
+      <div class="lw-card" style="margin-top: var(--cds-gap-lg)"><div class="lw-tl" data-source="events"></div></div>
+    </section>
+
+    <section class="lw-page" id="companies" hidden>
+      <div class="lw-hero"><h1>Companies</h1><p>All events with their source. Filter with the bar above, search, click a header to sort, then download exactly what you see as a CSV that opens in Excel.</p></div>
+      <div class="lw-card" style="margin-top: var(--cds-gap-lg)">
+        <div class="lw-top"><input class="lw-search" type="search" placeholder="Search company, city, reason…" aria-label="Search events"><span class="lw-note lw-count" data-source="events"></span><button type="button" class="lw-dl lw-dl-events">⬇ Download CSV</button></div>
+        <div class="lw-tablebox">
+          <table class="lw-table" data-source="events" data-row-key="id">
+            <thead><tr>
+              <th data-field="date"><button type="button" data-k="date">Date</button></th>
+              <th data-field="company"><button type="button" data-k="company">Company</button></th>
+              <th data-field="sector" class="lw-hide"><button type="button" data-k="sector">Sector</button></th>
+              <th data-field="jobs_reported" class="num"><button type="button" data-k="jobs">Jobs</button></th>
+              <th data-field="type"><button type="button" data-k="type">Type</button></th>
+              <th data-field="reason" class="lw-hide"><button type="button" data-k="reason">Reason</button></th>
+              <th data-field="city" class="lw-hide"><button type="button" data-k="city">City</button></th>
+              <th data-field="status"><button type="button" data-k="status">Status</button></th>
+              <th data-field="source"><button type="button" data-k="source">Source</button></th>
+            </tr></thead>
+            <tbody></tbody>
           </table>
-          <div id="noResults" class="no-results" style="display:none">No records found. Try adjusting filters.</div>
-        </div>
-        <div class="pagination" id="paginationContainer">
-          <span id="paginationInfo"></span>
-          <div class="pagination-btns" id="paginationBtns"></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ── SECTORS VIEW ── -->
-    <div class="view" id="view-sectors">
-      <div class="section-header">
-        <div class="section-title">Layoffs by Sector</div>
-        <div class="section-desc">Breakdown of job cuts across all major Indian industry sectors.</div>
-      </div>
-      <div class="sector-grid" id="sectorGrid"></div>
-      <div class="chart-card">
-        <div class="chart-title">Sector-wise Layoff Comparison</div>
-        <div class="chart-container tall" style="height:360px;">
-          <canvas id="chartSectorDetail"></canvas>
-        </div>
-      </div>
-    </div>
+    <section class="lw-page" id="sectors" hidden>
+      <div class="lw-hero"><h1>Sectors</h1><p>Every sector we track, grouped by industry, including manufacturing and FMCG. A sector with no sourced event says so rather than showing a guess.</p>
+        <div class="lw-dlbar"><button type="button" class="lw-dl lw-dl-sectors" style="margin-left:0">⬇ Sector summary (CSV)</button><button type="button" class="lw-dl alt lw-dl-sectorevents">⬇ All events in these sectors (CSV)</button><span class="lw-note lw-dlmsg"></span></div></div>
+      <div class="lw-sectors" data-source="events sectors"></div>
+    </section>
 
-    <!-- ── TIMELINE VIEW ── -->
-    <div class="view" id="view-timeline">
-      <div class="section-header">
-        <div class="section-title">Layoff Timeline</div>
-        <div class="section-desc">Chronological record of significant layoff events in India.</div>
+    <section class="lw-page" id="new-jobs" hidden>
+      <div class="lw-hero"><h1>Where new jobs are being added</h1><p>Hiring signals from job-posting data and industry reports. Growth rates are postings, not net jobs; projections are labelled.</p></div>
+      <div class="lw-grid" style="margin-top: var(--cds-gap-lg)">
+        <section class="lw-card wide" id="hiring-by-sector"><h2>Hiring by sector, year on year</h2><p class="lw-note">Naukri JobSpeak, white-collar postings, Sep 2026 vs Sep 2025. Green is growing, red is shrinking.</p><div class="lw-hbars lw-yoy" data-source="hiring"></div></section>
       </div>
-      <div class="table-card" style="overflow:hidden;">
-        <div class="table-header">
-          <div class="table-header-title">All Events — Newest First</div>
-          <select class="filter-select" id="filterTimelineSector" onchange="renderTimeline()">
-            <option value="">All Sectors</option>
-            <option value="IT/ITeS">IT/ITeS</option>
-            <option value="Banking">Banking</option>
-            <option value="Fintech">Fintech</option>
-            <option value="Gaming">Gaming</option>
-            <option value="E-commerce">E-commerce</option>
-            <option value="EdTech">EdTech</option>
-          </select>
-        </div>
-        <div style="padding: 0 var(--space-5);">
-          <div class="timeline" id="timelineContainer"></div>
-        </div>
-      </div>
-    </div>
+      <div class="lw-hot" data-source="hiring" style="margin-top: var(--cds-gap-md)"></div>
+    </section>
 
-    <!-- ── RISK CALCULATOR VIEW ── -->
-    <div class="view" id="view-risk">
-      <div class="section-header">
-        <div class="section-title">Personal Layoff Risk Calculator</div>
-        <div class="section-desc">Estimate your layoff risk based on real 2025–2026 Indian job market data.</div>
+    <section class="lw-page" id="workforce" hidden>
+      <div class="lw-hero"><h1>Workforce &amp; professions</h1><p>Beyond layoffs: how many professionals India has, whether employers are hiring them, and how the whole workforce is shifting. Hiring figures are job postings from Naukri; workforce figures are official PLFS survey data.</p>
+        <div class="lw-dlbar"><button type="button" class="lw-dl lw-dl-workforce" style="margin-left:0">⬇ Workforce data (CSV)</button><button type="button" class="lw-dl alt lw-dl-demand">⬇ Hiring by field (CSV)</button><button type="button" class="lw-dl alt lw-dl-signals">⬇ Hiring sources (CSV)</button><span class="lw-note lw-wfmsg"></span></div></div>
+      <h3 class="lw-gh" id="hiring-signals">What each hiring source says</h3>
+      <p class="lw-note">No single source tells the whole story. Job portals count online white-collar postings; government data (EPFO, PLFS) covers formal payrolls and all work; surveys capture employer intentions. They often disagree: in September 2026, Naukri showed white-collar postings up while foundit showed them down.</p>
+      <div class="lw-sig" data-source="signals" style="margin-top: var(--cds-gap-sm)"></div>
+      <h3 class="lw-gh" id="professions">Professions</h3>
+      <div class="lw-prof" data-source="workforce demand" style="margin-top: var(--cds-gap-sm)"></div>
+      <div class="lw-grid" style="margin-top: var(--cds-gap-lg)">
+        <section class="lw-card" id="hiring-by-field"><h2>Hiring demand by field</h2><p class="lw-note">Job postings, Sep 2026 vs Sep 2025, all 52 fields Naukri tracks. Professional fields are labelled in the cards above.</p><div class="lw-scroll"><div class="lw-hbars lw-fields" data-source="demand"></div></div></section>
+        <section class="lw-card" id="where-india-works"><h2>Where India works</h2><p class="lw-note">Share of all workers by sector, PLFS 2024 vs 2025. Farm work is shrinking; factories and services are absorbing it.</p><div class="lw-key"><span><i style="background:var(--cds-chart-muted)"></i>2024</span><span><i style="background:#ef4444"></i>2025</span></div><div class="lw-pair lw-sectorshare" data-source="workforce"></div></section>
+        <section class="lw-card" id="type-of-work"><h2>Type of work</h2><p class="lw-note">Share of workers by employment status, PLFS 2024 vs 2025. Salaried jobs are growing.</p><div class="lw-key"><span><i style="background:var(--cds-chart-muted)"></i>2024</span><span><i style="background:#ef4444"></i>2025</span></div><div class="lw-pair lw-status" data-source="workforce"></div></section>
+        <section class="lw-card" id="labour-market"><h2>Labour market pulse</h2><p class="lw-note">Latest PLFS readings and change vs a year earlier. For unemployment, a fall is good.</p><div class="lw-tiles lw-pulse" data-source="workforce"></div></section>
+        <section class="lw-card" id="hiring-outlook"><h2>Hiring outlook, Oct 2026–Mar 2027</h2><p class="lw-note">Employers' planned net change in headcount (TeamLease survey). India-wide average 5.4%.</p><div class="lw-hbars lw-outlook" data-source="workforce"></div></section>
       </div>
-      <div class="risk-section">
-        <div class="risk-form">
-          <div class="form-grid">
-            <div class="form-group">
-              <label class="form-label">Your Sector</label>
-              <select class="form-select" id="riskSector">
-                <option value="IT/ITeS">IT/ITeS (Services)</option>
-                <option value="Banking">Banking / Finance</option>
-                <option value="Startup">Startup (any sector)</option>
-                <option value="Gaming">Gaming</option>
-                <option value="EdTech">EdTech</option>
-                <option value="E-commerce">E-commerce</option>
-                <option value="Fintech">Fintech</option>
-                <option value="Healthtech">Healthtech</option>
-                <option value="Logistics">Logistics</option>
-                <option value="Manufacturing">Manufacturing</option>
-                <option value="Media">Media / Entertainment</option>
-                <option value="PSU/Government">PSU / Government</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Your Role Type</label>
-              <select class="form-select" id="riskRole">
-                <option value="Engineering">Software / Engineering</option>
-                <option value="Operations">Operations / Support</option>
-                <option value="Sales">Sales / BD</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Design">Design / Creative</option>
-                <option value="HR">HR / Recruiting</option>
-                <option value="Data">Data / Analytics</option>
-                <option value="Finance">Finance / Accounts</option>
-                <option value="Content">Content / Writing</option>
-                <option value="Management">Senior Management</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Company Size</label>
-              <select class="form-select" id="riskCompanySize">
-                <option value="small">Small (&lt;500)</option>
-                <option value="mid">Mid (500–5,000)</option>
-                <option value="large">Large (5,000–50,000)</option>
-                <option value="enterprise">Enterprise (50,000+)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Years at Current Company</label>
-              <select class="form-select" id="riskTenure">
-                <option value="0">Less than 1 year</option>
-                <option value="1">1–2 years</option>
-                <option value="2">2–4 years</option>
-                <option value="5">5+ years</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Seniority Level</label>
-              <select class="form-select" id="riskSeniority">
-                <option value="junior">Junior (0–3 yrs exp)</option>
-                <option value="mid">Mid-level (3–7 yrs)</option>
-                <option value="senior">Senior (7–12 yrs)</option>
-                <option value="lead">Lead / Manager</option>
-                <option value="exec">Executive / C-suite</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Primary Skill Area</label>
-              <select class="form-select" id="riskSkill">
-                <option value="ai">AI / ML / GenAI</option>
-                <option value="cloud">Cloud / DevOps</option>
-                <option value="fullstack">Full Stack Dev</option>
-                <option value="legacy">Legacy Systems / Maintenance</option>
-                <option value="manual">Manual / Repetitive Tasks</option>
-                <option value="pm">Product Management</option>
-                <option value="domain">Domain Expert (non-tech)</option>
-              </select>
-            </div>
+    </section>
+    <section class="lw-page" id="govt-jobs" hidden>
+      <div class="lw-hero"><h1>Government jobs</h1><p class="lw-ghero" data-source="govt"></p>
+        <div class="lw-dlbar"><button type="button" class="lw-dl lw-dl-govt" style="margin-left:0">⬇ Government jobs data (CSV)</button><span class="lw-note lw-gmsg"></span></div></div>
+      <div class="lw-grid" style="margin-top: var(--cds-gap-lg)">
+        <section class="lw-card wide" id="vacant-posts"><h2>Vacant posts in the central government</h2><p class="lw-note">Civilian regular posts as of 1 March 2024, the latest official count (released via RTI in Aug 2026). Click a header to sort.</p>
+          <div class="lw-tablebox"><table class="lw-table lw-vtable" data-source="govt" data-row-key="id">
+            <thead><tr>
+              <th data-field="label"><button type="button" data-k="label">Ministry / department</button></th>
+              <th data-field="sanctioned" class="num"><button type="button" data-k="sanctioned">Sanctioned posts</button></th>
+              <th data-field="filled" class="num lw-hide"><button type="button" data-k="filled">Filled</button></th>
+              <th data-field="vacant" class="num"><button type="button" data-k="vacant">Vacant</button></th>
+              <th data-field="vacancy_pct" class="num"><button type="button" data-k="vacancy_pct">% vacant</button></th>
+            </tr></thead><tbody></tbody></table></div>
+          <p class="lw-note">* Filled = sanctioned − vacant; the source reported only those two for this ministry. "—" means the source gave only the vacancy percentage.</p></section>
+        <section class="lw-card wide" id="exam-trends"><h2>Where recruitment is shrinking</h2><p class="lw-note">Vacancies notified per year in the biggest central exams. The latest bar is red; change is vs the previous year.</p><div class="lw-mini" data-source="govt"></div></section>
+        <section class="lw-card" id="hiring-now"><h2>Who is recruiting now (2026)</h2><p class="lw-note">Largest announced drives and notifications. State plans are announced targets, not filled posts.</p><div class="lw-hbars lw-gnow" data-source="govt"></div><div class="lw-gnotes lw-note" data-source="govt"></div></section>
+        <section class="lw-card" id="cgl-departments"><h2>SSC CGL 2026: which departments</h2><p class="lw-note">Revised vacancies by department, Sep 2026. Tax departments dominate.</p><div class="lw-hbars lw-gcgl" data-source="govt"></div></section>
+      </div>
+      <aside class="lw-disc" id="govt-disclaimer" role="note">
+        <b>Disclaimer — please read before using these figures</b>
+        <ul>
+          <li>This section compiles publicly reported figures for information and research only. It is not an official government publication and is not affiliated with any ministry, commission or recruitment board.</li>
+          <li>Vacancy and recruitment numbers are often provisional and are revised after publication. Several figures here are relayed through news or coaching websites rather than taken directly from the official notice.</li>
+          <li>Where any figure differs from the official source — the notification, gazette, Parliament reply or the recruiting body's website (e.g. ssc.gov.in, upsc.gov.in, rrbcdg.gov.in, ibps.in) — <b>the official source is correct and prevails</b>.</li>
+          <li>These figures must not be relied on for applications, eligibility, seat counts, legal claims, RTI disputes or any other formal purpose. Always check the latest official notification.</li>
+          <li>Every row links to the source it was taken from. To report an error, include the official document and we will correct it.</li>
+        </ul>
+      </aside>
+    </section>
+    <section class="lw-page" id="risk" hidden>
+      <div class="lw-hero"><h1>Personal layoff risk calculator</h1><p>Estimate your layoff risk from the 2025–26 Indian job-market data on this site. Six factors, each scored out of 100 and weighted like the original calculator; every factor says whether it comes from tracked data or is a rule of thumb.</p></div>
+      <div class="lw-card" style="margin-top: var(--cds-gap-lg)">
+        <div class="lw-form lw-rform" data-source="risk_rules sectors">
+          <label>Your sector<select class="lw-rq" data-f="sector"></select></label>
+          <label>Your role type<select class="lw-rq" data-f="role"></select></label>
+          <label>Company size<select class="lw-rq" data-f="size"></select></label>
+          <label>Years at current company<select class="lw-rq" data-f="tenure"></select></label>
+          <label>Seniority level<select class="lw-rq" data-f="seniority"></select></label>
+          <label>Primary skill area<select class="lw-rq" data-f="skill"></select></label>
+        </div>
+        <p class="lw-note lw-rhint"></p>
+        <button type="button" class="lw-calc">Calculate my risk score →</button>
+        <div class="lw-rres" data-source="risk risk_rules" hidden>
+          <div class="lw-rtop">
+            <div class="lw-gauge"></div>
+            <div class="lw-rinfo"><h3 class="lw-rtitle"></h3><p class="lw-rdesc"></p></div>
           </div>
-          <button class="calc-btn" onclick="calculateRisk()">
-            Calculate My Risk Score →
-          </button>
-        </div>
-
-        <div class="risk-result" id="riskResult">
-          <div class="risk-score-wrap">
-            <div class="risk-score-ring">
-              <canvas id="riskGauge" width="100" height="100"></canvas>
-              <div class="risk-score-label" id="riskScoreLabel">—</div>
-            </div>
-            <div class="risk-info">
-              <h3 id="riskTitle">—</h3>
-              <p id="riskDesc">—</p>
-            </div>
-          </div>
-          <div class="risk-breakdown" id="riskBreakdown"></div>
+          <div class="lw-rfactors"></div>
+          <div class="lw-radvice"><h3>What to do next</h3><ul></ul></div>
+          <p class="lw-note">Weights: sector 25%, role 15%, skill 20%, tenure 20%, seniority 10%, company size 10% (as in the original calculator). Sector exposure is calculated from this site's layoff and hiring data; other factors are scored from the evidence named on each card, and those marked "Rule of thumb" are editorial judgments. 65+ is high, 45–64 moderate, below 45 lower. Indicative only: it describes market patterns, not your employer's plans.</p>
         </div>
       </div>
-    </div>
-
-  </main>
+    </section>
+    <p class="lw-foot-note" id="site-disclaimer">Compiled from public news reports, company filings, trackers and official releases for information only; not official data and not advice. Figures are the low end of reported numbers and may be revised. Where anything here differs from the original or official source, that source prevails. Each figure links to its source.</p>
+  </div>
+</div>
 </div>
 
 <script>
-// ── DATA ──
-const LAYOFFS = [
-  // IT/ITeS — Major Indian IT Companies
-  { company:"TCS", sector:"IT/ITeS", jobs:12000, pct:"2%", reason:"AI Automation", date:"2025-08", month:"Aug 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"Infosys", sector:"IT/ITeS", jobs:8000, pct:"3%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
-  { company:"Wipro", sector:"IT/ITeS", jobs:7000, pct:"3%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
-  { company:"Tech Mahindra", sector:"IT/ITeS", jobs:5000, pct:"5%", reason:"Restructuring", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Pune", stage:"Listed" },
-  { company:"HCLTech", sector:"IT/ITeS", jobs:3500, pct:"2%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Noida", stage:"Listed" },
-  { company:"Cognizant", sector:"IT/ITeS", jobs:3500, pct:"2%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Chennai", stage:"Listed" },
-  { company:"IBM India", sector:"IT/ITeS", jobs:1000, pct:"~5%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Oracle India", sector:"IT/ITeS", jobs:2882, pct:"10%", reason:"AI Automation", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Accenture India", sector:"IT/ITeS", jobs:3000, pct:"~2%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"SAP India", sector:"IT/ITeS", jobs:800, pct:"~3%", reason:"Restructuring", date:"2025-05", month:"May 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
-  { company:"Mphasis", sector:"IT/ITeS", jobs:600, pct:"~2%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Bengaluru", stage:"Listed" },
-  { company:"LTIMindtree", sector:"IT/ITeS", jobs:900, pct:"~2%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
-  { company:"Persistent Systems", sector:"IT/ITeS", jobs:400, pct:"~1%", reason:"Restructuring", date:"2025-08", month:"Aug 2025", status:"silent", hq:"Pune", stage:"Listed" },
-  { company:"Hexaware", sector:"IT/ITeS", jobs:700, pct:"~3%", reason:"Cost Cutting", date:"2025-07", month:"Jul 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
-  { company:"Capgemini India", sector:"IT/ITeS", jobs:1200, pct:"~2%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"Microsoft India", sector:"IT/ITeS", jobs:1500, pct:"~3%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Hyderabad", stage:"Listed" },
-  { company:"Intel India", sector:"IT/ITeS", jobs:500, pct:"~4%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"PwC India", sector:"IT/ITeS", jobs:800, pct:"~3%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  // Banking
-  { company:"ICICI Bank", sector:"Banking", jobs:6000, pct:"4%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"Axis Bank", sector:"Banking", jobs:3100, pct:"3%", reason:"Restructuring", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"HDFC Bank", sector:"Banking", jobs:3000, pct:"1.5%", reason:"Restructuring", date:"2026-03", month:"Mar 2026", status:"silent", hq:"Mumbai", stage:"Listed" },
-  { company:"RBL Bank", sector:"Banking", jobs:950, pct:"7%", reason:"Cost Cutting", date:"2025-12", month:"Dec 2025", status:"silent", hq:"Mumbai", stage:"Listed" },
-  { company:"Yes Bank", sector:"Banking", jobs:1200, pct:"8%", reason:"Restructuring", date:"2025-10", month:"Oct 2025", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  // EV/Auto
-  { company:"Ola Electric", sector:"EV/Auto", jobs:1000, pct:"25%", reason:"AI Automation", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  // Gaming
-  { company:"MPL (Mobile Premier League)", sector:"Gaming", jobs:300, pct:"60%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Head Digital Works", sector:"Gaming", jobs:500, pct:"67%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Hyderabad", stage:"Growth Stage" },
-  { company:"Games 24x7", sector:"Gaming", jobs:400, pct:"~35%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  { company:"GamesKraft", sector:"Gaming", jobs:400, pct:"~67%", reason:"Regulatory", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"PokerBaazi", sector:"Gaming", jobs:200, pct:"50%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
-  // E-commerce
-  { company:"Flipkart / ANS Commerce", sector:"E-commerce", jobs:110, pct:"100%", reason:"Shutdown", date:"2025-02", month:"Feb 2025", status:"shutdown", hq:"Bengaluru", stage:"Listed" },
-  { company:"CARS24", sector:"E-commerce", jobs:200, pct:"~5%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
-  { company:"BeepKart", sector:"E-commerce", jobs:150, pct:"100%", reason:"Shutdown", date:"2025-08", month:"Aug 2025", status:"shutdown", hq:"Bengaluru", stage:"Early Stage" },
-  { company:"Meesho", sector:"E-commerce", jobs:251, pct:"~5%", reason:"Restructuring", date:"2024-05", month:"May 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Snapdeal", sector:"E-commerce", jobs:400, pct:"~20%", reason:"Cost Cutting", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
-  // Quick Commerce
-  { company:"Zepto", sector:"Quick Commerce", jobs:400, pct:"~7%", reason:"Cost Cutting", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  { company:"Zepto", sector:"Quick Commerce", jobs:200, pct:"~3%", reason:"Restructuring", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  // Logistics
-  { company:"Ecom Express", sector:"Logistics", jobs:500, pct:"~3%", reason:"Cost Cutting", date:"2025-02", month:"Feb 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
-  { company:"Porter", sector:"Logistics", jobs:350, pct:"18%", reason:"Restructuring", date:"2025-11", month:"Nov 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Delhivery", sector:"Logistics", jobs:600, pct:"~4%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"silent", hq:"Gurugram", stage:"Listed" },
-  { company:"Dunzo", sector:"Logistics", jobs:300, pct:"~30%", reason:"Funding Crunch", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  // Fintech
-  { company:"Gupshup", sector:"Fintech", jobs:500, pct:"30%", reason:"AI Automation", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  { company:"Gupshup", sector:"AI", jobs:100, pct:"~10%", reason:"AI Automation", date:"2025-09", month:"Sep 2025", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  { company:"Clear", sector:"Fintech", jobs:145, pct:"16%", reason:"AI Automation", date:"2025-08", month:"Aug 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Zopper", sector:"Fintech", jobs:100, pct:"20%", reason:"Restructuring", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Delhi", stage:"Growth Stage" },
-  { company:"Simpl", sector:"Fintech", jobs:80, pct:"80%", reason:"Regulatory", date:"2025-09", month:"Sep 2025", status:"shutdown", hq:"Bengaluru", stage:"Growth Stage" },
-  { company:"Paytm", sector:"Fintech", jobs:1000, pct:"~5%", reason:"Regulatory", date:"2024-03", month:"Mar 2024", status:"confirmed", hq:"Noida", stage:"Listed" },
-  { company:"BharatPe", sector:"Fintech", jobs:500, pct:"~20%", reason:"Restructuring", date:"2024-06", month:"Jun 2024", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
-  // EdTech
-  { company:"Byju's", sector:"EdTech", jobs:4500, pct:"~15%", reason:"Funding Crunch", date:"2024-06", month:"Jun 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Unacademy", sector:"EdTech", jobs:1000, pct:"~15%", reason:"Cost Cutting", date:"2024-05", month:"May 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Vedantu", sector:"EdTech", jobs:800, pct:"~20%", reason:"Cost Cutting", date:"2024-04", month:"Apr 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"upGrad", sector:"EdTech", jobs:700, pct:"~10%", reason:"Restructuring", date:"2024-03", month:"Mar 2024", status:"silent", hq:"Mumbai", stage:"Late Stage" },
-  // Healthtech
-  { company:"Pristyn Care", sector:"Healthtech", jobs:400, pct:"~10%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Gurugram", stage:"Late Stage" },
-  { company:"PharmEasy", sector:"Healthtech", jobs:1500, pct:"~15%", reason:"Funding Crunch", date:"2024-07", month:"Jul 2024", status:"confirmed", hq:"Mumbai", stage:"Late Stage" },
-  { company:"Zoplar", sector:"Healthtech", jobs:45, pct:"100%", reason:"Shutdown", date:"2025-05", month:"May 2025", status:"shutdown", hq:"Bengaluru", stage:"Growth Stage" },
-  // Media/Entertainment
-  { company:"VerSe Innovation (Josh/DailyHunt)", sector:"Media", jobs:350, pct:"~10%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"Pocket FM", sector:"Media", jobs:75, pct:"15%", reason:"Cost Cutting", date:"2025-01", month:"Jan 2025", status:"confirmed", hq:"Bengaluru", stage:"Growth Stage" },
-  { company:"ShareChat", sector:"Media", jobs:400, pct:"~15%", reason:"Cost Cutting", date:"2024-10", month:"Oct 2024", status:"confirmed", hq:"Bengaluru", stage:"Late Stage" },
-  { company:"MX Media (Times Internet)", sector:"Media", jobs:200, pct:"~8%", reason:"Restructuring", date:"2025-03", month:"Mar 2025", status:"silent", hq:"Delhi", stage:"Listed" },
-  // AI Startups
-  { company:"Krutrim", sector:"AI", jobs:150, pct:"~20%", reason:"Restructuring", date:"2025-07", month:"Jul 2025", status:"confirmed", hq:"Bengaluru", stage:"Growth Stage" },
-  { company:"Astra (AI)", sector:"AI", jobs:106, pct:"100%", reason:"Shutdown", date:"2025-07", month:"Jul 2025", status:"shutdown", hq:"Bengaluru", stage:"Early Stage" },
-  // Agritech
-  { company:"Otipy", sector:"Agritech", jobs:300, pct:"100%", reason:"Funding Crunch", date:"2025-05", month:"May 2025", status:"shutdown", hq:"Delhi", stage:"Growth Stage" },
-  { company:"BharatAgri", sector:"Agritech", jobs:37, pct:"100%", reason:"Shutdown", date:"2025-11", month:"Nov 2025", status:"shutdown", hq:"Pune", stage:"Early Stage" },
-  { company:"DeHaat", sector:"Agritech", jobs:200, pct:"~8%", reason:"Cost Cutting", date:"2025-03", month:"Mar 2025", status:"confirmed", hq:"Patna", stage:"Late Stage" },
-  // SaaS
-  { company:"Freshworks India", sector:"SaaS", jobs:700, pct:"~5%", reason:"AI Automation", date:"2025-02", month:"Feb 2025", status:"confirmed", hq:"Chennai", stage:"Listed" },
-  { company:"Zoho (selective)", sector:"SaaS", jobs:400, pct:"~1%", reason:"AI Automation", date:"2025-05", month:"May 2025", status:"silent", hq:"Chennai", stage:"Bootstrapped" },
-  { company:"Chargebee", sector:"SaaS", jobs:200, pct:"~12%", reason:"Cost Cutting", date:"2025-04", month:"Apr 2025", status:"confirmed", hq:"Chennai", stage:"Late Stage" },
-  { company:"Innovaccer", sector:"SaaS", jobs:150, pct:"~10%", reason:"Cost Cutting", date:"2025-06", month:"Jun 2025", status:"confirmed", hq:"Delhi", stage:"Late Stage" },
-  // 2026 events
-  { company:"Axis Bank", sector:"Banking", jobs:3100, pct:"3%", reason:"Restructuring", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"Oracle India (2026)", sector:"IT/ITeS", jobs:200, pct:"~5%", reason:"AI Automation", date:"2026-04", month:"Apr 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Meta India", sector:"Media", jobs:150, pct:"~8%", reason:"Restructuring", date:"2026-05", month:"May 2026", status:"confirmed", hq:"Mumbai", stage:"Listed" },
-  { company:"Amazon India", sector:"E-commerce", jobs:500, pct:"~2%", reason:"Restructuring", date:"2026-03", month:"Mar 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Flipkart", sector:"E-commerce", jobs:400, pct:"~2%", reason:"AI Automation", date:"2026-03", month:"Mar 2026", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Swiggy", sector:"Logistics", jobs:350, pct:"~3%", reason:"Cost Cutting", date:"2025-12", month:"Dec 2025", status:"confirmed", hq:"Bengaluru", stage:"Listed" },
-  { company:"Zomato / Blinkit", sector:"Logistics", jobs:200, pct:"~1%", reason:"Restructuring", date:"2026-01", month:"Jan 2026", status:"silent", hq:"Gurugram", stage:"Listed" },
-];
-
-// Sector metadata
-const SECTOR_META = {
-  "IT/ITeS":      { color: "#3b82f6", icon: "💻", description: "IT Services, MNCs & GCCs" },
-  "Banking":      { color: "#6366f1", icon: "🏦", description: "Private & Public Banks" },
-  "Gaming":       { color: "#ec4899", icon: "🎮", description: "Real Money Gaming Startups" },
-  "E-commerce":   { color: "#22c55e", icon: "🛒", description: "Online Marketplaces & D2C" },
-  "Quick Commerce":{ color: "#f97316", icon: "⚡", description: "Q-comm & Hyperlocal Delivery" },
-  "Fintech":      { color: "#f59e0b", icon: "💳", description: "Payments, Lending & Insurance" },
-  "EdTech":       { color: "#a855f7", icon: "📚", description: "Online Learning Platforms" },
-  "Healthtech":   { color: "#14b8a6", icon: "🏥", description: "Health & Pharma Tech" },
-  "Logistics":    { color: "#fb923c", icon: "🚚", description: "Delivery & Supply Chain" },
-  "EV/Auto":      { color: "#facc15", icon: "⚡🚗", description: "Electric Vehicles & Auto" },
-  "Media":        { color: "#f87171", icon: "📱", description: "Social & Digital Media" },
-  "AI":           { color: "#fde047", icon: "🤖", description: "AI/ML Native Startups" },
-  "Agritech":     { color: "#86efac", icon: "🌾", description: "Agricultural Technology" },
-  "SaaS":         { color: "#22d3ee", icon: "☁️", description: "B2B Software as a Service" },
-};
-
-
-// ── API Integration ──
-// When deployed to Vercel, the app auto-fetches from /api/* endpoints.
-// Falls back to static LAYOFFS data if fetch fails (e.g. local file open).
-const API_BASE = window.location.protocol.startsWith('http') ? '' : '';
-let apiAvailable = false;
-
-async function tryFetchStats() {
-  try {
-    const r = await fetch(API_BASE + '/api/stats');
-    if (!r.ok) return null;
-    apiAvailable = true;
-    return (await r.json()).data;
-  } catch { return null; }
-}
-
-async function tryFetchLayoffs(params = {}) {
-  try {
-    const qs = new URLSearchParams({ limit: 100, ...params }).toString();
-    const r = await fetch(API_BASE + '/api/layoffs?' + qs);
-    if (!r.ok) return null;
-    return (await r.json()).data;
-  } catch { return null; }
-}
-
-async function postRisk(body) {
-  try {
-    const r = await fetch(API_BASE + '/api/risk', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
-    return (await r.json()).data;
-  } catch { return null; }
-}
-
-// ── State ──
-let currentPage = 1;
-const PAGE_SIZE = 15;
-let filtered = [...LAYOFFS];
-let sortKey = 'date';
-let sortDir = -1;
-let charts = {};
-
-// ── Navigation ──
-function showView(id, btn) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
-  if (btn) btn.classList.add('active');
-  const titles = { dashboard:'Dashboard', companies:'Companies', sectors:'Sectors', timeline:'Timeline', risk:'Risk Calculator' };
-  document.getElementById('pageTitle').textContent = titles[id] || id;
-  if (id === 'companies') { applyFilters(); }
-  if (id === 'sectors') { renderSectors(); }
-  if (id === 'timeline') { renderTimeline(); }
-}
-
-function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
-}
-
-// ── Theme toggle ──
-(function(){
-  const t = document.querySelector('[data-theme-toggle]');
-  const r = document.documentElement;
-  let d = 'dark';
-  r.setAttribute('data-theme', d);
-  if (t) t.addEventListener('click', () => {
-    d = d === 'dark' ? 'light' : 'dark';
-    r.setAttribute('data-theme', d);
-    t.innerHTML = d === 'dark'
-      ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
-      : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>';
-    // Redraw charts
-    setTimeout(renderDashboardCharts, 100);
-  });
-})();
-
-// ── Helpers ──
-function getSectorBadge(sector) {
-  const map = {
-    "IT/ITeS":"it","Fintech":"fintech","E-commerce":"ecomm",
-    "EdTech":"edtech","Gaming":"gaming","Healthtech":"health",
-    "Logistics":"logistic","EV/Auto":"ev","Banking":"banking",
-    "SaaS":"saas","Media":"media","AI":"ai","Agritech":"agri",
-    "Manufacturing":"mfg","Quick Commerce":"logistic"
-  };
-  return `<span class="badge badge-${map[sector]||'sector'}">${sector}</span>`;
-}
-function getStatusBadge(status) {
-  const map = { confirmed:'status-confirmed', shutdown:'status-shutdown', silent:'status-silent' };
-  const label = { confirmed:'Confirmed', shutdown:'Shutdown', silent:'Silent' };
-  return `<span class="status-badge ${map[status]||''}">${label[status]||status}</span>`;
-}
-function fmtJobs(n) {
-  if (!n) return '—';
-  return n.toLocaleString('en-IN');
-}
-function getInitials(name) {
-  return name.split(/\s+/).slice(0,2).map(w=>w[0]).join('').toUpperCase();
-}
-
-// ── Charts ──
-function getChartDefaults() {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  return {
-    textColor: dark ? '#7c7980' : '#6b6966',
-    gridColor: dark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)',
-    bgColor: dark ? '#18171a' : '#f9f8f6',
-  };
-}
-
-function renderDashboardCharts() {
-  const { textColor, gridColor } = getChartDefaults();
-  const baseOpts = {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: textColor, font: { size: 11, family: 'Inter' }, boxWidth: 12 } } },
-  };
-
-  // Monthly Trend
-  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const monthlyData = [1200,1800,3400,4200,5800,4100,5200,4800,3900,2800,2200,1500];
-  if (charts.monthly) charts.monthly.destroy();
-  charts.monthly = new Chart(document.getElementById('chartMonthly'), {
-    type: 'bar',
-    data: {
-      labels: months,
-      datasets: [{
-        label: 'Jobs Cut',
-        data: monthlyData,
-        backgroundColor: monthlyData.map(v => v > 4000 ? 'rgba(239,68,68,0.8)' : 'rgba(239,68,68,0.4)'),
-        borderColor: 'rgba(239,68,68,0.9)',
-        borderWidth: 1, borderRadius: 4,
-      }]
-    },
-    options: { ...baseOpts, scales: {
-      x: { ticks: { color: textColor }, grid: { color: gridColor } },
-      y: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } }
-    }}
-  });
-
-  // Sector pie
-  const sectorTotals = {};
-  LAYOFFS.forEach(l => { sectorTotals[l.sector] = (sectorTotals[l.sector]||0) + l.jobs; });
-  const sortedSectors = Object.entries(sectorTotals).sort((a,b)=>b[1]-a[1]).slice(0,8);
-  const sectorColors = ['#3b82f6','#6366f1','#ec4899','#22c55e','#f59e0b','#a855f7','#14b8a6','#fb923c'];
-  if (charts.sector) charts.sector.destroy();
-  charts.sector = new Chart(document.getElementById('chartSector'), {
-    type: 'doughnut',
-    data: {
-      labels: sortedSectors.map(s=>s[0]),
-      datasets: [{ data: sortedSectors.map(s=>s[1]), backgroundColor: sectorColors, borderWidth: 2, borderColor: getChartDefaults().bgColor }]
-    },
-    options: { ...baseOpts, cutout: '60%' }
-  });
-
-  // Reason pie
-  const reasonData = { 'AI Automation': 38, 'Restructuring': 28, 'Cost Cutting': 20, 'Regulatory': 7, 'Funding Crunch': 5, 'Shutdown': 2 };
-  if (charts.reason) charts.reason.destroy();
-  charts.reason = new Chart(document.getElementById('chartReason'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(reasonData),
-      datasets: [{ data: Object.values(reasonData), backgroundColor: ['#f87171','#60a5fa','#fbbf24','#f472b6','#4ade80','#a1a1aa'], borderWidth: 2, borderColor: getChartDefaults().bgColor }]
-    },
-    options: { ...baseOpts, cutout: '60%' }
-  });
-
-  // Top companies bar
-  const topCos = [...LAYOFFS].sort((a,b)=>b.jobs-a.jobs).slice(0,10);
-  if (charts.companies) charts.companies.destroy();
-  charts.companies = new Chart(document.getElementById('chartCompanies'), {
-    type: 'bar',
-    data: {
-      labels: topCos.map(c=>c.company.length>18?c.company.slice(0,18)+'…':c.company),
-      datasets: [{ label: 'Jobs Cut', data: topCos.map(c=>c.jobs), backgroundColor: 'rgba(239,68,68,0.7)', borderColor: 'rgba(239,68,68,1)', borderWidth: 1, borderRadius: 4 }]
-    },
-    options: { ...baseOpts, indexAxis: 'y', scales: {
-      x: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } },
-      y: { ticks: { color: textColor, font: { size: 10 } }, grid: { display: false } }
-    }}
-  });
-
-  // Stage donut
-  const stageTotals = {};
-  LAYOFFS.forEach(l => { const s = l.stage || 'Unknown'; stageTotals[s] = (stageTotals[s]||0) + l.jobs; });
-  const sortedStages = Object.entries(stageTotals).sort((a,b)=>b[1]-a[1]);
-  if (charts.stage) charts.stage.destroy();
-  charts.stage = new Chart(document.getElementById('chartStage'), {
-    type: 'doughnut',
-    data: {
-      labels: sortedStages.map(s=>s[0]),
-      datasets: [{ data: sortedStages.map(s=>s[1]), backgroundColor: ['#f87171','#fbbf24','#4ade80','#60a5fa','#c084fc','#f472b6'], borderWidth: 2, borderColor: getChartDefaults().bgColor }]
-    },
-    options: { ...baseOpts, cutout: '55%' }
-  });
-}
-
-// ── Table ──
-function applyFilters() {
-  const sector = document.getElementById('filterSector').value;
-  const year = document.getElementById('filterYear').value;
-  const reason = document.getElementById('filterReason').value;
-  const search = (document.getElementById('globalSearch').value || '').toLowerCase();
-
-  filtered = LAYOFFS.filter(l => {
-    if (sector && l.sector !== sector) return false;
-    if (year && !l.date.startsWith(year)) return false;
-    if (reason && l.reason !== reason) return false;
-    if (search && !l.company.toLowerCase().includes(search) && !l.sector.toLowerCase().includes(search)) return false;
-    return true;
-  });
-  sortFiltered();
-  currentPage = 1;
-  renderTable();
-}
-
-function sortFiltered() {
-  filtered.sort((a,b) => {
-    let av = a[sortKey], bv = b[sortKey];
-    if (sortKey === 'jobs') return sortDir * (a.jobs - b.jobs);
-    if (sortKey === 'date') return sortDir * a.date.localeCompare(b.date);
-    return sortDir * String(av||'').localeCompare(String(bv||''));
-  });
-}
-
-function sortTable(key) {
-  if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = -1; }
-  sortFiltered(); renderTable();
-}
-
-function renderTable() {
-  const tbody = document.getElementById('companiesTableBody');
-  const start = (currentPage - 1) * PAGE_SIZE;
-  const pageData = filtered.slice(start, start + PAGE_SIZE);
-  const total = filtered.length;
-
-  document.getElementById('companiesCount').textContent = `${total} layoff event${total!==1?'s':''} found`;
-  document.getElementById('noResults').style.display = total ? 'none' : 'block';
-
-  tbody.innerHTML = pageData.map(l => `
-    <tr>
-      <td>
-        <div class="company-cell">
-          <div class="company-logo-placeholder">${getInitials(l.company)}</div>
-          <div>
-            <div class="company-name">${l.company}</div>
-            <div class="company-type">${l.hq || ''}</div>
-          </div>
-        </div>
-      </td>
-      <td>${getSectorBadge(l.sector)}</td>
-      <td><span class="jobs-cut">${fmtJobs(l.jobs)}</span></td>
-      <td>${l.pct || '—'}</td>
-      <td><span class="reason-tag">${l.reason}</span></td>
-      <td style="white-space:nowrap; color:var(--color-text-muted); font-family:var(--font-mono);">${l.month}</td>
-      <td>${getStatusBadge(l.status)}</td>
-    </tr>
-  `).join('');
-
-  // Pagination
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-  document.getElementById('paginationInfo').textContent = `Showing ${start+1}–${Math.min(start+PAGE_SIZE, total)} of ${total}`;
-  const btns = document.getElementById('paginationBtns');
-  let paginHtml = `<button class="pg-btn" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹ Prev</button>`;
-  for (let p = Math.max(1, currentPage-2); p <= Math.min(totalPages, currentPage+2); p++) {
-    paginHtml += `<button class="pg-btn ${p===currentPage?'current':''}" onclick="goPage(${p})">${p}</button>`;
-  }
-  paginHtml += `<button class="pg-btn" onclick="goPage(${currentPage+1})" ${currentPage>=totalPages?'disabled':''}>Next ›</button>`;
-  btns.innerHTML = paginHtml;
-}
-
-function goPage(p) {
-  const total = filtered.length;
-  const totalPages = Math.ceil(total / PAGE_SIZE);
-  if (p < 1 || p > totalPages) return;
-  currentPage = p;
-  renderTable();
-}
-
-// ── Sectors ──
-function renderSectors() {
-  const sectorTotals = {};
-  const sectorCounts = {};
-  LAYOFFS.forEach(l => {
-    sectorTotals[l.sector] = (sectorTotals[l.sector]||0) + l.jobs;
-    sectorCounts[l.sector] = (sectorCounts[l.sector]||0) + 1;
-  });
-  const maxJobs = Math.max(...Object.values(sectorTotals));
-  const sorted = Object.entries(sectorTotals).sort((a,b)=>b[1]-a[1]);
-
-  document.getElementById('sectorGrid').innerHTML = sorted.map(([sector, jobs]) => {
-    const meta = SECTOR_META[sector] || { color:'#888', icon:'📊', description: '' };
-    const pct = Math.round(jobs / maxJobs * 100);
-    return `
-    <div class="sector-card" onclick="filterBySector('${sector}')">
-      <div class="sector-card-top">
-        <div>
-          <div class="sector-name">${meta.icon} ${sector}</div>
-          <div class="sector-count">${sectorCounts[sector]} event(s)</div>
-        </div>
-        <div class="sector-jobs">${fmtJobs(jobs)}</div>
-      </div>
-      <div class="sector-bar"><div class="sector-bar-fill" style="width:${pct}%; background:${meta.color};"></div></div>
-      <div class="sector-stats">
-        <span style="color:var(--color-text-faint);">${meta.description}</span>
-        <span>${pct}% of max</span>
-      </div>
-    </div>`;
-  }).join('');
-
-  // Sector detail chart
-  const { textColor, gridColor } = getChartDefaults();
-  if (charts.sectorDetail) charts.sectorDetail.destroy();
-  charts.sectorDetail = new Chart(document.getElementById('chartSectorDetail'), {
-    type: 'bar',
-    data: {
-      labels: sorted.map(s=>s[0]),
-      datasets: [{
-        label: 'Jobs Cut',
-        data: sorted.map(s=>s[1]),
-        backgroundColor: sorted.map(([s]) => (SECTOR_META[s]||{color:'#888'}).color + 'cc'),
-        borderColor: sorted.map(([s]) => (SECTOR_META[s]||{color:'#888'}).color),
-        borderWidth: 1, borderRadius: 4,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { ticks: { color: textColor, font: { size: 10 } }, grid: { color: gridColor } },
-        y: { ticks: { color: textColor, callback: v => v.toLocaleString('en-IN') }, grid: { color: gridColor } }
-      }
+dash.calc('kpis', {
+  inputs: ['events', 'sectors'],
+  title: 'Headline figures by filter',
+  description: 'Tracked layoff totals (layoffs and shutdowns only), counts, AI share, largest event, plus headcount declines and industry estimates kept separate, for every year, sector and company type.',
+  fn: (events, sectors) => {
+    const nrm = (c) => c.replace(/\s*\([^)]*\)/g, '').replace(/ India( tech hub)?$/, '').trim();
+    const ev = events.map((r) => ({ ...r, jobs: r.jobs == null || r.jobs === '' ? null : Number(r.jobs) }));
+    const segs = ['All', ...Array.from(new Set(ev.map((r) => r.segment))).sort()];
+    const secs = ['All', ...sectors.map((s) => s.sector)];
+    const inr = (n) => n.toLocaleString('en-IN');
+    const mon = (d) => new Date(d + 'T00:00:00Z').toLocaleDateString('en-GB', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+    const maxDate = ev.reduce((m, r) => (r.date > m ? r.date : m), '');
+    const out = [];
+    for (const period of ['All', '2025', '2026']) for (const sector of secs) for (const segment of segs) {
+      const rs = ev.filter((r) => (period === 'All' || r.year === period) && (sector === 'All' || r.sector === sector) && (segment === 'All' || r.segment === segment));
+      const tr = rs.filter((r) => r.type === 'Layoff' || r.type === 'Shutdown');
+      const jobs = tr.reduce((s, r) => s + (r.jobs || 0), 0);
+      const ai = tr.filter((r) => r.reason === 'AI & automation').reduce((s, r) => s + (r.jobs || 0), 0);
+      const top = tr.filter((r) => r.jobs != null).sort((a, b) => b.jobs - a.jobs)[0];
+      const last = tr.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+      const sumType = (t) => rs.filter((r) => r.type === t).reduce((s, r) => s + (r.jobs || 0) - (Number(r.overlap) || 0), 0);
+      const drops = sumType('Headcount drop');
+      out.push({
+        period, sector, segment, jobs, jobs_fmt: inr(jobs), events: tr.length,
+        companies: new Set(tr.map((r) => nrm(r.company))).size,
+        shutdowns: tr.filter((r) => r.type === 'Shutdown').length,
+        ai_share_fmt: jobs ? Math.round((ai / jobs) * 100) + '%' : '0%',
+        top_company: top ? top.company + ', ' + mon(top.date) : '—',
+        top_jobs_fmt: top ? inr(top.jobs) : '—',
+        latest: last ? last.company + ' (' + mon(last.date) + ')' : '—',
+        drops_fmt: inr(drops),
+        total_fmt: inr(jobs + drops),
+        est_fmt: inr(sumType('Industry estimate')),
+        latest_date: maxDate ? new Date(maxDate + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }) : '—',
+        label: (period === 'All' ? 'Jan 2025 to date' : period) + (sector === 'All' ? '' : ', ' + sector) + (segment === 'All' ? '' : ', ' + segment),
+      });
     }
-  });
-}
-
-function filterBySector(sector) {
-  showView('companies', document.querySelector('.nav-item:nth-child(1)'));
-  document.getElementById('filterSector').value = sector;
-  applyFilters();
-}
-
-// ── Timeline ──
-function renderTimeline() {
-  const filterSector = document.getElementById('filterTimelineSector').value;
-  const sorted = [...LAYOFFS]
-    .filter(l => !filterSector || l.sector === filterSector)
-    .sort((a,b) => b.date.localeCompare(a.date))
-    .slice(0, 50);
-
-  document.getElementById('timelineContainer').innerHTML = sorted.map(l => {
-    const meta = SECTOR_META[l.sector] || { color: '#888', icon: '📊' };
-    return `
-    <div class="timeline-item">
-      <div class="timeline-dot" style="background:${meta.color};"></div>
-      <div class="timeline-content">
-        <div class="timeline-date">${l.month}</div>
-        <div class="timeline-company">${meta.icon} ${l.company}</div>
-        <div class="timeline-detail">${l.sector} · ${l.hq||''} · ${l.pct||'Undisclosed'} of workforce</div>
-        <span class="reason-tag">${l.reason}</span>
-        ${getStatusBadge(l.status)}
-      </div>
-      <div class="timeline-jobs">${fmtJobs(l.jobs)}</div>
-    </div>`;
-  }).join('');
-}
-
-// ── Risk Calculator ──
-function calculateRisk() {
-  const sector = document.getElementById('riskSector').value;
-  const role = document.getElementById('riskRole').value;
-  const size = document.getElementById('riskCompanySize').value;
-  const tenure = parseInt(document.getElementById('riskTenure').value);
-  const seniority = document.getElementById('riskSeniority').value;
-  const skill = document.getElementById('riskSkill').value;
-
-  // Sector risk
-  const sectorRisk = { 'Gaming':92, 'EdTech':78, 'IT/ITeS':72, 'Media':68, 'Fintech':65, 'E-commerce':60, 'Banking':55, 'Startup':70, 'Logistics':58, 'Healthtech':52, 'Manufacturing':35, 'PSU/Government':15 };
-  const sScore = sectorRisk[sector] || 50;
-
-  // Role risk
-  const roleRisk = { 'Operations':80, 'Content':75, 'HR':70, 'Marketing':65, 'Sales':60, 'Finance':55, 'Design':50, 'Data':45, 'Engineering':42, 'Management':40 };
-  const rScore = roleRisk[role] || 55;
-
-  // Size risk
-  const sizeRisk = { small:70, mid:55, large:65, enterprise:60 };
-  const szScore = sizeRisk[size] || 60;
-
-  // Tenure risk
-  const tenureRisk = { 0:85, 1:65, 2:45, 5:30 };
-  const tScore = tenureRisk[tenure] ?? 50;
-
-  // Skill risk
-  const skillRisk = { manual:90, legacy:82, domain:60, content:70, pm:50, fullstack:35, cloud:25, ai:15 };
-  const skScore = skillRisk[skill] || 50;
-
-  // Seniority
-  const senRisk = { junior:65, mid:55, senior:60, lead:45, exec:40 };
-  const senScore = senRisk[seniority] || 55;
-
-  const total = Math.round(sScore*0.25 + rScore*0.15 + szScore*0.1 + tScore*0.2 + skScore*0.2 + senScore*0.1);
-  const clamped = Math.min(100, Math.max(1, total));
-
-  // Display
-  const result = document.getElementById('riskResult');
-  result.classList.add('visible');
-  document.getElementById('riskScoreLabel').textContent = clamped;
-  document.getElementById('riskScoreLabel').style.color = clamped > 70 ? '#f87171' : clamped > 45 ? '#fbbf24' : '#4ade80';
-
-  let title, desc;
-  if (clamped > 75) { title = '🔴 High Risk'; desc = `Your profile closely matches patterns seen in India's 2025–26 layoff wave. Roles combining ${sector} with ${role} functions have seen significant cuts. Consider upskilling in AI-adjacent tools and diversifying income streams.`; }
-  else if (clamped > 50) { title = '🟡 Moderate Risk'; desc = `Your sector (${sector}) has seen layoffs, but your role and skills provide some protection. Stay current with GenAI tooling and strengthen domain expertise to remain indispensable.`; }
-  else { title = '🟢 Lower Risk'; desc = `Your profile — particularly your skill area — positions you relatively well in the current market. AI-adjacent and cloud skills are in high demand. Continue building a strong portfolio.`; }
-
-  document.getElementById('riskTitle').textContent = title;
-  document.getElementById('riskDesc').textContent = desc;
-
-  const factors = [
-    { label: 'Sector Exposure', score: sScore, color: sScore > 70 ? '#f87171' : sScore > 45 ? '#fbbf24' : '#4ade80' },
-    { label: 'Role Vulnerability', score: rScore, color: rScore > 70 ? '#f87171' : rScore > 45 ? '#fbbf24' : '#4ade80' },
-    { label: 'Skill Relevance', score: skScore, color: skScore > 70 ? '#f87171' : skScore > 45 ? '#fbbf24' : '#4ade80' },
-    { label: 'Tenure Safety', score: tScore, color: tScore > 70 ? '#f87171' : tScore > 45 ? '#fbbf24' : '#4ade80' },
-    { label: 'Seniority Level', score: senScore, color: senScore > 70 ? '#f87171' : senScore > 45 ? '#fbbf24' : '#4ade80' },
-    { label: 'Company Size', score: szScore, color: szScore > 70 ? '#f87171' : szScore > 45 ? '#fbbf24' : '#4ade80' },
-  ];
-  document.getElementById('riskBreakdown').innerHTML = factors.map(f => `
-    <div class="risk-factor">
-      <div class="risk-factor-label">${f.label}</div>
-      <div class="risk-factor-bar"><div class="risk-factor-fill" style="width:${f.score}%; background:${f.color};"></div></div>
-      <div class="risk-factor-score" style="color:${f.color};">${f.score}/100</div>
-    </div>
-  `).join('');
-
-  // Gauge chart
-  const existing = Chart.getChart('riskGauge');
-  if (existing) existing.destroy();
-  new Chart(document.getElementById('riskGauge'), {
-    type: 'doughnut',
-    data: {
-      datasets: [{
-        data: [clamped, 100 - clamped],
-        backgroundColor: [clamped > 70 ? '#f87171' : clamped > 45 ? '#fbbf24' : '#4ade80', 'rgba(255,255,255,0.06)'],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: false, cutout: '72%', rotation: -90, circumference: 180,
-      plugins: { legend: { display: false }, tooltip: { enabled: false } },
-      animation: { duration: 600 }
-    }
-  });
-}
-
-// ── Global Search ──
-function handleGlobalSearch(val) {
-  const view = document.querySelector('.view.active').id;
-  if (view === 'view-companies') applyFilters();
-}
-
-// ── Init ──
-document.addEventListener('DOMContentLoaded', () => {
-  renderDashboardCharts();
-  applyFilters();
-  renderSectors();
-  renderTimeline();
+    return out;
+  },
 });
+
+dash.calc('risk', {
+  inputs: ['events', 'sectors', 'hiring'],
+  title: 'Sector exposure score',
+  description: 'Sector exposure out of 100 from tracked data: size of job losses (log scale, 35), companies cutting (15), share in the last 6 months (10), AI-linked share (15), Naukri sector hiring (−15 to +15). Sectors with fewer than 2 events get a neutral 50.',
+  fn: (events, sectors, hiring) => {
+    const nrm = (c) => c.replace(/\s*\([^)]*\)/g, '').replace(/ India( tech hub)?$/, '').trim();
+    const ev = events.filter((r) => r.type === 'Layoff' || r.type === 'Shutdown' || r.type === 'Headcount drop')
+      .map((r) => ({ ...r, j: Math.max(0, (Number(r.jobs) || 0) - (Number(r.overlap) || 0)) }));
+    const t = (d) => Date.parse(d + 'T00:00:00Z');
+    const end = Math.max(...ev.map((r) => t(r.date)));
+    const recent = (r) => t(r.date) > end - 182 * 86400000;
+    const jobsOf = (rs) => rs.reduce((a, r) => a + r.j, 0);
+    const bySec = new Map(sectors.map((s) => [s.sector, ev.filter((r) => r.sector === s.sector)]));
+    const maxJobs = Math.max(1, ...Array.from(bySec.values()).map(jobsOf));
+    const inr = (n) => n.toLocaleString('en-IN');
+    return sectors.map((s) => {
+      const rs = bySec.get(s.sector);
+      const jobs = jobsOf(rs);
+      const cos = new Set(rs.map((r) => nrm(r.company))).size;
+      const size = jobs ? (35 * Math.log10(1 + jobs)) / Math.log10(1 + maxJobs) : 0;
+      const breadth = 15 * Math.min(1, cos / 8);
+      const rj = jobsOf(rs.filter(recent));
+      const recency = jobs ? (10 * rj) / jobs : 0;
+      const lay = rs.filter((r) => r.type !== 'Headcount drop');
+      const lj = jobsOf(lay);
+      const aiShare = lj ? jobsOf(lay.filter((r) => r.reason === 'AI & automation')) / lj : 0;
+      const h = hiring.find((x) => x.kind === 'Sector YoY' && x.label === s.naukri_sector);
+      const yoy = h ? Number(h.value) : null;
+      const hire = yoy == null ? 0 : Math.max(-15, Math.min(15, -yoy * 1.5));
+      const enough = rs.length >= 2;
+      const score = enough ? Math.max(0, Math.min(100, Math.round((100 * (size + breadth + recency + aiShare * 15 + hire + 15)) / 105))) : 50;
+      const top = rs.slice().sort((a, b) => b.j - a.j).slice(0, 3).map((r) => nrm(r.company));
+      return {
+        sector: s.sector, score, basis: enough ? 'Data' : 'Not enough data',
+        why: enough
+          ? inr(jobs) + ' jobs lost across ' + cos + ' companies since Jan 2025 (largest: ' + top.join(', ') + '); ' + Math.round((jobs ? (100 * rj) / jobs : 0)) + '% in the last 6 months; ' + Math.round(aiShare * 100) + '% of announced cuts cite AI' + (yoy == null ? '.' : '; job postings ' + (yoy > 0 ? '+' : '') + yoy + '% YoY (Naukri).')
+          : 'Fewer than two sourced events in this sector, so it gets a neutral 50 rather than a falsely low score.',
+      };
+    });
+  },
+});
+
+(() => {
+  const ALL = 'All';
+  const root = document.getElementById('tracker');
+  const pages = Array.from(document.querySelectorAll('.lw-page'));
+  const navs = Array.from(document.querySelectorAll('.lw-nav'));
+  const titleEl = document.querySelector('.lw-title');
+  const filters = document.getElementById('filters');
+  const yearBtns = Array.from(document.querySelectorAll('.lw-year button'));
+  const secSel = document.querySelector('.lw-sector');
+  const segSel = document.querySelector('.lw-segment');
+  const search = document.querySelector('.lw-search');
+  const inr = (n) => Number(n).toLocaleString('en-IN');
+  const compact = (n) => (n >= 1000 ? (Math.round(n / 100) / 10).toString().replace(/\.0$/, '') + 'k' : String(n));
+  const nrm = (c) => c.replace(/\s*\([^)]*\)/g, '').replace(/ India( tech hub)?$/, '').trim();
+  const isTracked = (r) => r.type === 'Layoff' || r.type === 'Shutdown';
+  const PAL = () => dash.colors;
+  let current = 'dashboard';
+  let sortKey = 'date', sortDir = -1, rowsNow = [], shownRows = [], sectorSummary = [], sectorRows = [];
+  const rPick = {}; let rShown = false;
+
+  function show(id, fromUser) {
+    if (!pages.some((p) => p.id === id)) id = 'dashboard';
+    current = id;
+    pages.forEach((p) => { p.hidden = p.id !== id; });
+    navs.forEach((n) => n.setAttribute('aria-current', n.dataset.page === id ? 'page' : 'false'));
+    const nav = navs.find((n) => n.dataset.page === id);
+    titleEl.textContent = nav ? nav.textContent.replace(/^\S+\s*/, '').trim() || nav.textContent : '';
+    titleEl.textContent = nav ? nav.lastChild.textContent.trim() : '';
+    filters.hidden = id === 'new-jobs' || id === 'risk' || id === 'workforce' || id === 'govt-jobs';
+    root.classList.remove('open');
+    if (fromUser) dash.setLink(id);
+    draw();
+  }
+  navs.forEach((n) => n.addEventListener('click', () => show(n.dataset.page, true)));
+  document.querySelector('.lw-menu').addEventListener('click', () => root.classList.toggle('open'));
+  yearBtns.forEach((b) => b.addEventListener('click', () => dash.setParams({ year: b.dataset.v })));
+  secSel.addEventListener('change', () => dash.setParams({ sector: secSel.value }));
+  segSel.addEventListener('change', () => dash.setParams({ segment: segSel.value }));
+  document.querySelector('.lw-reset').addEventListener('click', () => { search.value = ''; dash.resetParams(); });
+  search.addEventListener('input', () => fillTable());
+  document.querySelectorAll('.lw-table:not(.lw-vtable) th button').forEach((b) => b.addEventListener('click', () => {
+    if (sortKey === b.dataset.k) sortDir = -sortDir; else { sortKey = b.dataset.k; sortDir = b.dataset.k === 'jobs' || b.dataset.k === 'date' ? -1 : 1; }
+    fillTable();
+  }));
+
+  const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+  const fail = (box) => { box.replaceChildren(el('div', 'lw-fail', 'Failed to load')); };
+  const empty = (box, msg) => box.replaceChildren(el('p', 'lw-note', msg || 'No events match these filters.'));
+
+  function hbars(box, items, color, fmt, signed) {
+    box.replaceChildren();
+    if (!items.length) return empty(box);
+    const max = Math.max(...items.map((d) => Math.abs(d.value))) || 1;
+    items.forEach((d) => {
+      const row = el('div', 'lw-hrow');
+      const nm = el('span', 'nm', d.label); nm.title = d.label;
+      const tr = el('div', 'tr'); const fl = el('div', 'fl');
+      const w = (Math.abs(d.value) / max) * (signed ? 50 : 100);
+      fl.style.width = w + '%';
+      fl.style.left = signed ? (d.value >= 0 ? '50%' : 50 - w + '%') : '0';
+      fl.style.background = typeof color === 'function' ? color(d) : color;
+      tr.appendChild(fl);
+      row.append(nm, tr, el('span', 'nv', fmt(d.value)));
+      box.appendChild(row);
+    });
+  }
+
+  function donut(box, items) {
+    box.replaceChildren();
+    if (!items.length) return empty(box);
+    const tot = items.reduce((s, d) => s + d.value, 0) || 1;
+    const S = 152, R = S / 2;
+    const svg = d3.create('svg').attr('viewBox', `0 0 ${S} ${S}`).attr('width', '100%').style('max-width', S + 'px');
+    const arcs = d3.pie().sort(null).value((d) => d.value)(items);
+    svg.append('g').attr('transform', `translate(${R},${R})`).selectAll('path').data(arcs).join('path')
+      .attr('d', d3.arc().innerRadius(R * 0.58).outerRadius(R - 2).padAngle(0.012).cornerRadius(2))
+      .attr('fill', (d, i) => PAL()[i % PAL().length]);
+    const lg = el('div', 'lw-legend');
+    items.forEach((d, i) => {
+      const r = document.createElement('div');
+      const sw = el('i'); sw.style.background = PAL()[i % PAL().length];
+      r.append(sw, el('span', null, d.label), el('span', null, Math.round((d.value / tot) * 100) + '%'));
+      lg.appendChild(r);
+    });
+    box.append(svg.node(), lg);
+  }
+
+  function monthly(box, rows, all, year) {
+    box.replaceChildren();
+    const months = [];
+    const minM = d3.min(all, (r) => r.month), maxM = d3.max(all, (r) => r.month);
+    for (let d = new Date(minM + '-01T00:00:00Z'); d <= new Date(maxM + '-01T00:00:00Z'); d = d3.utcMonth.offset(d, 1)) {
+      const k = d3.utcFormat('%Y-%m')(d);
+      if (year === ALL || k.startsWith(year)) months.push(k);
+    }
+    const by = d3.group(rows, (r) => r.month);
+    const data = months.map((m) => { const rs = by.get(m) || []; return { m, jobs: d3.sum(rs, (r) => r.jobs || 0), rs }; });
+    const W = box.clientWidth || 600, H = 240, mt = 10, mb = 26;
+    const svg = d3.select(box).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const y = d3.scaleLinear([0, d3.max(data, (d) => d.jobs) || 1], [H - mb, mt]).nice();
+    const yt = y.ticks(4);
+    const probe = svg.append('text').attr('font-size', 11);
+    const ml = d3.max(yt, (v) => { probe.text(compact(v)); return probe.node().getComputedTextLength(); }) + 10;
+    probe.remove();
+    const x = d3.scaleBand(months, [ml, W - 4]).padding(0.25);
+    svg.append('g').selectAll('line').data(yt).join('line').attr('x1', ml).attr('x2', W - 4).attr('y1', (v) => y(v)).attr('y2', (v) => y(v)).attr('stroke', 'var(--cds-chart-grid)');
+    svg.append('g').selectAll('text').data(yt).join('text').attr('x', ml - 6).attr('y', (v) => y(v)).attr('dy', '0.32em').attr('text-anchor', 'end').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text(compact);
+    const every = Math.max(1, Math.ceil(months.length / Math.max(1, Math.floor((W - ml) / 56))));
+    svg.append('g').selectAll('text').data(months.filter((m, i) => i % every === 0)).join('text').attr('x', (m) => x(m) + x.bandwidth() / 2).attr('y', H - 8).attr('text-anchor', 'middle').attr('fill', 'var(--color-fg-muted)').attr('font-size', 11).text((m) => d3.utcFormat('%b %y')(new Date(m + '-01T00:00:00Z')));
+    const bars = svg.append('g').selectAll('rect').data(data).join('rect')
+      .attr('x', (d) => x(d.m)).attr('width', x.bandwidth()).attr('y', (d) => y(d.jobs)).attr('height', (d) => Math.max(0, y(0) - y(d.jobs)))
+      .attr('rx', 4).attr('fill', (d) => (d.m.startsWith('2026') ? '#ef4444' : PAL()[0]));
+    const tip = el('div', 'lw-tip'); tip.hidden = true; box.appendChild(tip);
+    svg.append('g').selectAll('rect').data(data).join('rect').attr('x', (d) => x(d.m) - (x.step() * x.paddingInner()) / 2).attr('width', x.step()).attr('y', mt).attr('height', H - mb - mt).attr('fill', 'transparent')
+      .on('mousemove', (event, d) => {
+        bars.attr('opacity', (b) => (b === d ? 1 : 0.45));
+        tip.replaceChildren(el('div', 'd', d3.utcFormat('%B %Y')(new Date(d.m + '-01T00:00:00Z'))), el('div', null, inr(d.jobs) + ' jobs · ' + d.rs.length + ' events'));
+        d.rs.slice().sort((a, b) => (b.jobs || 0) - (a.jobs || 0)).slice(0, 4).forEach((r) => tip.appendChild(el('div', 'd', r.company + ': ' + r.jobs_reported)));
+        tip.hidden = false;
+        const [px, py] = d3.pointer(event, box);
+        tip.style.left = Math.min(Math.max(0, px + 12), box.clientWidth - tip.offsetWidth) + 'px';
+        tip.style.top = Math.max(0, py - 10) + 'px';
+      })
+      .on('mouseleave', () => { tip.hidden = true; bars.attr('opacity', 1); });
+  }
+
+  const statusCls = (s) => (s === 'Confirmed' || s === 'Annual report' ? 'ok' : s === 'Reported' ? '' : 'warn');
+
+  function fillTable() {
+    const tb = document.querySelector('.lw-table:not(.lw-vtable) tbody');
+    const q = search.value.trim().toLowerCase();
+    const rs = rowsNow.filter((r) => !q || [r.company, r.city, r.reason, r.sector, r.source, r.status, r.type].join(' ').toLowerCase().includes(q))
+      .sort((a, b) => (sortKey === 'jobs' ? ((a.jobs || 0) - (b.jobs || 0)) : String(a[sortKey]).localeCompare(String(b[sortKey]))) * sortDir);
+    shownRows = rs;
+    tb.replaceChildren();
+    rs.forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = r.id;
+      const td = (t, c) => { const x = el('td', c, t); tr.appendChild(x); return x; };
+      td(r.date); td(r.company, 'co'); td(r.sector, 'lw-hide'); td(r.jobs_reported, 'num');
+      const ty = td(''); ty.appendChild(el('span', 'lw-tag' + (isTracked(r) ? ' alt' : ''), r.type));
+      td(r.reason, 'lw-hide'); td(r.city, 'lw-hide');
+      const st = td(''); st.appendChild(el('span', 'lw-tag ' + statusCls(r.status), r.status));
+      const sc = td('');
+      if (/^https:\/\//.test(r.url)) { const a = el('a', null, r.source); a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; sc.appendChild(a); } else sc.textContent = r.source;
+      tb.appendChild(tr);
+    });
+    document.querySelector('.lw-count').textContent = rs.length + ' of ' + rowsNow.length + ' events';
+    document.querySelectorAll('.lw-table:not(.lw-vtable) th button').forEach((b) => b.parentElement.setAttribute('aria-sort', b.dataset.k === sortKey ? (sortDir > 0 ? 'ascending' : 'descending') : 'none'));
+  }
+
+  function timeline(box, rows) {
+    box.replaceChildren();
+    if (!rows.length) return empty(box);
+    rows.slice().sort((a, b) => b.date.localeCompare(a.date)).forEach((r) => {
+      const it = el('div', 'lw-tli');
+      const dot = el('span', 'dot'); dot.style.background = isTracked(r) ? '#ef4444' : PAL()[0];
+      const hd = el('div', 'hd'); hd.append(el('span', null, d3.utcFormat('%-d %b %Y')(new Date(r.date + 'T00:00:00Z'))), el('span', 'n', r.jobs_reported));
+      it.append(dot, hd, el('div', 'co', r.company), el('div', 'meta', r.sector + ' · ' + r.city));
+      const tags = el('div');
+      tags.append(el('span', 'lw-tag', r.reason), el('span', 'lw-tag' + (isTracked(r) ? ' alt' : ''), r.type), el('span', 'lw-tag ' + statusCls(r.status), r.status));
+      it.appendChild(tags);
+      box.appendChild(it);
+    });
+  }
+
+  function sectorCards(box, rows, sectors) {
+    box.replaceChildren();
+    sectorRows = rows.filter((r) => sectors.some((s) => s.sector === r.sector));
+    sectorSummary = sectors.map((s) => {
+      const rs = rows.filter((r) => r.sector === s.sector);
+      const tr = rs.filter(isTracked);
+      const last = tr.slice().sort((a, b) => b.date.localeCompare(a.date))[0];
+      return { 'Industry group': s.group, Sector: s.sector, Covers: s.covers, 'Jobs cut (announced layoffs)': d3.sum(tr, (r) => r.jobs || 0), 'Layoff events': tr.length, Shutdowns: tr.filter((r) => r.type === 'Shutdown').length, 'Companies cutting': new Set(tr.map((r) => nrm(r.company))).size, 'Net headcount declines': d3.sum(rs.filter((r) => r.type === 'Headcount drop'), (r) => (r.jobs || 0) - (Number(r.overlap) || 0)), 'Industry estimates (not counted)': d3.sum(rs.filter((r) => r.type === 'Industry estimate'), (r) => r.jobs || 0), 'AI-linked share of jobs cut': (() => { const j = d3.sum(tr, (r) => r.jobs || 0); return j ? Math.round((100 * d3.sum(tr.filter((r) => r.reason === 'AI & automation'), (r) => r.jobs || 0)) / j) + '%' : ''; })(), 'Latest event': last ? last.company + ' (' + last.date + ')' : '' };
+    }).sort((a, b) => b['Jobs cut (announced layoffs)'] - a['Jobs cut (announced layoffs)']);
+    const tracked = rows.filter(isTracked);
+    const jobsOf = d3.rollup(tracked, (v) => d3.sum(v, (r) => r.jobs || 0), (r) => r.sector);
+    const max = Math.max(1, ...jobsOf.values());
+    const groups = d3.group(sectors, (s) => s.group);
+    let gi = 0;
+    groups.forEach((list, g) => {
+      box.appendChild(el('h3', 'lw-gh', g));
+      const grid = el('div', 'lw-scards');
+      const col = PAL()[gi++ % PAL().length];
+      list.slice().sort((a, b) => (jobsOf.get(b.sector) || 0) - (jobsOf.get(a.sector) || 0)).forEach((s) => {
+        const rs = rows.filter((r) => r.sector === s.sector);
+        const tr = rs.filter(isTracked);
+        const jobs = jobsOf.get(s.sector) || 0;
+        const other = rs.filter((r) => !isTracked(r));
+        const c = el('div', 'lw-sc');
+        const top = el('div', 'top'); top.append(el('span', 't', s.sector), el('span', 'v' + (tr.length ? '' : ' zero'), tr.length ? inr(jobs) : 'No sourced layoffs yet'));
+        c.append(top, el('span', 'cv', s.covers));
+        const bt = el('div', 'bt'); const bf = el('div', 'bf'); bf.style.width = (jobs / max) * 100 + '%'; bf.style.background = col; bt.appendChild(bf); c.appendChild(bt);
+        const meta = [tr.length + (tr.length === 1 ? ' event' : ' events')];
+        if (tr.length) { const last = tr.slice().sort((a, b) => b.date.localeCompare(a.date))[0]; meta.push('latest: ' + last.company); }
+        c.appendChild(el('span', 'm', meta.join(' · ')));
+        other.forEach((o) => c.appendChild(el('span', 'm', '+ ' + o.jobs_reported + ' ' + (o.type === 'Headcount drop' ? 'headcount decline' : 'estimate') + ' — ' + o.company)));
+        grid.appendChild(c);
+      });
+      box.appendChild(grid);
+    });
+  }
+
+  function hiringPage(rows) {
+    const yoy = rows.filter((r) => r.kind === 'Sector YoY').map((r) => ({ label: r.label, value: Number(r.value) })).sort((a, b) => b.value - a.value);
+    hbars(document.querySelector('.lw-yoy'), yoy, (d) => (d.value >= 0 ? '#10b981' : '#ef4444'), (v) => (v > 0 ? '+' : '') + v + '%', true);
+    const box = document.querySelector('.lw-hot'); box.replaceChildren();
+    rows.filter((r) => r.kind === 'Hotspot' || r.kind === 'Projection').forEach((r) => {
+      const v = Number(r.value);
+      const txt = r.unit.startsWith('%') ? '+' + v + '%' : v >= 100000 ? (v / 100000).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + ' lakh' : inr(v);
+      const c = el('div', 'lw-hc');
+      c.append(el('span', 'k' + (r.kind === 'Projection' ? ' proj' : ''), r.kind === 'Projection' ? 'Projection' : 'Growing'), el('span', 'v', txt), el('span', 'u', r.unit.replace(/^%\s*/, '') + ' · ' + r.period), el('span', 't', r.label), el('span', 'd', r.detail));
+      if (/^https:\/\//.test(r.url)) { const a = el('a', null, 'Source: ' + r.source); a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; c.appendChild(a); }
+      box.appendChild(c);
+    });
+  }
+
+  const EVENT_COLS = [['date', 'Date'], ['company', 'Company'], ['sector', 'Sector'], ['segment', 'Company type'], ['jobs', 'Jobs (low end, number)'], ['jobs_reported', 'Jobs as reported'], ['pct', '% of workforce'], ['type', 'Type'], ['reason', 'Reason'], ['city', 'City'], ['status', 'Status'], ['source', 'Source'], ['url', 'Source link']];
+  const cell = (v) => { const s = v == null ? '' : String(v); return /[",\n\r]/.test(s) || /^[=+\-@]/.test(s) ? '"' + (/^[=+\-@]/.test(s) ? "'" : '') + s.replace(/"/g, '""') + '"' : s; };
+  const toCsv = (header, rows) => '\ufeff' + [header.map(cell).join(','), ...rows.map((r) => r.map(cell).join(','))].join('\r\n');
+  const eventsCsv = (rs) => toCsv(EVENT_COLS.map((c) => c[1]), rs.map((r) => EVENT_COLS.map(([k]) => r[k])));
+  const objCsv = (objs) => objs.length ? toCsv(Object.keys(objs[0]), objs.map((o) => Object.values(o))) : '';
+  const filterTag = () => { const p = dash.params(); return [p.year, p.sector, p.segment].filter((v) => v && v !== ALL).map((v) => v.replace(/[^A-Za-z0-9]+/g, '-')).join('_'); };
+  const stamp = () => new Date().toISOString().slice(0, 10);
+  let dlApi;
+  const dlReady = (async () => { try { dlApi = window.claude && window.claude.use ? await window.claude.use('downloads') : null; } catch (e) { dlApi = null; } })();
+  async function offer(filename, text, msgEl) {
+    if (!text) return;
+    await dlReady;
+    if (dlApi) {
+      try { await dlApi.save({ filename, data: text }); if (msgEl) msgEl.textContent = 'Saved ' + filename; }
+      catch (e) { if (msgEl) msgEl.textContent = e && e.code === 'declined' ? '' : 'Download unavailable here'; }
+      return;
+    }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+    a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }
+  document.querySelector('.lw-dl-events').addEventListener('click', () => offer('india-layoffs-' + (filterTag() || 'all') + '-' + stamp() + '.csv', eventsCsv(shownRows), document.querySelector('.lw-count')));
+  document.querySelector('.lw-dl-sectors').addEventListener('click', () => offer('india-layoffs-by-sector-' + (filterTag() || 'all') + '-' + stamp() + '.csv', objCsv(sectorSummary), document.querySelector('.lw-dlmsg')));
+  document.querySelector('.lw-dl-sectorevents').addEventListener('click', () => offer('india-layoffs-events-' + (filterTag() || 'all') + '-' + stamp() + '.csv', eventsCsv(sectorRows.slice().sort((a, b) => a.sector.localeCompare(b.sector) || b.date.localeCompare(a.date))), document.querySelector('.lw-dlmsg')));
+
+  const bigNum = (v) => (v >= 1e7 ? (v / 1e7).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' crore' : v >= 1e5 ? (v / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' lakh' : Number(v).toLocaleString('en-IN'));
+  const sgn1 = (v) => (v > 0 ? '+' : v < 0 ? '−' : '±') + Math.abs(v).toLocaleString('en-IN', { maximumFractionDigits: 1 });
+  let wfRows = [], dmRows = [];
+  function pairBars(box, rows) {
+    box.replaceChildren();
+    const max = Math.max(...rows.map((r) => Math.max(Number(r.value), Number(r.prev_value) || 0))) || 1;
+    rows.forEach((r) => {
+      const row = el('div', 'lw-prow'); const bars = el('div', 'bars');
+      const a = el('div', 'b'); a.style.width = (100 * Number(r.prev_value)) / max + '%'; a.style.background = 'var(--cds-chart-muted)';
+      const b = el('div', 'b'); b.style.width = (100 * Number(r.value)) / max + '%'; b.style.background = '#ef4444';
+      bars.append(a, b);
+      const nv = el('span', 'nv'); nv.append(el('b', null, Number(r.value).toFixed(1) + '%'), document.createTextNode(' (' + sgn1(Number(r.value) - Number(r.prev_value)) + ' pts)'));
+      row.append(el('span', null, r.label), bars, nv); box.appendChild(row);
+    });
+  }
+  function workforcePage(wf, dm) {
+    const dmap = new Map(dm.map((d) => [d.industry, d]));
+    const prof = document.querySelector('.lw-prof'); prof.replaceChildren();
+    wf.filter((r) => r.group === 'Profession').forEach((r) => {
+      const c = el('div', 'lw-pc');
+      c.append(el('span', 't', r.label), el('span', 'v', bigNum(Number(r.value))), el('span', 'u', r.unit + ' · ' + r.period));
+      const d = r.naukri_industry ? dmap.get(r.naukri_industry) : null;
+      if (d) { const y = Number(d.yoy_pct); c.appendChild(el('span', 'lw-chip ' + (y >= 2 ? 'up' : y <= -2 ? 'down' : 'flat'), sgn1(y) + '% job postings YoY (' + d.industry + ')')); }
+      if (r.prev_value != null) c.appendChild(el('span', 'u', 'vs ' + bigNum(Number(r.prev_value)) + ' in ' + r.prev_period));
+      c.appendChild(el('span', 'd', r.detail));
+      if (/^https:\/\//.test(r.url)) { const a = el('a', null, 'Source: ' + r.source); a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; c.appendChild(a); }
+      prof.appendChild(c);
+    });
+    hbars(document.querySelector('.lw-fields'), dm.map((d) => ({ label: d.industry, value: Number(d.yoy_pct) })).sort((a, b) => b.value - a.value), (d) => (d.value >= 0 ? '#10b981' : '#ef4444'), (v) => (v > 0 ? '+' : '') + v.toFixed(1) + '%', true);
+    pairBars(document.querySelector('.lw-sectorshare'), wf.filter((r) => r.group === 'Where India works'));
+    pairBars(document.querySelector('.lw-status'), wf.filter((r) => r.group === 'Type of work'));
+    const tiles = document.querySelector('.lw-pulse'); tiles.replaceChildren();
+    wf.filter((r) => r.group === 'Labour market').forEach((r) => {
+      const t = el('div', 'lw-tile'); t.append(el('span', 'l', r.label + ' · ' + r.period), el('span', 'v', Number(r.value).toFixed(1) + '%'));
+      if (r.prev_value != null) {
+        const ch = Number(r.value) - Number(r.prev_value); const good = /unemployment/i.test(r.label) ? ch < 0 : ch > 0;
+        const c = el('span', 'c', sgn1(ch) + ' pts vs ' + r.prev_period); c.style.color = ch === 0 ? 'var(--color-fg-muted)' : good ? '#10b981' : '#ef4444'; t.appendChild(c);
+      } else t.appendChild(el('span', 'c', r.detail));
+      tiles.appendChild(t);
+    });
+    hbars(document.querySelector('.lw-outlook'), wf.filter((r) => r.group === 'Hiring outlook').map((r) => ({ label: r.label, value: Number(r.value) })), '#10b981', (v) => '+' + v + '%');
+  }
+  document.querySelector('.lw-dl-workforce').addEventListener('click', () => offer('india-workforce-' + stamp() + '.csv', objCsv(wfRows.map((r) => ({ Group: r.group, Measure: r.label, Value: r.value, Unit: r.unit, Period: r.period, 'Previous value': r.prev_value == null ? '' : r.prev_value, 'Previous period': r.prev_period, 'Naukri field': r.naukri_industry, Notes: r.detail, Source: r.source, 'Source link': r.url }))), document.querySelector('.lw-wfmsg')));
+  document.querySelector('.lw-dl-demand').addEventListener('click', () => offer('india-hiring-by-field-' + stamp() + '.csv', objCsv(dmRows.slice().sort((a, b) => b.yoy_pct - a.yoy_pct).map((d) => ({ Field: d.industry, 'Index Sep 2025': d.index_sep_2025, 'Index Sep 2026': d.index_sep_2026, 'YoY %': d.yoy_pct, Source: d.source, 'Source link': d.url }))), document.querySelector('.lw-wfmsg')));
+
+  let sgRows = [], gvRows = [], vRows = [], vKey = 'vacancy_pct', vDir = -1;
+  const fullNum = (v) => (v == null || v === '' ? '—' : Number(v).toLocaleString('en-IN'));
+  function fillVac() {
+    const tb = document.querySelector('.lw-vtable tbody'); tb.replaceChildren();
+    const total = vRows.filter((r) => r.id === 'V01');
+    const rest = vRows.filter((r) => r.id !== 'V01').sort((a, b) => {
+      const x = a[vKey], y = b[vKey];
+      if (vKey === 'label') return String(x).localeCompare(String(y)) * vDir;
+      return ((x == null ? -1 : Number(x)) - (y == null ? -1 : Number(y))) * vDir;
+    });
+    [...rest, ...total].forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = r.id; if (r.id === 'V01') tr.className = 'total';
+      const derived = r.sanctioned != null && r.id !== 'V01' && r.id !== 'V02';
+      tr.append(el('td', 'co', r.label), el('td', 'num', fullNum(r.sanctioned)), el('td', 'num lw-hide', r.filled == null ? '—' : fullNum(r.filled) + (derived ? '*' : '')), el('td', 'num', fullNum(r.vacant)));
+      const pc = el('td', 'num pct'); const pb = el('span', 'pb'); const pi = el('i'); pi.style.width = Math.min(100, Number(r.vacancy_pct)) + '%'; pb.appendChild(pi);
+      pc.append(pb, document.createTextNode(Number(r.vacancy_pct).toFixed(1) + '%')); tr.appendChild(pc);
+      tb.appendChild(tr);
+    });
+    document.querySelectorAll('.lw-vtable th button').forEach((b) => b.parentElement.setAttribute('aria-sort', b.dataset.k === vKey ? (vDir > 0 ? 'ascending' : 'descending') : 'none'));
+  }
+  document.querySelectorAll('.lw-vtable th button').forEach((b) => b.addEventListener('click', () => {
+    if (vKey === b.dataset.k) vDir = -vDir; else { vKey = b.dataset.k; vDir = b.dataset.k === 'label' ? 1 : -1; }
+    fillVac();
+  }));
+  function signalsBlock(rows) {
+    const box = document.querySelector('.lw-sig'); box.replaceChildren();
+    rows.forEach((r) => {
+      const c = el('div', 'lw-sg');
+      const v = Number(r.value);
+      const signed = /YoY|above/.test(r.unit);
+      const big = el('span', 'v', (signed && v > 0 ? '+' : '') + v.toLocaleString('en-IN', { maximumFractionDigits: 2 }) + (r.unit.startsWith('%') ? '%' : ''));
+      if (signed) big.style.color = v >= 0 ? '#10b981' : '#ef4444';
+      c.append(el('span', 'ty' + (r.type === 'Government' ? ' gov' : ''), r.type), el('span', 's', r.source), el('span', 'm', r.metric), big, el('span', 'm', r.unit.replace(/^%\s*/, '') + ' · ' + r.period), el('span', 'r', r.read));
+      if (/^https:\/\//.test(r.url)) { const a = el('a', null, 'Source'); a.href = r.url; a.target = '_blank'; a.rel = 'noopener noreferrer'; c.appendChild(a); }
+      box.appendChild(c);
+    });
+  }
+  function miniBars(box, title, rows) {
+    const c = el('div', 'lw-mc');
+    const last = rows[rows.length - 1], prev = rows[rows.length - 2];
+    const ch = prev ? (100 * (last.value - prev.value)) / prev.value : 0;
+    const chg = el('span', 'chg', 'Latest ' + inr(last.value) + ' (' + last.period + '): ' + (ch > 0 ? '+' : '') + ch.toFixed(0) + '% vs previous');
+    chg.style.color = ch < 0 ? '#ef4444' : '#10b981';
+    const holder = el('div'); holder.style.position = 'relative';
+    c.append(el('span', 't', title), chg, holder);
+    box.appendChild(c);
+    const W = holder.clientWidth || 280, H = 150, mb = 18, mt = 16;
+    const svg = d3.select(holder).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${W} ${H}`).attr('height', H);
+    const x = d3.scaleBand(rows.map((r) => r.year), [0, W]).padding(0.2);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => r.value)], [H - mb, mt]);
+    svg.selectAll('rect').data(rows).join('rect').attr('x', (r) => x(r.year)).attr('width', x.bandwidth()).attr('y', (r) => y(r.value)).attr('height', (r) => y(0) - y(r.value)).attr('rx', 3)
+      .attr('fill', (r, i) => (i === rows.length - 1 ? '#ef4444' : /backlog/.test(r.detail) ? 'var(--cds-chart-grid)' : 'var(--cds-chart-muted)'));
+    const every = Math.max(1, Math.ceil(rows.length / Math.max(1, Math.floor(W / 34))));
+    svg.selectAll('text.yr').data(rows.filter((r, i) => i % every === 0 || i === rows.length - 1)).join('text').attr('class', 'yr').attr('x', (r) => x(r.year) + x.bandwidth() / 2).attr('y', H - 4).attr('text-anchor', 'middle').attr('font-size', 10).attr('fill', 'var(--color-fg-muted)').text((r) => "'" + r.year.slice(2));
+    svg.append('text').attr('x', x(last.year) + x.bandwidth() / 2).attr('y', y(last.value) - 4).attr('text-anchor', 'end').attr('font-size', 10).attr('fill', 'var(--color-fg)').text(inr(last.value));
+  }
+  function govtPage(rows) {
+    const tot = rows.find((r) => r.id === 'V01');
+    const hero = document.querySelector('.lw-ghero'); hero.replaceChildren();
+    if (tot) hero.append(document.createTextNode('The central government had '), el('b', null, inr(tot.vacant) + ' vacant posts'), document.createTextNode(' (' + tot.vacancy_pct + '% of ' + inr(tot.sanctioned) + ' sanctioned) as of ' + tot.period + '. Yet notified vacancies in its flagship exams are falling, while states such as Uttar Pradesh and Bihar announce the biggest new drives, mainly police and teachers.'));
+    vRows = rows.filter((r) => r.kind === 'Vacancy by ministry');
+    fillVac();
+    const mini = document.querySelector('.lw-mini'); mini.replaceChildren();
+    const ex = d3.group(rows.filter((r) => r.kind === 'Exam vacancies'), (r) => r.body);
+    ex.forEach((rs, body) => miniBars(mini, body, rs.slice().sort((a, b) => a.year.localeCompare(b.year))));
+    const now = rows.filter((r) => r.kind === 'Hiring now').slice().sort((a, b) => b.value - a.value);
+    hbars(document.querySelector('.lw-gnow'), now.map((r) => ({ label: r.label, value: r.value })), (d) => (/State|planned|in process|announced/.test(now.find((r) => r.label === d.label).unit + now.find((r) => r.label === d.label).body) ? '#f59e0b' : '#3b82f6'), bigNum);
+    const notes = document.querySelector('.lw-gnotes'); notes.replaceChildren();
+    const key = el('div', 'lw-key'); const k1 = el('span'); const i1 = el('i'); i1.style.background = '#f59e0b'; k1.append(i1, document.createTextNode('State plans / announcements')); const k2 = el('span'); const i2 = el('i'); i2.style.background = '#3b82f6'; k2.append(i2, document.createTextNode('Central notifications')); key.append(k1, k2); notes.appendChild(key);
+    hbars(document.querySelector('.lw-gcgl'), rows.filter((r) => r.kind === 'SSC CGL 2026 by department').map((r) => ({ label: r.label, value: r.value })), '#3b82f6', inr);
+  }
+  document.querySelector('.lw-dl-govt').addEventListener('click', () => offer('india-government-jobs-' + stamp() + '.csv', objCsv(gvRows.map((r) => ({ Category: r.kind, Body: r.body, Item: r.label, Year: r.year, Value: r.value == null ? '' : r.value, Sanctioned: r.sanctioned == null ? '' : r.sanctioned, Filled: r.filled == null ? '' : r.filled, Vacant: r.vacant == null ? '' : r.vacant, 'Vacancy %': r.vacancy_pct == null ? '' : r.vacancy_pct, Unit: r.unit, Period: r.period, Notes: r.detail, Source: r.source, 'Source link': r.url }))), document.querySelector('.lw-gmsg')));
+  document.querySelector('.lw-dl-signals').addEventListener('click', () => offer('india-hiring-sources-' + stamp() + '.csv', objCsv(sgRows.map((r) => ({ Source: r.source, Type: r.type, Measure: r.metric, Value: r.value, Unit: r.unit, Period: r.period, 'What it says': r.read, 'Source link': r.url }))), document.querySelector('.lw-wfmsg')));
+
+  const W8 = { sector: 0.25, role: 0.15, size: 0.10, tenure: 0.20, skill: 0.20, seniority: 0.10 };
+  const FNAME = { sector: 'Sector exposure', role: 'Role vulnerability', skill: 'Skill relevance', tenure: 'Tenure safety', seniority: 'Seniority level', size: 'Company size' };
+  const riskCol = (v) => (v >= 65 ? '#ef4444' : v >= 45 ? '#f59e0b' : '#10b981');
+  function fillRiskForm() {
+    const rr = dash.data('risk_rules'), se = dash.data('sectors');
+    if (rr.status !== 'ok' || se.status !== 'ok') return;
+    const sectorOpts = [...se.data.map((s) => [s.sector, s.sector]), ...rr.data.filter((r) => r.factor === 'sector').sort((a, b) => a.order - b.order).map((r) => [r.option, r.label])];
+    if (!rPick.sector || !sectorOpts.some(([v]) => v === rPick.sector)) rPick.sector = sectorOpts[0][0];
+    const secRow = se.data.find((s) => s.sector === rPick.sector);
+    const group = secRow ? secRow.group : 'PSU';
+    const tokens = new Set(['all', 'sector:' + rPick.sector, 'group:' + group]);
+    if (secRow) tokens.add('common');
+    const optsFor = (f) => rr.data.filter((r) => r.factor === f).map((r) => {
+      const ap = String(r.applies || 'all').split(',');
+      if (!ap.some((t) => tokens.has(t))) return null;
+      const rank = ap.includes('all') ? 0 : ap.includes('common') ? 2 : ap.length <= 4 ? 0 : 1;
+      return { r, rank };
+    }).filter(Boolean).sort((a, b) => a.rank - b.rank || a.r.order - b.r.order).map(({ r }) => [r.option, r.label]);
+    document.querySelectorAll('.lw-rq').forEach((sel) => {
+      const f = sel.dataset.f;
+      const opts = f === 'sector' ? sectorOpts : optsFor(f);
+      const sig = opts.map((o) => o[0]).join('|');
+      if (sel.dataset.sig !== sig) { sel.replaceChildren(...opts.map(([v, l]) => new Option(l, v))); sel.dataset.sig = sig; }
+      if (!rPick[f] || !opts.some(([v]) => v === rPick[f])) rPick[f] = opts[0][0];
+      sel.value = rPick[f];
+    });
+    const hint = document.querySelector('.lw-rhint');
+    if (hint) hint.textContent = 'Role and skill options are tailored to ' + (secRow ? secRow.sector : 'PSU / Government') + '.';
+  }
+  document.querySelectorAll('.lw-rq').forEach((sel) => sel.addEventListener('change', () => { rPick[sel.dataset.f] = sel.value; fillRiskForm(); if (rShown) renderRisk(); }));
+  document.querySelector('.lw-calc').addEventListener('click', () => { rShown = true; renderRisk(); });
+  function gauge(box, v) {
+    box.replaceChildren();
+    const W = 176, H = 104, r = 76, cx = W / 2, cy = 88;
+    const svg = d3.create('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('width', '100%');
+    const arc = d3.arc().innerRadius(r - 16).outerRadius(r).cornerRadius(3);
+    const g = svg.append('g').attr('transform', `translate(${cx},${cy})`);
+    g.append('path').attr('d', arc({ startAngle: -Math.PI / 2, endAngle: Math.PI / 2 })).attr('fill', 'var(--cds-chart-grid)');
+    g.append('path').attr('d', arc({ startAngle: -Math.PI / 2, endAngle: -Math.PI / 2 + (Math.PI * v) / 100 })).attr('fill', riskCol(v));
+    g.append('text').attr('text-anchor', 'middle').attr('y', -6).attr('font-size', 30).attr('font-weight', 800).attr('fill', riskCol(v)).style('font-variant-numeric', 'tabular-nums').text(v);
+    g.append('text').attr('text-anchor', 'middle').attr('y', 12).attr('font-size', 10).attr('fill', 'var(--color-fg-muted)').text('out of 100');
+    box.appendChild(svg.node());
+  }
+  function renderRisk() {
+    const rr = dash.data('risk_rules'), rk = dash.data('risk');
+    const res = document.querySelector('.lw-rres');
+    if (rr.status !== 'ok' || rk.status !== 'ok') return;
+    const rule = (f) => rr.data.find((r) => r.factor === f && r.option === rPick[f]);
+    const secRow = rk.data.find((r) => r.sector === rPick.sector);
+    const fac = {};
+    fac.sector = secRow ? { score: secRow.score, label: secRow.sector, basis: secRow.basis, why: secRow.why, advice: '' } : (() => { const x = rule('sector'); return x && { score: x.score, label: x.label, basis: x.basis, why: x.why, advice: x.advice }; })();
+    ['role', 'size', 'tenure', 'seniority', 'skill'].forEach((f) => { const x = rule(f); if (x) fac[f] = { score: x.score, label: x.label, basis: x.basis, why: x.why, advice: x.advice }; });
+    if (Object.keys(W8).some((f) => !fac[f])) return;
+    const total = Math.max(1, Math.min(100, Math.round(Object.keys(W8).reduce((s, f) => s + fac[f].score * W8[f], 0))));
+    res.hidden = false;
+    gauge(res.querySelector('.lw-gauge'), total);
+    const title = res.querySelector('.lw-rtitle'); title.style.color = riskCol(total);
+    const ranked = Object.keys(W8).map((f) => ({ f, c: fac[f].score * W8[f], s: fac[f].score })).sort((a, b) => b.c - a.c);
+    const worst = ranked.filter((x) => x.s >= 55).slice(0, 2).map((x) => FNAME[x.f].toLowerCase() + ' (' + fac[x.f].label + ')');
+    const best = ranked.slice().reverse().filter((x) => x.s < 45).slice(0, 1).map((x) => FNAME[x.f].toLowerCase() + ' (' + fac[x.f].label + ')');
+    title.textContent = total >= 65 ? 'High risk' : total >= 45 ? 'Moderate risk' : 'Lower risk';
+    res.querySelector('.lw-rdesc').textContent = (total >= 65 ? 'Your profile closely matches where India’s 2025–26 cuts have landed.' : total >= 45 ? 'Your profile has some exposure to the current wave of cuts, with some protection.' : 'Your profile sits mostly outside where the current cuts are landing.')
+      + (worst.length ? ' The biggest pressure comes from your ' + worst.join(' and ') + '.' : '')
+      + (best.length ? ' Your strongest protection is your ' + best[0] + '.' : '');
+    const box = res.querySelector('.lw-rfactors'); box.replaceChildren();
+    ['sector', 'role', 'skill', 'tenure', 'seniority', 'size'].forEach((f) => {
+      const x = fac[f]; const c = el('div', 'lw-rf');
+      const hd = el('div', 'hd'); const sc = el('span', 'sc', x.score + '/100'); sc.style.color = riskCol(x.score); hd.append(el('span', 'nm', FNAME[f]), sc);
+      const bar = el('div', 'bar'); const i = el('i'); i.style.width = x.score + '%'; i.style.background = riskCol(x.score); bar.appendChild(i);
+      const isData = /^Data/.test(x.basis);
+      c.append(hd, el('span', 'opt', x.label + ' · weight ' + Math.round(W8[f] * 100) + '%'), bar, el('span', 'bs ' + (isData ? 'data' : 'rule'), x.basis), el('span', 'why', x.why));
+      box.appendChild(c);
+    });
+    const ul = res.querySelector('.lw-radvice ul'); ul.replaceChildren();
+    ranked.filter((x) => fac[x.f].advice).slice(0, 3).forEach((x) => { const li = el('li'); li.append(el('b', null, FNAME[x.f] + ': '), document.createTextNode(fac[x.f].advice)); ul.appendChild(li); });
+    if (!ul.children.length) ul.appendChild(el('li', null, 'Keep your skills current and watch this tracker for your sector.'));
+  }
+
+  function draw() {
+    const p = dash.params();
+    const year = p.year || ALL, sector = p.sector || ALL, segment = p.segment || ALL;
+    yearBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === year)));
+    const ev = dash.data('events'), se = dash.data('sectors'), hi = dash.data('hiring'), k = dash.data('kpis'), rk = dash.data('risk');
+
+    const krow = k.status === 'ok' ? k.data.find((r) => r.period === year && r.sector === sector && r.segment === segment) : null;
+    const where = 'period=' + encodeURIComponent(year) + '&sector=' + encodeURIComponent(sector) + '&segment=' + encodeURIComponent(segment);
+    document.querySelectorAll('.lw-k').forEach((m) => { m.setAttribute('data-where', where); m.textContent = krow ? String(krow[m.dataset.field]) : '—'; });
+
+    if (se.status === 'ok') {
+      secSel.replaceChildren(new Option('All sectors', ALL), ...se.data.map((s) => new Option(s.sector, s.sector))); secSel.value = sector;
+    }
+    if (ev.status === 'ok') {
+      const segs = Array.from(new Set(ev.data.map((r) => r.segment))).sort();
+      segSel.replaceChildren(new Option('All company types', ALL), ...segs.map((s) => new Option(s, s))); segSel.value = segment;
+    }
+
+    fillRiskForm();
+    if (rShown) renderRisk();
+
+    const page = document.getElementById(current);
+    const boxes = Array.from(page.querySelectorAll('[data-source]')).filter((b) => !b.matches('.lw-k, .lw-r, select, table, .lw-vtable, .lw-rform, .lw-rres'));
+    if (ev.status === 'error' || se.status === 'error' || (current === 'new-jobs' && hi.status === 'error')) { boxes.forEach(fail); return; }
+    if (ev.status !== 'ok' || se.status !== 'ok') return;
+
+    const all = ev.data.map((r) => ({ ...r, jobs: r.jobs == null || r.jobs === '' ? null : Number(r.jobs) }));
+    const rows = all.filter((r) => (year === ALL || r.year === year) && (sector === ALL || r.sector === sector) && (segment === ALL || r.segment === segment));
+    const tracked = rows.filter(isTracked);
+    const sumBy = (rs, key) => Array.from(d3.rollup(rs, (v) => d3.sum(v, (r) => r.jobs || 0), key)).map(([label, value]) => ({ label, value })).filter((d) => d.value > 0).sort((a, b) => b.value - a.value);
+
+    if (current === 'dashboard') {
+      monthly(document.querySelector('.lw-monthly'), tracked, all.filter(isTracked), year);
+      hbars(document.querySelector('.lw-topco'), sumBy(tracked, (r) => nrm(r.company)).slice(0, 10), '#e11d48', inr);
+      const grp = new Map(se.data.map((s) => [s.sector, s.group]));
+      hbars(document.querySelector('.lw-bygroup'), sumBy(tracked, (r) => grp.get(r.sector) || 'Other'), PAL()[0], inr);
+      donut(document.querySelector('.lw-reason'), sumBy(tracked, (r) => r.reason));
+      donut(document.querySelector('.lw-segdonut'), sumBy(tracked, (r) => r.segment));
+    } else if (current === 'timeline') {
+      timeline(page.querySelector('.lw-tl'), rows);
+    } else if (current === 'companies') {
+      rowsNow = rows; fillTable();
+    } else if (current === 'sectors') {
+      sectorCards(page.querySelector('.lw-sectors'), rows, sector === ALL ? se.data : se.data.filter((s) => s.sector === sector));
+    } else if (current === 'workforce') {
+      const wf = dash.data('workforce'), dm = dash.data('demand');
+      if (wf.status === 'error' || dm.status === 'error') { boxes.forEach(fail); return; }
+      if (wf.status === 'ok' && dm.status === 'ok') { wfRows = wf.data; dmRows = dm.data; workforcePage(wf.data, dm.data); }
+      const sg = dash.data('signals'); if (sg.status === 'ok') { sgRows = sg.data; signalsBlock(sg.data); }
+    } else if (current === 'govt-jobs') {
+      const gv = dash.data('govt');
+      if (gv.status === 'error') { boxes.forEach(fail); return; }
+      if (gv.status === 'ok') { gvRows = gv.data; govtPage(gv.data); }
+    } else if (current === 'new-jobs' && hi.status === 'ok') {
+      hiringPage(hi.data);
+    }
+  }
+
+  dash.onData(draw);
+  show(location.hash.slice(1) || 'dashboard', false);
+})();
 </script>
+
+</div>
 </body>
 </html>

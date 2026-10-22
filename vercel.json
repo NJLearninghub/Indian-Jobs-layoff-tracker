@@ -1,37 +1,21 @@
 {
-  "version": 2,
-  "name": "india-layoff-tracker",
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "public/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    { "src": "/api/layoffs",       "dest": "/api/layoffs.js" },
-    { "src": "/api/sectors",       "dest": "/api/sectors.js" },
-    { "src": "/api/stats",         "dest": "/api/stats.js" },
-    { "src": "/api/search",        "dest": "/api/search.js" },
-    { "src": "/api/risk",          "dest": "/api/risk.js" },
-    { "src": "/api/timeline",      "dest": "/api/timeline.js" },
-    { "src": "/(.*)",              "dest": "/public/$1" }
-  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "",
+  "buildCommand": "node scripts/validate.mjs",
+  "outputDirectory": "public",
+  "cleanUrls": true,
   "headers": [
     {
-      "source": "/api/(.*)",
+      "source": "/data/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" },
-        { "key": "Cache-Control",                "value": "s-maxage=300, stale-while-revalidate=600" }
+        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=300, must-revalidate" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }

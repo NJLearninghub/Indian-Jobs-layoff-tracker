@@ -1,0 +1,169 @@
+{
+ "rows": [
+  {
+   "id": "H01",
+   "kind": "Sector YoY",
+   "label": "Automotive",
+   "value": 11,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H02",
+   "kind": "Sector YoY",
+   "label": "BPO/ITES",
+   "value": 4,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H03",
+   "kind": "Sector YoY",
+   "label": "GCCs",
+   "value": 4,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H04",
+   "kind": "Sector YoY",
+   "label": "IT and software services",
+   "value": -4,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H05",
+   "kind": "Sector YoY",
+   "label": "Pharma/biotech",
+   "value": -4,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H06",
+   "kind": "Sector YoY",
+   "label": "FMCG",
+   "value": -4,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "White-collar job postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H07",
+   "kind": "Hotspot",
+   "label": "Global Capability Centres (GCCs)",
+   "value": 227991,
+   "unit": "hires",
+   "period": "Jan–Jun 2026",
+   "detail": "Up 11% YoY; AI, data and analytics roles up 38%; Bengaluru 30% of hiring, Tier-2 cities up 23%",
+   "source": "Swarajya (Nasscom-Zinnov context)",
+   "url": "https://swarajyamag.com/economy/ai-data-skills-now-drive-two-in-three-new-gcc-jobs-in-india-as-hiring-rises-11-per-cent"
+  },
+  {
+   "id": "H08",
+   "kind": "Hotspot",
+   "label": "BFSI operations roles",
+   "value": 15000,
+   "unit": "roles added",
+   "period": "12 months to May 2026",
+   "detail": "15,000–20,000 new operations roles in banking and insurance, while non-banking BPO hiring fell 40–50%",
+   "source": "Outsource Accelerator (Han Digital report)",
+   "url": "https://news.outsourceaccelerator.com/india-bfsi-hiring-jumps-20000/"
+  },
+  {
+   "id": "H09",
+   "kind": "Hotspot",
+   "label": "AI / ML roles",
+   "value": 20,
+   "unit": "% YoY",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "Fastest-growing role family on Naukri; overall white-collar hiring up only 2%",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H10",
+   "kind": "Hotspot",
+   "label": "Hyderabad",
+   "value": 9,
+   "unit": "% YoY",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "Fastest-growing metro for white-collar hiring; Mumbai and Delhi-NCR each down 6%",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H11",
+   "kind": "Hotspot",
+   "label": "Senior roles paying ₹20 LPA+",
+   "value": 23,
+   "unit": "% YoY",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "High-pay postings grew far faster than fresher postings (up 1%)",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H12",
+   "kind": "Projection",
+   "label": "Electronics & semiconductors",
+   "value": 4500000,
+   "unit": "hires (projected)",
+   "period": "Next five years from Jan 2026",
+   "detail": "Government-cited BCG–Nasscom projection, not jobs already created",
+   "source": "Let's Data Science (MeitY / NITI Aayog)",
+   "url": "https://letsdatascience.com/news/india-creates-millions-of-electronics-sector-jobs-6029e603"
+  },
+  {
+   "id": "H13",
+   "kind": "Experience YoY",
+   "label": "Fresher (0–3 years)",
+   "value": 1,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "Fresher postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H14",
+   "kind": "Experience YoY",
+   "label": "Senior (13+ years)",
+   "value": 7,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "Postings for 13–15 years' experience",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  },
+  {
+   "id": "H15",
+   "kind": "Skill YoY",
+   "label": "AI / ML / data",
+   "value": 20,
+   "unit": "%",
+   "period": "Sep 2026 vs Sep 2025",
+   "detail": "AI/ML role postings",
+   "source": "Naukri JobSpeak",
+   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+  }
+ ]
+}

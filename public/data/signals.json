@@ -1,0 +1,81 @@
+{
+ "rows": [
+  {
+   "id": "G1",
+   "source": "Naukri JobSpeak",
+   "metric": "White-collar job postings",
+   "value": 2,
+   "unit": "% YoY",
+   "period": "Sep 2026",
+   "read": "Postings index 3,053; AI/ML roles +20%. One portal's postings, white-collar only.",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf",
+   "type": "Job portal"
+  },
+  {
+   "id": "G2",
+   "source": "foundit Insights Tracker",
+   "metric": "White-collar hiring",
+   "value": -11,
+   "unit": "% YoY",
+   "period": "Sep 2026",
+   "read": "Festive hiring 1,27,080 jobs (+7%); white-collar gig and freelance roles +15%. Contradicts Naukri for the same month.",
+   "url": "https://www.thepeoplesboard.com/news/festive-hiring-7-pct-2026-foundit-quick-commerce/",
+   "type": "Job portal"
+  },
+  {
+   "id": "G3",
+   "source": "Indeed Hiring Lab",
+   "metric": "Job postings vs pre-pandemic",
+   "value": 84,
+   "unit": "% above Feb 2020",
+   "period": "Jan 2026",
+   "read": "Postings rose 3.3% in January; 55% of occupation categories now mention AI.",
+   "url": "https://ianslive.in/india-job-postings-remain-84-pc-above-pre-pandemic-levels-report--20260310141945",
+   "type": "Job portal"
+  },
+  {
+   "id": "G4",
+   "source": "EPFO payroll (Govt)",
+   "metric": "Net new formal-sector members",
+   "value": 7.86,
+   "unit": "% YoY",
+   "period": "Latest month published 13 Jun 2026",
+   "read": "19.29 lakh net additions; 59% aged 18–25. Counts formal jobs with provident fund, including job switches.",
+   "url": "https://www.businesstoday.in/personal-finance/news/story/epfo-adds-over-19-lakh-members-in-june-rolls-out-easier-online-update-facility-536695-2026-06-13",
+   "type": "Government"
+  },
+  {
+   "id": "G5",
+   "source": "PLFS monthly (Govt)",
+   "metric": "Unemployment rate",
+   "value": 5.0,
+   "unit": "%",
+   "period": "Sep 2026",
+   "read": "Down from 5.2% a year earlier; urban 6.9%, urban women 9.2%. The broadest measure: covers all work, not only formal jobs.",
+   "url": "https://ddnews.gov.in/en/urban-workforce-participation-improves-in-september-female-lfpr-reaches-highest-level-since-october-2025/",
+   "type": "Government"
+  },
+  {
+   "id": "G6",
+   "source": "ManpowerGroup survey",
+   "metric": "Net employment outlook",
+   "value": 48,
+   "unit": "% of employers (net)",
+   "period": "Jul–Sep 2026",
+   "read": "Strongest outlook of 40+ countries; utilities and natural resources 61%. Employer intentions, not actual hires.",
+   "url": "https://ianslive.in/india-retains-worlds-strongest-hiring-outlook-at-48-pc-survey--20260609145838",
+   "type": "Employer survey"
+  },
+  {
+   "id": "G7",
+   "source": "TeamLease outlook",
+   "metric": "Net employment change planned",
+   "value": 5.4,
+   "unit": "%",
+   "period": "Oct 2026–Mar 2027",
+   "read": "E-commerce 12.6%, travel 12.3%, retail 10.3%. Employer intentions.",
+   "url": "https://www.pninews.com/teamlease-staffing-projects-5-4-workforce-growth-in-hy2-fy2026-27-led-by-e-commerce-tech-start-ups-travel-hospitality-and-retail/",
+   "type": "Employer survey"
+  }
+ ]
+}

@@ -1,0 +1,420 @@
+{
+ "rows": [
+  {
+   "industry": "Accounting/Finance",
+   "index_sep_2025": 8329,
+   "index_sep_2026": 8379,
+   "yoy_pct": 0.6,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Advertising/PR/MR/Events",
+   "index_sep_2025": 5536,
+   "index_sep_2026": 5262,
+   "yoy_pct": -4.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Agriculture/Dairy",
+   "index_sep_2025": 1344,
+   "index_sep_2026": 1053,
+   "yoy_pct": -21.7,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Architecture/Interior Designing",
+   "index_sep_2025": 4779,
+   "index_sep_2026": 4823,
+   "yoy_pct": 0.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Auto/Auto Ancillary",
+   "index_sep_2025": 1349,
+   "index_sep_2026": 1495,
+   "yoy_pct": 10.8,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Banking/Financial Services/Broking",
+   "index_sep_2025": 3664,
+   "index_sep_2026": 3681,
+   "yoy_pct": 0.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "BPO/ITES",
+   "index_sep_2025": 2532,
+   "index_sep_2026": 2638,
+   "yoy_pct": 4.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Chemicals/PetroChemical/Plastic/Rubber",
+   "index_sep_2025": 1935,
+   "index_sep_2026": 1942,
+   "yoy_pct": 0.4,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Construction/Engineering/Cement/Metals",
+   "index_sep_2025": 1329,
+   "index_sep_2026": 1390,
+   "yoy_pct": 4.6,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Consumer Durables",
+   "index_sep_2025": 904,
+   "index_sep_2026": 1102,
+   "yoy_pct": 21.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Courier/Transportation/Freight",
+   "index_sep_2025": 3145,
+   "index_sep_2026": 2938,
+   "yoy_pct": -6.6,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Defence/Government",
+   "index_sep_2025": 10843,
+   "index_sep_2026": 11409,
+   "yoy_pct": 5.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Education/Teaching/Training",
+   "index_sep_2025": 5357,
+   "index_sep_2026": 4386,
+   "yoy_pct": -18.1,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Export/Import",
+   "index_sep_2025": 1354,
+   "index_sep_2026": 1455,
+   "yoy_pct": 7.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Fertilizers/Pesticides",
+   "index_sep_2025": 6325,
+   "index_sep_2026": 5365,
+   "yoy_pct": -15.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "FMCG/Foods/Beverage",
+   "index_sep_2025": 2376,
+   "index_sep_2026": 2276,
+   "yoy_pct": -4.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Gems & Jewellery",
+   "index_sep_2025": 7119,
+   "index_sep_2026": 8469,
+   "yoy_pct": 19.0,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Hotels/Restaurants/Airlines/Travel",
+   "index_sep_2025": 2086,
+   "index_sep_2026": 1866,
+   "yoy_pct": -10.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Industrial Products/Heavy Machinery",
+   "index_sep_2025": 1715,
+   "index_sep_2026": 1842,
+   "yoy_pct": 7.4,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Insurance",
+   "index_sep_2025": 3162,
+   "index_sep_2026": 3197,
+   "yoy_pct": 1.1,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "IT-Hardware & Networking",
+   "index_sep_2025": 580,
+   "index_sep_2026": 549,
+   "yoy_pct": -5.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "IT-Software/Software Services",
+   "index_sep_2025": 3585,
+   "index_sep_2026": 3432,
+   "yoy_pct": -4.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Legal",
+   "index_sep_2025": 5600,
+   "index_sep_2026": 4409,
+   "yoy_pct": -21.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Media/Dotcom/Entertainment",
+   "index_sep_2025": 547,
+   "index_sep_2026": 477,
+   "yoy_pct": -12.8,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Medical/Healthcare/Hospital",
+   "index_sep_2025": 6995,
+   "index_sep_2026": 6782,
+   "yoy_pct": -3.0,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "NGO/Social Services",
+   "index_sep_2025": 4685,
+   "index_sep_2026": 4194,
+   "yoy_pct": -10.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Office Equipment/Automation",
+   "index_sep_2025": 4883,
+   "index_sep_2026": 4881,
+   "yoy_pct": -0.0,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Oil and Gas/Power/Infrastructure/Energy",
+   "index_sep_2025": 766,
+   "index_sep_2026": 760,
+   "yoy_pct": -0.8,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Pharma/Biotech/Clinical Research",
+   "index_sep_2025": 2522,
+   "index_sep_2026": 2417,
+   "yoy_pct": -4.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Printing/Packaging",
+   "index_sep_2025": 1420,
+   "index_sep_2026": 1469,
+   "yoy_pct": 3.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Real Estate/Property",
+   "index_sep_2025": 4711,
+   "index_sep_2026": 4723,
+   "yoy_pct": 0.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Recruitment",
+   "index_sep_2025": 545,
+   "index_sep_2026": 995,
+   "yoy_pct": 82.6,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Retail",
+   "index_sep_2025": 1656,
+   "index_sep_2026": 1678,
+   "yoy_pct": 1.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Security/Law Enforcement",
+   "index_sep_2025": 1885,
+   "index_sep_2026": 1545,
+   "yoy_pct": -18.0,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Semiconductors/Electronics",
+   "index_sep_2025": 5588,
+   "index_sep_2026": 5655,
+   "yoy_pct": 1.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Shipping/Marine",
+   "index_sep_2025": 1031,
+   "index_sep_2026": 1105,
+   "yoy_pct": 7.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Telcom/ISP",
+   "index_sep_2025": 508,
+   "index_sep_2026": 445,
+   "yoy_pct": -12.4,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Textiles/Garments/Accessories",
+   "index_sep_2025": 2581,
+   "index_sep_2026": 2701,
+   "yoy_pct": 4.6,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Aviation/Aerospace Firms",
+   "index_sep_2025": 1113,
+   "index_sep_2026": 1087,
+   "yoy_pct": -2.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Electricals/Switchgears",
+   "index_sep_2025": 2195,
+   "index_sep_2026": 2122,
+   "yoy_pct": -3.3,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Facility Management",
+   "index_sep_2025": 1259,
+   "index_sep_2026": 1391,
+   "yoy_pct": 10.5,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Food Processing",
+   "index_sep_2025": 1550,
+   "index_sep_2026": 1581,
+   "yoy_pct": 2.0,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Internet/Ecommerce",
+   "index_sep_2025": 953,
+   "index_sep_2026": 911,
+   "yoy_pct": -4.4,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "KPO/Research/Analytics",
+   "index_sep_2025": 1207,
+   "index_sep_2026": 976,
+   "yoy_pct": -19.1,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Medical Devices/Equipments",
+   "index_sep_2025": 1745,
+   "index_sep_2026": 1795,
+   "yoy_pct": 2.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Mining",
+   "index_sep_2025": 1826,
+   "index_sep_2026": 2022,
+   "yoy_pct": 10.7,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Other",
+   "index_sep_2025": 1612,
+   "index_sep_2026": 1707,
+   "yoy_pct": 5.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Publishing",
+   "index_sep_2025": 1253,
+   "index_sep_2026": 1127,
+   "yoy_pct": -10.1,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Steel",
+   "index_sep_2025": 1813,
+   "index_sep_2026": 1848,
+   "yoy_pct": 1.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Strategy/Management Consulting Firms",
+   "index_sep_2025": 1208,
+   "index_sep_2026": 1157,
+   "yoy_pct": -4.2,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Water Treatment/Waste Management",
+   "index_sep_2025": 1622,
+   "index_sep_2026": 1653,
+   "yoy_pct": 1.9,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  },
+  {
+   "industry": "Wellness/Fitness/Sports/Beauty",
+   "index_sep_2025": 1599,
+   "index_sep_2026": 1581,
+   "yoy_pct": -1.1,
+   "source": "Naukri JobSpeak, Sep 2026",
+   "url": "https://www.infoedge.in/pdfs/News_Events_pdfs/Naukri-Jobspeak-September-2026.pdf"
+  }
+ ]
+}
