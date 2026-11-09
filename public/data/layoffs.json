@@ -2203,6 +2203,25 @@
    "overlap": 0,
    "year": "2026",
    "month": "2026-10"
+  },
+  {
+   "id": "E117",
+   "date": "2026-11-06",
+   "company": "ServiceNow India (round 2)",
+   "sector": "Software & SaaS",
+   "segment": "MNC / Big Tech",
+   "jobs": null,
+   "jobs_reported": "Not disclosed (part of global round)",
+   "pct": "",
+   "reason": "Restructuring",
+   "type": "Layoff",
+   "city": "Pan-India",
+   "status": "Developing",
+   "source": "People Matters",
+   "url": "https://www.peoplematters.in/news/strategic-hr/servicenow-layoffs-hit-uk-us-and-india-as-company-restructures-workforce-53222",
+   "overlap": 0,
+   "year": "2026",
+   "month": "2026-11"
   }
  ]
 }

@@ -4,45 +4,45 @@
    "id": "H01",
    "kind": "Sector YoY",
    "label": "Automotive",
-   "value": 11,
+   "value": 36,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "White-collar job postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "White-collar job postings; auto R&D roles +53%, procurement +50%",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H02",
    "kind": "Sector YoY",
    "label": "BPO/ITES",
-   "value": 4,
+   "value": 17,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
+   "period": "Oct 2026 vs Oct 2025",
    "detail": "White-collar job postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H03",
    "kind": "Sector YoY",
    "label": "GCCs",
-   "value": 4,
+   "value": 18,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
+   "period": "Oct 2026 vs Oct 2025",
    "detail": "White-collar job postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H04",
    "kind": "Sector YoY",
    "label": "IT and software services",
-   "value": -4,
+   "value": 5,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "White-collar job postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "White-collar job postings; software engineering & QA roles across all sectors only +1%",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H05",
@@ -59,12 +59,12 @@
    "id": "H06",
    "kind": "Sector YoY",
    "label": "FMCG",
-   "value": -4,
+   "value": 6,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "White-collar job postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "White-collar job postings; FMCG production roles +40%, sales -5%",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H07",
@@ -92,23 +92,23 @@
    "id": "H09",
    "kind": "Hotspot",
    "label": "AI / ML roles",
-   "value": 20,
+   "value": 32,
    "unit": "% YoY",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "Fastest-growing role family on Naukri; overall white-collar hiring up only 2%",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "Fastest-growing role family on Naukri; overall white-collar hiring up 14% (index 2,836 vs 2,480)",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H10",
    "kind": "Hotspot",
    "label": "Hyderabad",
-   "value": 9,
+   "value": 15,
    "unit": "% YoY",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "Fastest-growing metro for white-collar hiring; Mumbai and Delhi-NCR each down 6%",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "Fastest-growing metro for white-collar hiring; Gujarat cities led emerging markets (Gandhinagar +48%, Surat +36%)",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H11",
@@ -136,34 +136,34 @@
    "id": "H13",
    "kind": "Experience YoY",
    "label": "Fresher (0–3 years)",
-   "value": 1,
+   "value": 15,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
+   "period": "Oct 2026 vs Oct 2025",
    "detail": "Fresher postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H14",
    "kind": "Experience YoY",
    "label": "Senior (13+ years)",
-   "value": 7,
+   "value": 22,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
-   "detail": "Postings for 13–15 years' experience",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "period": "Oct 2026 vs Oct 2025",
+   "detail": "Postings for 13–16 years' experience; 16+ years also +22%",
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   },
   {
    "id": "H15",
    "kind": "Skill YoY",
    "label": "AI / ML / data",
-   "value": 20,
+   "value": 32,
    "unit": "%",
-   "period": "Sep 2026 vs Sep 2025",
+   "period": "Oct 2026 vs Oct 2025",
    "detail": "AI/ML role postings",
-   "source": "Naukri JobSpeak",
-   "url": "https://www.thepeoplesboard.com/news/ai-ml-hiring-20-september-naukri-jobspeak-2026/"
+   "source": "Naukri JobSpeak (ANI via The Tribune)",
+   "url": "https://www.tribuneindia.com/news/business/indias-white-collar-hiring-rises-14-in-october-manufacturing-leads-with-39-growth-report"
   }
  ]
 }
